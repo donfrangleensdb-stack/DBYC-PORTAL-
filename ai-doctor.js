@@ -248,7 +248,7 @@ const AIDoctor = {
     // Step 2: Prime Cache Storage with Core App Shell
     if ('caches' in window) {
       try {
-        const cache = await caches.open('dbyc-v9');
+        const cache = await caches.open('dbyc-v10');
         const coreFiles = [
           './',
           './index.html',
