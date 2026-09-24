@@ -1,0 +1,144 @@
+/* DBYC — Certificate Styles */
+.cert-preview-wrap {
+  overflow-x: auto;
+  padding: var(--s-3);
+  display: flex;
+  justify-content: center;
+  background: #E5E9F2;
+  border-radius: var(--r-md);
+}
+.certificate {
+  width: 960px;
+  height: 680px;
+  position: relative;
+  background: #ffffff;
+  overflow: hidden;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  border: 12px solid #003F8A;
+  box-sizing: border-box;
+}
+.cert-inner-border {
+  position: absolute;
+  inset: 8px;
+  border: 2px solid #FFB800;
+  box-sizing: border-box;
+}
+.cert-header {
+  text-align: center;
+  padding-top: 36px;
+}
+.cert-logo-img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid #FFB800;
+  margin: 0 auto 10px;
+  display: block;
+  object-fit: cover;
+}
+.cert-org-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #003F8A;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.cert-org-subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  color: #556688;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+.cert-badge-pill {
+  display: inline-block;
+  margin-top: 14px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #003F8A;
+  background: #FFF5D6;
+  border: 1px solid #FFB800;
+  padding: 4px 16px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+.cert-main-title {
+  font-size: 34px;
+  font-weight: 700;
+  color: #002D63;
+  margin-top: 12px;
+}
+.cert-to-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  color: #778899;
+  letter-spacing: 0.08em;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+.cert-recipient {
+  font-size: 40px;
+  font-weight: 700;
+  color: #003F8A;
+  margin-top: 6px;
+  font-style: italic;
+  border-bottom: 2px solid #FFB800;
+  display: inline-block;
+  padding: 0 20px 4px;
+}
+.cert-description {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #334455;
+  max-width: 660px;
+  margin: 18px auto 0;
+  text-align: center;
+}
+.cert-footer-row {
+  position: absolute;
+  bottom: 30px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.cert-sig {
+  text-align: center;
+  min-width: 170px;
+}
+.cert-sig-line {
+  border-top: 1px solid #667788;
+  margin-bottom: 4px;
+}
+.cert-sig-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #002D63;
+}
+.cert-sig-sub {
+  font-family: 'Poppins', sans-serif;
+  font-size: 9px;
+  color: #778899;
+}
+.cert-seal-badge {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px dashed #003F8A;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 8px;
+  color: #003F8A;
+  font-weight: 700;
+  text-align: center;
+  background: #F8FAFC;
+}

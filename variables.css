@@ -1,0 +1,71 @@
+﻿:root {
+  /* Brand Colors */
+  --primary:        #003F8A;
+  --primary-dark:   #002D63;
+  --primary-light:  #1565C0;
+  --primary-10:     rgba(0, 63, 138, 0.10);
+  --primary-20:     rgba(0, 63, 138, 0.20);
+  --accent:         #FFB800;
+  --accent-dark:    #D99E00;
+  --accent-light:   #FFD054;
+  --accent-10:      rgba(255, 184, 0, 0.15);
+  --bg:             #F4F6FB;
+  --surface:        #FFFFFF;
+  --surface-alt:    #F0F4FF;
+  --border:         #DDE3F0;
+  --border-strong:  #B8C4DD;
+  --overlay:        rgba(0, 20, 60, 0.50);
+  --text-primary:   #0E1B35;
+  --text-secondary: #4A5C82;
+  --text-muted:     #8A97B4;
+  --text-on-primary:#FFFFFF;
+  --text-on-accent: #1A1000;
+  --success:        #16A34A;
+  --success-bg:     #DCFCE7;
+  --warning:        #D97706;
+  --warning-bg:     #FEF3C7;
+  --danger:         #DC2626;
+  --danger-bg:      #FEE2E2;
+  --info:           #2563EB;
+  --info-bg:        #DBEAFE;
+
+  /* 4 Teams */
+  --team-red:       #DC2626;
+  --team-red-bg:    #FEE2E2;
+  --team-blue:      #2563EB;
+  --team-blue-bg:   #DBEAFE;
+  --team-green:     #16A34A;
+  --team-green-bg:  #DCFCE7;
+  --team-yellow:    #CA8A04;
+  --team-yellow-bg: #FEF9C3;
+
+  /* 6 Youth Groups */
+  --group-sub-juniors:  #F43F5E;
+  --group-juniors:      #8B5CF6;
+  --group-seniors:      #3B82F6;
+  --group-inters:       #10B981;
+  --group-super-seniors:#F59E0B;
+  --group-elders:       #EF4444;
+
+  --font:           'Poppins', 'Segoe UI', system-ui, sans-serif;
+  --font-mono:      'Courier New', monospace;
+  --text-xs:  0.6875rem; --text-sm: 0.8125rem; --text-base: 0.9375rem;
+  --text-md:  1rem; --text-lg: 1.125rem; --text-xl: 1.25rem;
+  --text-2xl: 1.5rem; --text-3xl: 1.875rem; --text-4xl: 2.25rem;
+  --fw-normal:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700; --fw-extrabold:800;
+  --lh-tight:1.2; --lh-snug:1.4; --lh-normal:1.6;
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:20px;
+  --s-6:24px; --s-8:32px; --s-10:40px; --s-12:48px; --s-16:64px;
+  --r-sm:6px; --r-md:10px; --r-lg:16px; --r-xl:24px; --r-2xl:32px; --r-full:9999px;
+  --shadow-xs:0 1px 2px rgba(14,27,53,0.06);
+  --shadow-sm:0 1px 4px rgba(14,27,53,0.08),0 1px 2px rgba(14,27,53,0.04);
+  --shadow-md:0 4px 12px rgba(14,27,53,0.10),0 2px 4px rgba(14,27,53,0.06);
+  --shadow-lg:0 8px 24px rgba(14,27,53,0.12),0 4px 8px rgba(14,27,53,0.06);
+  --shadow-xl:0 16px 40px rgba(14,27,53,0.14),0 8px 16px rgba(14,27,53,0.08);
+  --shadow-primary:0 4px 16px rgba(0,63,138,0.30);
+  --shadow-accent:0 4px 16px rgba(255,184,0,0.40);
+  --sidebar-w:260px; --topbar-h:64px; --bottom-nav-h:68px; --content-max:1280px;
+  --ease:cubic-bezier(0.4,0,0.2,1); --ease-out:cubic-bezier(0,0,0.2,1);
+  --dur-fast:120ms; --dur-base:200ms; --dur-slow:350ms;
+  --z-sidebar:100; --z-topbar:200; --z-bottom-nav:200; --z-modal:500; --z-toast:999;
+}

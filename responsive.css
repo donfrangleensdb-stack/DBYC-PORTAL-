@@ -1,0 +1,99 @@
+/* DBYC Responsive & Mobile App Styles */
+
+/* Native App Feel */
+html, body {
+  overscroll-behavior-y: contain;
+  -webkit-touch-callout: none;
+}
+
+button, a, .nav-item, .bottom-nav-item, .page-btn {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media screen and (max-width: 767px) {
+  #sidebar { transform: translateX(-100%); }
+  #sidebar.open { transform: translateX(0); }
+  #sidebar-overlay.open { display: block; }
+
+  .main-wrapper {
+    margin-left: 0;
+    padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom, 12px));
+  }
+
+  #bottom-nav {
+    display: flex;
+    padding-bottom: env(safe-area-inset-bottom, 8px);
+    height: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .topbar-menu-btn { display: flex; }
+  #view-container { padding: var(--s-3); }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); gap: var(--s-3); }
+  .grid-3 { grid-template-columns: 1fr; }
+  .grid-2 { grid-template-columns: 1fr; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: var(--s-2); margin-bottom: var(--s-4); }
+  .page-actions { width: 100%; }
+  .page-actions .btn { flex: 1; }
+  .form-row { grid-template-columns: 1fr; }
+  .col-hide-mobile { display: none; }
+  .certificate { transform: scale(0.35); transform-origin: top left; margin-bottom: -430px; }
+
+  /* Mobile App Scoreboard Card */
+  #team-scoreboard-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: var(--s-2) !important;
+  }
+
+  .card {
+    border-radius: var(--r-md);
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  :root { --sidebar-w: 72px; }
+  .sidebar-brand, .sidebar-section-title, .nav-item span.nav-label, .sidebar-user-info { display: none; }
+  .sidebar-header { justify-content: center; }
+  .nav-item { justify-content: center; }
+  .main-wrapper { margin-left: var(--sidebar-w); }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .certificate { transform: scale(0.65); transform-origin: top left; margin-bottom: -230px; }
+}
+
+@media screen and (min-width: 1024px) {
+  #sidebar { transform: translateX(0) !important; }
+  .topbar-menu-btn { display: none !important; }
+}
+
+/* PWA App Install Banner */
+.pwa-install-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  background: linear-gradient(135deg, #002D63 0%, #003F8A 100%);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: var(--r-lg);
+  margin-bottom: var(--s-4);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(255,255,255,0.15);
+  animation: slideUp 0.3s ease-out;
+}
+.pwa-install-banner-text {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+.pwa-install-btn {
+  background: var(--accent);
+  color: #1A1000;
+  font-weight: 700;
+  font-size: var(--text-xs);
+  padding: 6px 14px;
+  border-radius: var(--r-full);
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}

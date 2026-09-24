@@ -1,0 +1,208 @@
+/* DBYC — Universal Print Stylesheet */
+
+@media print {
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    font-size: 12pt;
+    line-height: 1.4;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* 1. Hide UI Navigation & Controls */
+  #sidebar,
+  #topbar,
+  #bottom-nav,
+  #sidebar-overlay,
+  #toast-container,
+  .page-actions,
+  .search-wrap,
+  .btn,
+  .tabs,
+  .pagination,
+  .table-actions,
+  #scan-btn,
+  .scanner-container,
+  select,
+  input,
+  textarea,
+  .modal-close,
+  .modal-footer,
+  label[title="Change Candidate Photo"],
+  label[title="Upload Photo"] {
+    display: none !important;
+  }
+
+  .main-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  #view-container {
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* 2. Modal ID Card Pass Printing */
+  #modal-overlay.open {
+    display: block !important;
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+    backdrop-filter: none !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  #modal-overlay.open .modal {
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    display: block !important;
+  }
+
+  #modal-overlay.open .modal-header {
+    display: none !important;
+  }
+
+  #modal-overlay.open .modal-body {
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  #id-card-export-target {
+    margin: 30px auto !important;
+    border: 3px solid #003F8A !important;
+    border-radius: 16px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    background: #fff !important;
+    width: 330px !important;
+    box-shadow: none !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #id-card-export-target * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* 3. Batch Member Passes Printing (Grid) */
+  #qr-cards-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  #qr-cards-grid .card {
+    border: 2px solid #003F8A !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    background: #fff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #qr-cards-grid .card .btn {
+    display: none !important;
+  }
+
+  /* 4. Certificate Printing */
+  .certificate {
+    transform: none !important;
+    margin: 0 auto !important;
+    box-shadow: none !important;
+    border: 10px solid #003F8A !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    width: 100% !important;
+    max-width: 960px !important;
+    height: 640px !important;
+    display: block !important;
+  }
+
+  .cert-preview-wrap {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* 5. Tables & Data Cards */
+  .table-wrapper {
+    border: none !important;
+    overflow: visible !important;
+  }
+
+  .data-table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+
+  .data-table th, .data-table td {
+    border: 1px solid #ccc !important;
+    padding: 6px 10px !important;
+    font-size: 10pt !important;
+  }
+
+  .card {
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* 6. Student Admission Form Printable Sheet & Rules Plate */
+  .admission-form-sheet {
+    box-shadow: none !important;
+    border: 2px solid #003F8A !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 16px 20px !important;
+    margin: 0 auto !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .admission-page-1 {
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .rules-plate-sheet {
+    box-shadow: none !important;
+    border: 3px double #003F8A !important;
+    outline: 1.5px solid #b45309 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 16px 20px !important;
+    margin: 0 auto !important;
+    page-break-before: always !important;
+    break-before: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .admission-form-sheet *, .rules-plate-sheet * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
