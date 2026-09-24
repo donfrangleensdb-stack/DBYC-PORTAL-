@@ -1,5 +1,5 @@
 /* DBYC Service Worker - Cache-First for Assets, Network-First for API */
-const CACHE_NAME = 'dbyc-v10';
+const CACHE_NAME = 'dbyc-v13';
 const ASSETS = [
   './',
   './index.html',

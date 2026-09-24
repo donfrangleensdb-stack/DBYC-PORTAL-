@@ -120,7 +120,7 @@ table { border-collapse: collapse; width: 100%; }
   justify-content: center;
   background: 
     linear-gradient(145deg, rgba(0, 35, 85, 0.88) 0%, rgba(0, 63, 138, 0.82) 55%, rgba(15, 23, 42, 0.94) 100%),
-    url('../assets/don-bosco-walk.jpg') center/cover no-repeat fixed;
+    url('assets/don-bosco-walk.jpg') center/cover no-repeat fixed;
   padding: var(--s-6);
   position: relative;
   overflow: hidden;
@@ -1815,8 +1815,7 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
   transform: translateY(-50%) scale(1.1);
 }
 /* ==========================================================================
-   NEAT & PERFECT FRONT PORTAL (DON BOSCO YOUTH CENTRE)
-   Symmetrical, Responsive, No-Overflow Architecture
+   ATTRACTIVE SALESIAN PORTAL (LOGIN SCREEN) - MODERN, VIBRANT & PRESTIGIOUS
    ========================================================================== */
 
 #login-screen {
@@ -1826,8 +1825,8 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
   align-items: center;
   justify-content: center;
   background: 
-    linear-gradient(145deg, rgba(0, 35, 85, 0.92) 0%, rgba(0, 63, 138, 0.88) 55%, rgba(15, 23, 42, 0.95) 100%),
-    url('../assets/don-bosco-walk.jpg') center/cover no-repeat fixed;
+    linear-gradient(145deg, rgba(0, 35, 85, 0.88) 0%, rgba(0, 63, 138, 0.82) 55%, rgba(15, 23, 42, 0.94) 100%),
+    url('assets/don-bosco-walk.jpg') center/cover no-repeat fixed;
   padding: 24px 16px;
   position: relative;
   overflow-x: hidden;
@@ -1840,19 +1839,21 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 10% 90%, rgba(255, 184, 0, 0.18) 0%, transparent 45%),
-    radial-gradient(circle at 90% 10%, rgba(255, 255, 255, 0.12) 0%, transparent 40%);
+    radial-gradient(circle at 15% 85%, rgba(255, 184, 0, 0.22) 0%, transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.18) 0%, transparent 45%);
   pointer-events: none;
 }
 
 .login-card {
   position: relative;
-  background: #FFFFFF !important;
-  border-radius: 22px !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-radius: 24px !important;
   width: 100% !important;
-  max-width: 460px !important;
+  max-width: 480px !important;
   box-sizing: border-box !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 25, 70, 0.35), 0 0 0 1px rgba(0, 63, 138, 0.12) !important;
+  box-shadow: 0 25px 60px -10px rgba(0, 25, 70, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.7) !important;
   text-align: center;
   animation: slideUp var(--dur-slow) var(--ease-out);
   overflow: hidden !important;
@@ -1865,10 +1866,12 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
   box-sizing: border-box !important;
 }
 
+/* Glowing Top Gold Accent Halo */
 .login-top-accent {
   height: 6px;
   width: 100%;
-  background: linear-gradient(90deg, #FFB800 0%, #FFD054 50%, #FFB800 100%);
+  background: linear-gradient(90deg, #FFB800 0%, #FFE082 35%, #F59E0B 70%, #D97706 100%);
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.5);
 }
 
 .login-header-group {
@@ -1877,131 +1880,260 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
 
 .login-logo-wrapper {
   position: relative;
-  width: 84px;
-  height: 84px;
-  margin: 0 auto 10px;
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 12px;
 }
 
 .login-logo {
-  width: 84px !important;
-  height: 84px !important;
+  width: 88px !important;
+  height: 88px !important;
   border-radius: 50% !important;
   object-fit: cover !important;
   border: 3.5px solid #FFB800 !important;
-  box-shadow: 0 6px 18px rgba(0, 63, 138, 0.25) !important;
+  box-shadow: 0 8px 24px rgba(0, 63, 138, 0.3) !important;
   display: block;
+  position: relative;
+  z-index: 2;
 }
 
-.login-title {
-  font-size: 19px !important;
-  font-weight: 800 !important;
-  color: #002D63 !important;
-  letter-spacing: 0.5px !important;
-  line-height: 1.2 !important;
-  margin: 0 0 3px 0 !important;
-  text-transform: uppercase;
+.login-logo-glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 184, 0, 0.45) 0%, transparent 70%);
+  z-index: 1;
+  animation: pulseGlow 3s ease-in-out infinite;
 }
 
-.login-location-badge {
-  font-size: 11px;
-  font-weight: 700;
-  color: #D99E00;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: 6px;
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.1); opacity: 1; }
 }
 
-.login-portal-tag {
+.login-live-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  background: #F0F4FF;
-  color: #003F8A;
-  padding: 4px 12px;
+  background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+  color: #065F46;
+  border: 1px solid #A7F3D0;
+  padding: 4px 14px;
   border-radius: 999px;
   font-size: 11px;
-  font-weight: 600;
-  border: 1px solid rgba(0, 63, 138, 0.15);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15);
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10B981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.login-title {
+  font-size: 20px !important;
+  font-weight: 900 !important;
+  color: #002D63 !important;
+  letter-spacing: 0.5px !important;
+  line-height: 1.25 !important;
+  margin: 0 0 4px 0 !important;
+  text-transform: uppercase;
+}
+
+.login-location-badge {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #B45309;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
 }
 
 .login-gis-container {
   display: flex;
   justify-content: center;
   padding: 0 20px;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 
-.login-divider {
+.login-cards-container {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 1. RADIANT SALESIAN GOLD YOUTH MEMBER CARD */
+.attractive-member-card {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  padding: 14px 16px !important;
+  background: linear-gradient(135deg, #FFFDF5 0%, #FEF3C7 50%, #FDE68A 100%) !important;
+  border: 2px solid #F59E0B !important;
+  border-radius: 16px !important;
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.22), 0 2px 4px rgba(245, 158, 11, 0.1) !important;
+  cursor: pointer !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  text-align: left !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.attractive-member-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transform: skewX(-25deg);
+  transition: 0.75s;
+}
+
+.attractive-member-card:hover {
+  transform: translateY(-2px) scale(1.01) !important;
+  box-shadow: 0 10px 28px rgba(245, 158, 11, 0.32), 0 0 0 1px #F59E0B !important;
+  border-color: #D97706 !important;
+}
+
+.attractive-member-card:hover::before {
+  left: 150%;
+}
+
+.member-card-icon-wrap {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
   display: flex;
   align-items: center;
-  margin: 12px 20px 14px 20px;
-  color: #8A97B4;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35);
+  flex-shrink: 0;
+}
+
+.member-card-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.member-card-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #78350F;
+  line-height: 1.25;
+}
+
+.member-card-sub {
+  font-size: 11px;
+  font-weight: 600;
+  color: #92400E;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.member-card-tamil {
   font-size: 10px;
   font-weight: 700;
+  color: #B45309;
+  margin-top: 2px;
+}
+
+.member-card-arrow {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #D97706;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.attractive-member-card:hover .member-card-arrow {
+  transform: translateX(4px);
+  color: #78350F;
+}
+
+/* Divider Line */
+.login-divider-line {
+  display: flex;
+  align-items: center;
+  margin: 4px 0;
+  color: #94A3B8;
+  font-size: 10px;
+  font-weight: 800;
   letter-spacing: 0.8px;
 }
 
-.login-divider::before,
-.login-divider::after {
+.login-divider-line::before,
+.login-divider-line::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid #E2E8F0;
+  border-bottom: 1.5px dashed #E2E8F0;
 }
 
-.login-divider span {
+.login-divider-line span {
   padding: 0 10px;
   text-transform: uppercase;
 }
 
-.login-sections-wrapper {
-  padding: 0 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.login-tier-block {
+/* Glassmorphic Section Cards */
+.login-section-card {
   background: #F8FAFD;
   border: 1px solid #E2E8F0;
-  border-radius: 12px;
-  padding: 8px 10px;
+  border-radius: 14px;
+  padding: 10px 12px;
   text-align: left;
 }
 
-.login-tier-title {
+.login-section-label {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 9.5px;
+  gap: 6px;
+  font-size: 10px;
   font-weight: 800;
-  color: #4A5C82;
+  color: #475569;
   letter-spacing: 0.6px;
   text-transform: uppercase;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   padding-left: 2px;
 }
 
-.login-grid-2 {
+.login-role-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   width: 100%;
 }
 
-/* Unified Role Buttons */
-.portal-btn {
+/* Universal Role Buttons */
+.role-btn {
   display: flex !important;
   align-items: center !important;
   justify-content: flex-start !important;
-  gap: 8px !important;
-  padding: 9px 10px !important;
-  border-radius: 9px !important;
-  border: 1.5px solid transparent !important;
+  gap: 10px !important;
+  padding: 10px 12px !important;
+  border-radius: 10px !important;
   cursor: pointer !important;
   transition: all 0.2s ease !important;
   width: 100% !important;
-  max-width: 100% !important;
   min-width: 0 !important;
   text-align: left !important;
   text-decoration: none !important;
@@ -2009,13 +2141,13 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
   overflow: hidden !important;
 }
 
-.portal-btn .p-btn-icon {
-  font-size: 1.15rem;
+.role-btn .r-icon {
+  font-size: 1.25rem;
   line-height: 1;
   flex-shrink: 0;
 }
 
-.portal-btn .p-btn-content {
+.role-btn .r-info {
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -2023,17 +2155,18 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
   overflow: hidden;
 }
 
-.portal-btn .p-btn-role {
-  font-size: 12px;
-  font-weight: 700;
+.role-btn .r-info strong {
+  font-size: 12.5px;
+  font-weight: 800;
   line-height: 1.25;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.portal-btn .p-btn-sub {
+.role-btn .r-info small {
   font-size: 9.5px;
+  font-weight: 600;
   line-height: 1.2;
   margin-top: 1px;
   white-space: nowrap;
@@ -2041,171 +2174,171 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
   text-overflow: ellipsis;
 }
 
-/* Management Buttons (Director / Asst) */
-.btn-director {
-  background: linear-gradient(135deg, #002D63, #003F8A) !important;
+/* Leadership Cards */
+.btn-director-royal {
+  background: linear-gradient(135deg, #002D63 0%, #003F8A 100%) !important;
   color: #FFFFFF !important;
-  border-color: #002D63 !important;
-  box-shadow: 0 3px 10px rgba(0, 45, 99, 0.25) !important;
-}
-.btn-director:hover {
-  background: linear-gradient(135deg, #001A3D, #002D63) !important;
-  transform: translateY(-1px);
-}
-.btn-director .p-btn-sub {
-  color: #FFD054;
+  border: 1px solid #002D63 !important;
+  box-shadow: 0 4px 12px rgba(0, 45, 99, 0.25) !important;
 }
 
-.btn-asst {
-  background: #FFFFFF !important;
-  color: #002D63 !important;
-  border-color: #003F8A !important;
-  box-shadow: 0 2px 6px rgba(0, 45, 99, 0.08) !important;
-}
-.btn-asst:hover {
-  background: #F0F4FF !important;
-  transform: translateY(-1px);
-}
-.btn-asst .p-btn-sub {
-  color: #4A5C82;
+.btn-director-royal:hover {
+  background: linear-gradient(135deg, #001A3D 0%, #002D63 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 45, 99, 0.35) !important;
 }
 
-/* Leader & Incharge Buttons */
-.btn-leader, .btn-incharge {
-  background: #FFFFFF !important;
-  color: #0E1B35 !important;
-  border-color: #CBD5E1 !important;
+.btn-director-royal small {
+  color: #FFE082 !important;
 }
-.btn-leader:hover, .btn-incharge:hover {
+
+.btn-asst-royal {
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid #0284C7 !important;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2) !important;
+}
+
+.btn-asst-royal:hover {
+  background: linear-gradient(135deg, #0369A1 0%, #075985 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.3) !important;
+}
+
+.btn-asst-royal small {
+  color: #E0F2FE !important;
+}
+
+/* Animators & Leaders Cards */
+.btn-leader-blue {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 1.5px solid #CBD5E1 !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05) !important;
+}
+
+.btn-leader-blue:hover {
+  background: #F0FDF4 !important;
+  border-color: #10B981 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15) !important;
+}
+
+.btn-leader-blue small {
+  color: #64748B !important;
+}
+
+.btn-incharge-blue {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 1.5px solid #CBD5E1 !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05) !important;
+}
+
+.btn-incharge-blue:hover {
   background: #EFF6FF !important;
   border-color: #3B82F6 !important;
-  transform: translateY(-1px);
-}
-.btn-leader .p-btn-sub, .btn-incharge .p-btn-sub {
-  color: #64748B;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15) !important;
 }
 
-/* Member Portal Button */
-.btn-member {
-  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%) !important;
-  border: 1.5px solid #F59E0B !important;
-  color: #78350F !important;
-  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.15) !important;
-  padding: 10px 12px !important;
+.btn-incharge-blue small {
+  color: #64748B !important;
 }
-.btn-member:hover {
-  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%) !important;
-  transform: translateY(-1px);
-}
-.member-btn-inner {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  gap: 10px;
-}
-.p-btn-icon-large {
-  font-size: 1.35rem;
-  line-height: 1;
-  background: rgba(245, 158, 11, 0.2);
-  width: 36px;
-  height: 36px;
+
+/* Quick Utility Pills */
+.login-quick-utilities {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
-  flex-shrink: 0;
-}
-.p-btn-arrow {
-  font-size: 1rem;
-  font-weight: 800;
-  color: #B45309;
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
-/* Utility Bar (Install, Password, AI Doctor) */
-.login-utils-bar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 12px 18px 0 18px;
+  gap: 8px;
+  padding: 12px 20px 0 20px;
   flex-wrap: wrap;
 }
 
-.util-action-btn {
+.quick-pill-btn {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 4px !important;
-  padding: 6px 11px !important;
+  gap: 5px !important;
+  padding: 6px 12px !important;
   background: #F1F5F9 !important;
   border: 1px solid #CBD5E1 !important;
-  border-radius: 18px !important;
+  border-radius: 20px !important;
   font-size: 11px !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   color: #334155 !important;
   cursor: pointer !important;
   transition: all 0.15s ease !important;
   white-space: nowrap !important;
   text-decoration: none !important;
 }
-.util-action-btn:hover {
+
+.quick-pill-btn:hover {
   background: #E2E8F0 !important;
   color: #0F172A !important;
   transform: translateY(-1px);
 }
-.util-ai {
-  background: rgba(16, 185, 129, 0.08) !important;
+
+.ai-pill {
+  background: rgba(16, 185, 129, 0.1) !important;
   border-color: #10B981 !important;
   color: #047857 !important;
 }
-.util-ai:hover {
-  background: rgba(16, 185, 129, 0.18) !important;
+
+.ai-pill:hover {
+  background: rgba(16, 185, 129, 0.2) !important;
 }
 
-/* Salesian Motto & Card Footer */
+/* Salesian Motto & Footer */
 .login-card-footer {
-  margin-top: 12px;
-  padding: 8px 18px 0 18px;
+  margin-top: 14px;
+  padding: 10px 20px 0 20px;
   border-top: 1px solid #F1F5F9;
 }
-.salesian-quote {
-  font-size: 10.5px;
-  color: #64748B;
-  line-height: 1.35;
-  margin-bottom: 2px;
+
+.salesian-motto-quote {
+  font-size: 11px;
+  color: #475569;
+  line-height: 1.4;
+  margin-bottom: 3px;
 }
-.salesian-quote em {
+
+.salesian-motto-quote em {
   color: #003F8A;
-  font-weight: 600;
+  font-weight: 700;
 }
-.salesian-quote span {
+
+.salesian-motto-quote span {
   display: block;
-  font-size: 9.5px;
-  color: #94A3B8;
-}
-.login-system-tag {
-  font-size: 9.5px;
+  font-size: 10px;
   color: #94A3B8;
   margin-top: 2px;
 }
 
+.login-footer-tag {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #94A3B8;
+  margin-top: 3px;
+}
+
 @media (max-width: 480px) {
   .login-card {
-    border-radius: 16px !important;
+    border-radius: 18px !important;
     padding: 0 0 14px 0 !important;
   }
   .login-header-group {
-    padding: 16px 14px 8px 14px;
+    padding: 18px 14px 8px 14px;
   }
   .login-title {
     font-size: 17px !important;
   }
-  .login-sections-wrapper {
-    padding: 0 12px;
+  .login-cards-container {
+    padding: 0 14px;
+    gap: 10px;
   }
-  .login-grid-2 {
+  .login-role-grid {
     grid-template-columns: 1fr;
     gap: 6px;
   }
@@ -2213,676 +2346,128 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
 
 
 /* ==========================================================================
-   OFFICIAL DBYC DASHBOARD - RESPONSIVE & ANTI-LETTER-OVERFLOW STYLING
+   CLASSIC DBYC DASHBOARD - ANTI-LETTER-OVERFLOW & RESPONSIVE PERFECTION
    ========================================================================== */
 
-/* Official Executive Header */
-.dash-official-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
+/* Stat Cards: Guaranteed zero text overflow */
+.stat-card {
+  background: var(--surface) !important;
+  border-radius: var(--r-lg) !important;
+  padding: 12px 14px !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 2px 8px rgba(14, 27, 53, 0.05) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
-
-.dash-header-meta {
-  flex: 1;
-  min-width: 260px;
-}
-
-.dash-inst-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(0, 63, 138, 0.08);
-  border: 1px solid rgba(0, 63, 138, 0.18);
-  color: var(--primary);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 999px;
-  margin-bottom: 6px;
-}
-
-.pulse-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #16A34A;
-  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.25);
-  display: inline-block;
-}
-
-.dash-title {
-  font-size: clamp(1.35rem, 3vw, 1.75rem);
-  font-weight: 800;
-  color: var(--primary-dark);
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin: 0 0 4px 0;
-}
-
-.dash-subtitle {
-  font-size: 12.5px;
-  color: var(--text-secondary);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  line-height: 1.4;
-}
-
-.dash-sep {
-  color: var(--border-strong);
-}
-
-.dash-role-badge {
-  background: var(--surface-alt);
-  color: var(--primary);
-  font-weight: 700;
-  font-size: 11px;
-  padding: 2px 8px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-}
-
-.dash-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.dash-action-btn {
-  font-weight: 700 !important;
-  white-space: nowrap !important;
-}
-
-/* Alert Box */
-.dash-alert-box {
-  background: #FFFBEB;
-  border: 1.5px solid #F59E0B;
-  border-radius: 12px;
-  padding: 12px 16px;
-  margin-bottom: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.dash-alert-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 220px;
-  flex: 1;
-}
-
-.dash-alert-icon {
-  font-size: 1.5rem;
-  line-height: 1;
-  flex-shrink: 0;
-}
-
-.dash-alert-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #92400E;
-}
-
-.dash-alert-desc {
-  font-size: 11.5px;
-  color: #B45309;
-  margin-top: 1px;
-}
-
-.dash-alert-action {
-  white-space: nowrap;
-}
-
-/* Salesian Hero Card */
-.dash-hero-card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 18px;
-  margin-bottom: 20px;
-  background: linear-gradient(135deg, rgba(0, 35, 85, 0.94) 0%, rgba(0, 63, 138, 0.88) 55%, rgba(15, 23, 42, 0.95) 100%),
-              url('assets/don-bosco-banner.jpg') center/cover no-repeat;
-  padding: 22px 24px;
-  box-shadow: 0 10px 30px rgba(0, 35, 85, 0.22);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.dash-hero-content {
-  position: relative;
-  z-index: 2;
-  color: #FFFFFF;
-  max-width: 680px;
-}
-
-.dash-hero-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: rgba(255, 184, 0, 0.2);
-  border: 1px solid rgba(255, 184, 0, 0.55);
-  color: #FFD054;
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  padding: 3px 10px;
-  border-radius: 999px;
-  margin-bottom: 8px;
-}
-
-.dash-hero-quote {
-  font-size: clamp(1.15rem, 2.8vw, 1.45rem);
-  font-weight: 800;
-  line-height: 1.3;
-  margin: 0 0 6px 0;
-  color: #FFFFFF;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-}
-
-.dash-hero-creed {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.85);
-  font-style: italic;
-  margin-bottom: 14px;
-}
-
-.dash-hero-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.dash-pill-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-  white-space: nowrap;
-}
-
-.dash-pill-btn.accent {
-  background: #FFB800;
-  color: #1A1000;
-  border-color: #D99E00;
-  box-shadow: 0 2px 8px rgba(255, 184, 0, 0.35);
-}
-.dash-pill-btn.accent:hover {
-  background: #FFD054;
-  transform: translateY(-1px);
-}
-
-.dash-pill-btn.light {
-  background: rgba(255, 255, 255, 0.15);
-  color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(4px);
-}
-.dash-pill-btn.light:hover {
-  background: rgba(255, 255, 255, 0.28);
-  transform: translateY(-1px);
-}
-
-/* Common Dash Card Styles */
-.dash-card {
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(14, 27, 53, 0.05);
-  overflow: hidden;
-  margin-bottom: 20px;
-}
-
-.dash-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 18px;
-  border-bottom: 1px solid #F1F5F9;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.dash-header-title-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.dash-header-icon {
-  font-size: 1.3rem;
-  line-height: 1;
-}
-
-.dash-header-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.dash-header-sub {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-/* Scoreboard Card */
-.scoreboard-card {
-  background: linear-gradient(135deg, #002D63 0%, #003F8A 100%);
-  border: none;
-  color: #FFFFFF;
-}
-
-.scoreboard-header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-}
-.scoreboard-header .dash-header-title {
-  color: #FFFFFF;
-}
-.scoreboard-header .dash-header-sub {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.dash-live-chip {
-  background: rgba(239, 68, 68, 0.2);
-  border: 1px solid rgba(239, 68, 68, 0.5);
-  color: #FCA5A5;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.8px;
-  padding: 3px 8px;
-  border-radius: 999px;
-}
-
-#team-scoreboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 12px;
-  padding: 16px;
-}
-
-.dash-house-tile {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 12px 14px;
-  border-top: 4px solid #FFB800;
-  position: relative;
-  min-width: 0;
-  overflow: hidden;
-}
-
-.dash-house-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 4px;
-}
-
-.dash-house-rank {
-  font-size: 10.5px;
-  font-weight: 800;
-  padding: 2px 7px;
-  border-radius: 10px;
-  white-space: nowrap;
-}
-
-.dash-house-count {
-  font-size: 10.5px;
-  color: rgba(255, 255, 255, 0.7);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.dash-house-name {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #FFFFFF;
-  margin-top: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.dash-house-points {
-  font-size: clamp(1.3rem, 3.5vw, 1.7rem);
-  font-weight: 800;
-  color: #FFB800;
-  line-height: 1.2;
-  margin: 3px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.dash-pts-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.dash-house-today {
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.7);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.dash-dot-live {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #34D399;
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-/* Stats Cards Grid - Anti-Letter-Overflow */
-.dash-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-bottom: 20px;
-}
-
-.dash-stat-box {
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  border-radius: 14px;
-  padding: 14px 16px;
-  box-shadow: 0 2px 8px rgba(14, 27, 53, 0.04);
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  overflow: hidden;
-  transition: transform 0.2s ease;
-}
-.dash-stat-box:hover {
+.stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(14, 27, 53, 0.08);
+  box-shadow: 0 6px 16px rgba(14, 27, 53, 0.08) !important;
 }
 
-.dash-stat-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
+.stat-icon {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: var(--r-md) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.25rem !important;
+  flex-shrink: 0 !important;
 }
 
-.dash-stat-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.15rem;
-  flex-shrink: 0;
+.stat-body {
+  flex: 1 !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
 }
 
-.dash-stat-tag {
-  font-size: 9.5px;
-  font-weight: 700;
-  color: #94A3B8;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.stat-label {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: var(--text-muted) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1.25 !important;
 }
 
-.dash-stat-label {
-  font-size: 11px;
-  font-weight: 700;
-  color: #64748B;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.25;
+.stat-value {
+  font-size: clamp(1.2rem, 2.5vw, 1.55rem) !important;
+  font-weight: 800 !important;
+  color: var(--text-primary) !important;
+  line-height: 1.2 !important;
+  margin: 2px 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
-.dash-stat-value {
-  font-size: clamp(1.25rem, 2.5vw, 1.6rem);
-  font-weight: 800;
-  color: #002D63;
-  line-height: 1.2;
-  margin: 3px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.stat-change {
+  font-size: 10.5px !important;
+  color: var(--text-muted) !important;
+  margin-top: 1px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1.2 !important;
+}
+.stat-change.up { color: var(--success) !important; font-weight: 600; }
+.stat-change.down { color: var(--danger) !important; font-weight: 600; }
+
+/* Scoreboard Grid: Responsive without clipping */
+#team-scoreboard-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+  gap: 10px !important;
 }
 
-.dash-stat-unit {
-  font-size: 12px;
-  font-weight: 600;
-  color: #94A3B8;
-}
-
-.dash-stat-change {
-  font-size: 10.5px;
-  color: #94A3B8;
-  margin-top: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.2;
-}
-.dash-stat-change.up {
-  color: #16A34A;
-  font-weight: 600;
-}
-.dash-stat-change.down {
-  color: #DC2626;
-  font-weight: 600;
-}
-
-/* Groups and Recent Details Grid */
-.dash-details-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-.dash-details-grid.single-col {
-  grid-template-columns: 1fr;
-}
-
-.dash-group-row {
-  margin-bottom: 12px;
-}
-.dash-group-row:last-child {
-  margin-bottom: 0;
-}
-
-.dash-group-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 5px;
-  flex-wrap: wrap;
-}
-
-.dash-group-left {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 0;
-  flex: 1;
-  flex-wrap: wrap;
-}
-
-.dash-group-count {
-  font-size: 11px;
-  color: #4A5C82;
-  white-space: nowrap;
-}
-
-.dash-group-pct {
-  font-size: 11.5px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-.dash-group-pct.success { color: #16A34A; }
-.dash-group-pct.warning { color: #D97706; }
-.dash-group-pct.danger  { color: #DC2626; }
-
-/* Activity Items */
-.dash-activity-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 16px;
-  border-bottom: 1px solid #F1F5F9;
-  min-width: 0;
-}
-.dash-activity-item:last-child {
-  border-bottom: none;
-}
-
-.dash-activity-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--primary-10);
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11.5px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.dash-activity-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.dash-activity-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: #0F172A;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.dash-activity-badges {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 2px;
-  flex-wrap: wrap;
-}
-
-.dash-activity-points {
-  flex-shrink: 0;
-}
-
-/* ==========================================================================
-   MOBILE & TABLET RESPONSIVENESS OVERRIDES
-   ========================================================================== */
-
-@media screen and (max-width: 900px) {
-  .dash-stats-grid {
+/* Responsive Overrides */
+@media screen and (max-width: 767px) {
+  #view-container {
+    padding: 12px 10px !important;
+  }
+  .grid-4 {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
+    gap: 8px !important;
   }
-  .dash-details-grid {
-    grid-template-columns: 1fr !important;
+  .stat-card {
+    padding: 10px 10px !important;
+    gap: 8px !important;
   }
-}
-
-@media screen and (max-width: 600px) {
-  .dash-official-header {
-    margin-bottom: 14px;
+  .stat-icon {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 1.05rem !important;
   }
-  .dash-header-actions {
-    width: 100%;
+  .stat-label {
+    font-size: 10px !important;
   }
-  .dash-action-btn {
-    flex: 1 1 calc(50% - 4px);
-    justify-content: center;
-    font-size: 11.5px !important;
+  .stat-value {
+    font-size: 1.2rem !important;
   }
-  .dash-hero-card {
-    padding: 16px 14px;
-    border-radius: 14px;
-  }
-  .dash-hero-actions {
-    gap: 6px;
-  }
-  .dash-pill-btn {
-    padding: 5px 11px;
-    font-size: 11px;
+  .stat-change {
+    font-size: 9.5px !important;
   }
   #team-scoreboard-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 8px !important;
-    padding: 10px !important;
-  }
-  .dash-house-tile {
-    padding: 8px 10px !important;
-  }
-  .dash-house-name {
-    font-size: 12px;
-  }
-  .dash-house-points {
-    font-size: 1.25rem !important;
-  }
-  .dash-stats-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
-  }
-  .dash-stat-box {
-    padding: 10px 12px;
-    border-radius: 12px;
-  }
-  .dash-stat-icon {
-    width: 30px;
-    height: 30px;
-    font-size: 1rem;
-    border-radius: 8px;
-  }
-  .dash-stat-label {
-    font-size: 10px;
-  }
-  .dash-stat-value {
-    font-size: 1.2rem;
-  }
-  .dash-stat-change {
-    font-size: 9.5px;
   }
 }
 
 @media screen and (max-width: 380px) {
-  .dash-stats-grid {
+  .grid-4 {
     grid-template-columns: 1fr !important;
   }
   #team-scoreboard-grid {
     grid-template-columns: 1fr !important;
   }
 }
-
 </style>
 
   <!-- Free Third-Party Libraries (CDNs) -->
@@ -2903,124 +2488,121 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
   <!-- Mobile Sidebar Dimmer Overlay -->
   <div id="sidebar-overlay" onclick="UI.toggleSidebar()"></div>
 
-  <!-- 1. LOGIN SCREEN -->
+    <!-- 1. LOGIN SCREEN -->
   <section id="login-screen">
     <div class="login-card">
-      <!-- Top Decorative Don Bosco Gold Banner Accent -->
+      <!-- Golden Top Accent Halo -->
       <div class="login-top-accent"></div>
 
       <!-- Institutional Crest & Header -->
       <div class="login-header-group">
         <div class="login-logo-wrapper">
           <img src="assets/dbyc-logo.jpg" alt="Don Bosco Youth Centre" class="login-logo" id="login-logo-img">
+          <div class="login-logo-glow"></div>
+        </div>
+        <div class="login-live-badge">
+          <span class="pulse-dot"></span>
+          <span>OFFICIAL SALESIAN PORTAL &bull; தொன்போஸ்கோ தளம்</span>
         </div>
         <h1 class="login-title">DON BOSCO YOUTH CENTRE</h1>
         <div class="login-location-badge">Basin Bridge, Chennai &bull; Est. 1950</div>
-        <div class="login-portal-tag">
-          <span>🏛️</span> Official Youth & Attendance Portal &bull; இளைஞர் மன்ற தளம்
-        </div>
       </div>
 
       <!-- Google GIS Auth Container -->
       <div id="g_id_signin" class="login-gis-container"></div>
 
-      <div class="login-divider">
-        <span>PORTAL ACCESS &bull; உள்நுழைவுத் தெரிவுகள்</span>
-      </div>
+      <!-- Attractive Visual Role Cards Container -->
+      <div class="login-cards-container">
 
-      <!-- Clean, Structured Role Portal Sections -->
-      <div class="login-sections-wrapper">
-
-        <!-- 1. Salesian Management (Directors) -->
-        <div class="login-tier-block">
-          <div class="login-tier-title">
-            <span>👑</span> <span>MANAGEMENT &bull; தலைமை இயக்குநர்கள்</span>
+        <!-- 1. Star Card: Youth Member Portal (Primary Feature!) -->
+        <button class="attractive-member-card" onclick="loginAsRole('member')" title="Youth Member Portal & Digital Pass">
+          <div class="member-card-icon-wrap">
+            <span class="member-card-icon">🪪</span>
           </div>
-          <div class="login-grid-2">
-            <button class="portal-btn btn-director" onclick="loginAsRole('director')" title="Fr. Director Full Access">
-              <span class="p-btn-icon">👑</span>
-              <div class="p-btn-content">
-                <span class="p-btn-role">Fr. Director</span>
-                <span class="p-btn-sub">முழு அணுகல் &bull; Full Access</span>
+          <div class="member-card-text">
+            <div class="member-card-title">Youth Member Portal</div>
+            <div class="member-card-sub">My Digital Pass &bull; Points Board &bull; Oratory Rules</div>
+            <div class="member-card-tamil">இளைஞர் மன்ற அட்டை &bull; புள்ளிகள் பலகை</div>
+          </div>
+          <div class="member-card-arrow">➔</div>
+        </button>
+
+        <div class="login-divider-line">
+          <span>OR ROLE ACCESS &bull; பொறுப்பாளர் தெரிவு</span>
+        </div>
+
+        <!-- 2. Management: Fr. Director & Assistant Director -->
+        <div class="login-section-card">
+          <div class="login-section-label">
+            <span>🏛️</span> <span>SALESIAN LEADERSHIP &bull; தலைமை இயக்குநர்கள்</span>
+          </div>
+          <div class="login-role-grid">
+            <button class="role-btn btn-director-royal" onclick="loginAsRole('director')" title="Fr. Director Full Access">
+              <span class="r-icon">👑</span>
+              <div class="r-info">
+                <strong>Fr. Director</strong>
+                <small>முழு அணுகல் &bull; Full Access</small>
               </div>
             </button>
-            <button class="portal-btn btn-asst" onclick="loginAsRole('asst_director')" title="Fr. Assistant Director Full Access">
-              <span class="p-btn-icon">⚡</span>
-              <div class="p-btn-content">
-                <span class="p-btn-role">Fr. Asst. Director</span>
-                <span class="p-btn-sub">முழு அணுகல் &bull; Full Access</span>
+            <button class="role-btn btn-asst-royal" onclick="loginAsRole('asst_director')" title="Fr. Assistant Director Full Access">
+              <span class="r-icon">⚡</span>
+              <div class="r-info">
+                <strong>Fr. Asst. Director</strong>
+                <small>முழு அணுகல் &bull; Full Access</small>
               </div>
             </button>
           </div>
         </div>
 
-        <!-- 2. Group Leadership & Incharges -->
-        <div class="login-tier-block">
-          <div class="login-tier-title">
-            <span>🛡️</span> <span>INCHARGES & LEADERS &bull; பொறுப்பாளர்கள்</span>
+        <!-- 3. Group Leaders & Incharges -->
+        <div class="login-section-card">
+          <div class="login-section-label">
+            <span>🎖️</span> <span>ANIMATORS & LEADERS &bull; குழுப் பொறுப்பாளர்கள்</span>
           </div>
-          <div class="login-grid-2">
-            <button class="portal-btn btn-leader" onclick="loginAsRole('leader', 'Seniors')" title="Group Leader: Members & Points">
-              <span class="p-btn-icon">🎖️</span>
-              <div class="p-btn-content">
-                <span class="p-btn-role">Group Leader</span>
-                <span class="p-btn-sub">Members & Points</span>
+          <div class="login-role-grid">
+            <button class="role-btn btn-leader-blue" onclick="loginAsRole('leader', 'Seniors')" title="Group Leader: Members & Points">
+              <span class="r-icon">🎖️</span>
+              <div class="r-info">
+                <strong>Group Leader</strong>
+                <small>Members & Points &bull; புள்ளிகள்</small>
               </div>
             </button>
-            <button class="portal-btn btn-incharge" onclick="loginAsRole('incharge', 'Juniors')" title="Group Incharge: Attendance Only">
-              <span class="p-btn-icon">🛡️</span>
-              <div class="p-btn-content">
-                <span class="p-btn-role">Group Incharge</span>
-                <span class="p-btn-sub">Attendance Only</span>
+            <button class="role-btn btn-incharge-blue" onclick="loginAsRole('incharge', 'Juniors')" title="Group Incharge: Attendance Only">
+              <span class="r-icon">🛡️</span>
+              <div class="r-info">
+                <strong>Group Incharge</strong>
+                <small>Attendance &bull; வருகைப் பதிவு</small>
               </div>
             </button>
           </div>
-        </div>
-
-        <!-- 3. Youth Member Portal & Digital ID Pass -->
-        <div class="login-tier-block">
-          <div class="login-tier-title">
-            <span>🌟</span> <span>ORATORY YOUTH &bull; மன்ற உறுப்பினர்கள்</span>
-          </div>
-          <button class="portal-btn btn-member" onclick="loginAsRole('member')" title="Youth Member Digital ID, Rules & Points">
-            <div class="member-btn-inner">
-              <span class="p-btn-icon-large">👤</span>
-              <div class="p-btn-content" style="text-align:left">
-                <span class="p-btn-role" style="font-size:13.5px">Youth Member Portal (My Pass)</span>
-                <span class="p-btn-sub" style="color:rgba(120,53,15,0.85)">Digital ID &bull; Points Board &bull; Rules of the Oratory</span>
-              </div>
-              <span class="p-btn-arrow">➔</span>
-            </div>
-          </button>
         </div>
 
       </div>
 
-      <!-- Quick Utility Actions Bar -->
-      <div class="login-utils-bar">
-        <button class="util-action-btn pwa-install-trigger" onclick="PWA.install()" title="Install App on Device">
+      <!-- Quick Action Utilities -->
+      <div class="login-quick-utilities">
+        <button class="quick-pill-btn pwa-install-trigger" onclick="PWA.install()" title="Install App on Phone / PC">
           <span>📲</span> <span>Install App (நிறுவுக)</span>
         </button>
-        <button class="util-action-btn" onclick="Auth.openForgotPasswordModal('director')" title="Authority Password Recovery">
-          <span>🔑</span> <span>Password Reset</span>
+        <button class="quick-pill-btn" onclick="Auth.openForgotPasswordModal('director')" title="Reset Password">
+          <span>🔑</span> <span>Password</span>
         </button>
-        <button class="util-action-btn util-ai" onclick="AIDoctor.openModal()" title="AI PWA Assistant & Auto-Doctor">
+        <button class="quick-pill-btn ai-pill" onclick="AIDoctor.openModal()" title="AI PWA Assistant & Auto-Doctor">
           <span>🤖</span> <span>AI Doctor</span>
         </button>
       </div>
 
-      <!-- Salesian Motto & Footer -->
+      <!-- Don Bosco Salesian Motto -->
       <div class="login-card-footer">
-        <div class="salesian-quote">
-          <em>&ldquo;Run, jump, make noise, but do not sin.&rdquo;</em>
-          <span>&mdash; St. John Bosco</span>
+        <div class="salesian-motto-quote">
+          <em>&ldquo;Run, jump, make noise, but do not sin!&rdquo;</em>
+          <span>&mdash; St. John Bosco &bull; புனித தொன்போஸ்கோ</span>
         </div>
-        <div class="login-system-tag">DBYC Secure Cloud System &bull; Basin Bridge</div>
+        <div class="login-footer-tag">Official DBYC Digital System &bull; Chennai - 12</div>
       </div>
 
     </div>
   </section>
-
 
   <!-- 2. AUTHENTICATED APP SHELL -->
   <div id="app-shell" class="hidden">
