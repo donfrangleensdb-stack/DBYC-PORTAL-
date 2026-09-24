@@ -136,43 +136,7 @@ table { border-collapse: collapse; width: 100%; }
   pointer-events: none;
 }
 
-.login-card {
-  position: relative;
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: var(--r-2xl);
-  padding: var(--s-10) var(--s-8);
-  width: 100%;
-  max-width: 440px;
-  box-shadow: 0 20px 45px rgba(0, 15, 45, 0.4), 0 0 0 2px rgba(255, 184, 0, 0.5);
-  text-align: center;
-  animation: slideUp var(--dur-slow) var(--ease-out);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-}
-
-.login-logo {
-  width: 110px;
-  height: 110px;
-  border-radius: var(--r-full);
-  object-fit: cover;
-  margin: 0 auto var(--s-3);
-  box-shadow: 0 8px 24px rgba(0, 63, 138, 0.4);
-  border: 3px solid var(--accent);
-}
-
-.login-title {
-  font-size: var(--text-2xl);
-  font-weight: var(--fw-bold);
-  color: var(--primary);
-  letter-spacing: -0.02em;
-}
-.login-subtitle {
-  font-size: var(--text-xs);
-  color: var(--text-secondary);
-  margin-top: 2px;
-  margin-bottom: var(--s-4);
-}
+/* Legacy login-card replaced with standard Front Portal styles */
 
 /* Don Bosco Authenticated Portal Watermark & Background */
 body {
@@ -1850,77 +1814,403 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
   background: rgba(0, 0, 0, 0.07);
   transform: translateY(-50%) scale(1.1);
 }
-/* Pixel-Perfect Responsive Login Card & Button Styles */
+/* ==========================================================================
+   NEAT & PERFECT FRONT PORTAL (DON BOSCO YOUTH CENTRE)
+   Symmetrical, Responsive, No-Overflow Architecture
+   ========================================================================== */
+
+#login-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: 
+    linear-gradient(145deg, rgba(0, 35, 85, 0.92) 0%, rgba(0, 63, 138, 0.88) 55%, rgba(15, 23, 42, 0.95) 100%),
+    url('../assets/don-bosco-walk.jpg') center/cover no-repeat fixed;
+  padding: 24px 16px;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+#login-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 10% 90%, rgba(255, 184, 0, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 90% 10%, rgba(255, 255, 255, 0.12) 0%, transparent 40%);
+  pointer-events: none;
+}
+
 .login-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.98) !important;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: 20px !important;
-  padding: 28px 20px !important;
-  width: 92% !important;
-  max-width: 440px !important;
+  background: #FFFFFF !important;
+  border-radius: 22px !important;
+  width: 100% !important;
+  max-width: 460px !important;
   box-sizing: border-box !important;
-  box-shadow: 0 20px 45px rgba(0, 15, 45, 0.35), 0 0 0 2px rgba(255, 184, 0, 0.4) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 25, 70, 0.35), 0 0 0 1px rgba(0, 63, 138, 0.12) !important;
   text-align: center;
   animation: slideUp var(--dur-slow) var(--ease-out);
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  overflow: hidden;
+  overflow: hidden !important;
+  padding: 0 0 18px 0 !important;
+  margin: auto !important;
+  border: none !important;
 }
 
 .login-card * {
   box-sizing: border-box !important;
 }
 
-.login-card .btn {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-  padding: 10px 14px !important;
-  height: auto !important;
-  min-height: 42px !important;
-  font-size: 13.5px !important;
-  font-weight: 600 !important;
-  white-space: normal !important;
-  word-break: normal !important;
-  line-height: 1.3 !important;
-  border-radius: 8px !important;
-  text-align: center !important;
+.login-top-accent {
+  height: 6px;
+  width: 100%;
+  background: linear-gradient(90deg, #FFB800 0%, #FFD054 50%, #FFB800 100%);
 }
 
-.login-btn-grid {
+.login-header-group {
+  padding: 22px 20px 10px 20px;
+}
+
+.login-logo-wrapper {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 10px;
+}
+
+.login-logo {
+  width: 84px !important;
+  height: 84px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 3.5px solid #FFB800 !important;
+  box-shadow: 0 6px 18px rgba(0, 63, 138, 0.25) !important;
+  display: block;
+}
+
+.login-title {
+  font-size: 19px !important;
+  font-weight: 800 !important;
+  color: #002D63 !important;
+  letter-spacing: 0.5px !important;
+  line-height: 1.2 !important;
+  margin: 0 0 3px 0 !important;
+  text-transform: uppercase;
+}
+
+.login-location-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #D99E00;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.login-portal-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #F0F4FF;
+  color: #003F8A;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid rgba(0, 63, 138, 0.15);
+}
+
+.login-gis-container {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+  margin-bottom: 6px;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  margin: 12px 20px 14px 20px;
+  color: #8A97B4;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.login-divider span {
+  padding: 0 10px;
+  text-transform: uppercase;
+}
+
+.login-sections-wrapper {
+  padding: 0 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.login-tier-block {
+  background: #F8FAFD;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.login-tier-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #4A5C82;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  padding-left: 2px;
+}
+
+.login-grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   width: 100%;
-  box-sizing: border-box;
 }
 
-.login-btn-sub {
+/* Unified Role Buttons */
+.portal-btn {
   display: flex !important;
-  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  padding: 9px 10px !important;
+  border-radius: 9px !important;
+  border: 1.5px solid transparent !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  text-align: left !important;
+  text-decoration: none !important;
+  user-select: none !important;
+  overflow: hidden !important;
+}
+
+.portal-btn .p-btn-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.portal-btn .p-btn-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.portal-btn .p-btn-role {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.portal-btn .p-btn-sub {
+  font-size: 9.5px;
+  line-height: 1.2;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Management Buttons (Director / Asst) */
+.btn-director {
+  background: linear-gradient(135deg, #002D63, #003F8A) !important;
+  color: #FFFFFF !important;
+  border-color: #002D63 !important;
+  box-shadow: 0 3px 10px rgba(0, 45, 99, 0.25) !important;
+}
+.btn-director:hover {
+  background: linear-gradient(135deg, #001A3D, #002D63) !important;
+  transform: translateY(-1px);
+}
+.btn-director .p-btn-sub {
+  color: #FFD054;
+}
+
+.btn-asst {
+  background: #FFFFFF !important;
+  color: #002D63 !important;
+  border-color: #003F8A !important;
+  box-shadow: 0 2px 6px rgba(0, 45, 99, 0.08) !important;
+}
+.btn-asst:hover {
+  background: #F0F4FF !important;
+  transform: translateY(-1px);
+}
+.btn-asst .p-btn-sub {
+  color: #4A5C82;
+}
+
+/* Leader & Incharge Buttons */
+.btn-leader, .btn-incharge {
+  background: #FFFFFF !important;
+  color: #0E1B35 !important;
+  border-color: #CBD5E1 !important;
+}
+.btn-leader:hover, .btn-incharge:hover {
+  background: #EFF6FF !important;
+  border-color: #3B82F6 !important;
+  transform: translateY(-1px);
+}
+.btn-leader .p-btn-sub, .btn-incharge .p-btn-sub {
+  color: #64748B;
+}
+
+/* Member Portal Button */
+.btn-member {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%) !important;
+  border: 1.5px solid #F59E0B !important;
+  color: #78350F !important;
+  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.15) !important;
+  padding: 10px 12px !important;
+}
+.btn-member:hover {
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%) !important;
+  transform: translateY(-1px);
+}
+.member-btn-inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+}
+.p-btn-icon-large {
+  font-size: 1.35rem;
+  line-height: 1;
+  background: rgba(245, 158, 11, 0.2);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.p-btn-arrow {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #B45309;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Utility Bar (Install, Password, AI Doctor) */
+.login-utils-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 18px 0 18px;
+  flex-wrap: wrap;
+}
+
+.util-action-btn {
+  display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 8px 6px !important;
-  min-height: 46px !important;
-  font-size: 11.5px !important;
-  line-height: 1.25 !important;
+  gap: 4px !important;
+  padding: 6px 11px !important;
+  background: #F1F5F9 !important;
+  border: 1px solid #CBD5E1 !important;
+  border-radius: 18px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #334155 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+}
+.util-action-btn:hover {
+  background: #E2E8F0 !important;
+  color: #0F172A !important;
+  transform: translateY(-1px);
+}
+.util-ai {
+  background: rgba(16, 185, 129, 0.08) !important;
+  border-color: #10B981 !important;
+  color: #047857 !important;
+}
+.util-ai:hover {
+  background: rgba(16, 185, 129, 0.18) !important;
 }
 
-.login-logo {
-  width: 90px !important;
-  height: 90px !important;
-  border-radius: var(--r-full);
-  object-fit: cover;
-  margin: 0 auto 10px !important;
-  box-shadow: 0 8px 24px rgba(0, 63, 138, 0.35);
-  border: 3px solid var(--accent);
+/* Salesian Motto & Card Footer */
+.login-card-footer {
+  margin-top: 12px;
+  padding: 8px 18px 0 18px;
+  border-top: 1px solid #F1F5F9;
 }
-  </style>
+.salesian-quote {
+  font-size: 10.5px;
+  color: #64748B;
+  line-height: 1.35;
+  margin-bottom: 2px;
+}
+.salesian-quote em {
+  color: #003F8A;
+  font-weight: 600;
+}
+.salesian-quote span {
+  display: block;
+  font-size: 9.5px;
+  color: #94A3B8;
+}
+.login-system-tag {
+  font-size: 9.5px;
+  color: #94A3B8;
+  margin-top: 2px;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    border-radius: 16px !important;
+    padding: 0 0 14px 0 !important;
+  }
+  .login-header-group {
+    padding: 16px 14px 8px 14px;
+  }
+  .login-title {
+    font-size: 17px !important;
+  }
+  .login-sections-wrapper {
+    padding: 0 12px;
+  }
+  .login-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+</style>
 
   <!-- Free Third-Party Libraries (CDNs) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -1943,63 +2233,121 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
   <!-- 1. LOGIN SCREEN -->
   <section id="login-screen">
     <div class="login-card">
-      <img src="assets/dbyc-logo.jpg" alt="Don Bosco Youth Centre" class="login-logo" id="login-logo-img">
-      <h1 class="login-title" style="letter-spacing:0.02em">DON BOSCO YOUTH CENTRE</h1>
-      <div style="font-size:11px;font-weight:700;color:var(--accent-dark);letter-spacing:0.08em;text-transform:uppercase;margin-top:2px">Basin Bridge, Chennai - 600 012</div>
-      <p class="login-subtitle" style="margin-top:4px;margin-bottom:var(--s-3);font-size:12px;color:var(--text-secondary)">
-        Official Member & Attendance Portal<br>
-        <span style="font-size:11px;color:var(--text-muted)">தொன்போஸ்கோ இளைஞர் மன்ற தளம்</span>
-      </p>
+      <!-- Top Decorative Don Bosco Gold Banner Accent -->
+      <div class="login-top-accent"></div>
+
+      <!-- Institutional Crest & Header -->
+      <div class="login-header-group">
+        <div class="login-logo-wrapper">
+          <img src="assets/dbyc-logo.jpg" alt="Don Bosco Youth Centre" class="login-logo" id="login-logo-img">
+        </div>
+        <h1 class="login-title">DON BOSCO YOUTH CENTRE</h1>
+        <div class="login-location-badge">Basin Bridge, Chennai &bull; Est. 1950</div>
+        <div class="login-portal-tag">
+          <span>🏛️</span> Official Youth & Attendance Portal &bull; இளைஞர் மன்ற தளம்
+        </div>
+      </div>
 
       <!-- Google GIS Auth Container -->
-      <div id="g_id_signin" style="display:flex;justify-content:center;margin-bottom:var(--s-4)"></div>
+      <div id="g_id_signin" class="login-gis-container"></div>
 
-      <div class="login-divider"><span>OR DEMO QUICK ACCESS</span></div>
+      <div class="login-divider">
+        <span>PORTAL ACCESS &bull; உள்நுழைவுத் தெரிவுகள்</span>
+      </div>
 
-      <!-- Quick Role Selection -->
-      <div style="display:flex;flex-direction:column;gap:8px;width:100%;box-sizing:border-box">
-        <button class="btn btn-primary login-btn" onclick="loginAsRole('director')">
-          👑 Fr. Director (Full Access)
-        </button>
-        <button class="btn btn-outline login-btn" onclick="loginAsRole('asst_director')">
-          ⚡ Fr. Assistant Director (Full Access)
-        </button>
-        <div class="login-btn-grid">
-          <button class="btn btn-ghost login-btn login-btn-sub" onclick="loginAsRole('leader', 'Seniors')" style="border:1.5px solid var(--border)">
-            <span>🎖️ <strong>Group Leader</strong></span>
-            <span style="font-size:10px;color:var(--text-muted);margin-top:1px">Members & Points</span>
-          </button>
-          <button class="btn btn-ghost login-btn login-btn-sub" onclick="loginAsRole('incharge', 'Juniors')" style="border:1.5px solid var(--border)">
-            <span>🛡️ <strong>Group Incharge</strong></span>
-            <span style="font-size:10px;color:var(--text-muted);margin-top:1px">Attendance Only</span>
+      <!-- Clean, Structured Role Portal Sections -->
+      <div class="login-sections-wrapper">
+
+        <!-- 1. Salesian Management (Directors) -->
+        <div class="login-tier-block">
+          <div class="login-tier-title">
+            <span>👑</span> <span>MANAGEMENT &bull; தலைமை இயக்குநர்கள்</span>
+          </div>
+          <div class="login-grid-2">
+            <button class="portal-btn btn-director" onclick="loginAsRole('director')" title="Fr. Director Full Access">
+              <span class="p-btn-icon">👑</span>
+              <div class="p-btn-content">
+                <span class="p-btn-role">Fr. Director</span>
+                <span class="p-btn-sub">முழு அணுகல் &bull; Full Access</span>
+              </div>
+            </button>
+            <button class="portal-btn btn-asst" onclick="loginAsRole('asst_director')" title="Fr. Assistant Director Full Access">
+              <span class="p-btn-icon">⚡</span>
+              <div class="p-btn-content">
+                <span class="p-btn-role">Fr. Asst. Director</span>
+                <span class="p-btn-sub">முழு அணுகல் &bull; Full Access</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Group Leadership & Incharges -->
+        <div class="login-tier-block">
+          <div class="login-tier-title">
+            <span>🛡️</span> <span>INCHARGES & LEADERS &bull; பொறுப்பாளர்கள்</span>
+          </div>
+          <div class="login-grid-2">
+            <button class="portal-btn btn-leader" onclick="loginAsRole('leader', 'Seniors')" title="Group Leader: Members & Points">
+              <span class="p-btn-icon">🎖️</span>
+              <div class="p-btn-content">
+                <span class="p-btn-role">Group Leader</span>
+                <span class="p-btn-sub">Members & Points</span>
+              </div>
+            </button>
+            <button class="portal-btn btn-incharge" onclick="loginAsRole('incharge', 'Juniors')" title="Group Incharge: Attendance Only">
+              <span class="p-btn-icon">🛡️</span>
+              <div class="p-btn-content">
+                <span class="p-btn-role">Group Incharge</span>
+                <span class="p-btn-sub">Attendance Only</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. Youth Member Portal & Digital ID Pass -->
+        <div class="login-tier-block">
+          <div class="login-tier-title">
+            <span>🌟</span> <span>ORATORY YOUTH &bull; மன்ற உறுப்பினர்கள்</span>
+          </div>
+          <button class="portal-btn btn-member" onclick="loginAsRole('member')" title="Youth Member Digital ID, Rules & Points">
+            <div class="member-btn-inner">
+              <span class="p-btn-icon-large">👤</span>
+              <div class="p-btn-content" style="text-align:left">
+                <span class="p-btn-role" style="font-size:13.5px">Youth Member Portal (My Pass)</span>
+                <span class="p-btn-sub" style="color:rgba(120,53,15,0.85)">Digital ID &bull; Points Board &bull; Rules of the Oratory</span>
+              </div>
+              <span class="p-btn-arrow">➔</span>
+            </div>
           </button>
         </div>
-        <button class="btn btn-accent login-btn" onclick="loginAsRole('member')">
-          👤 Youth Member Portal (My Pass)
+
+      </div>
+
+      <!-- Quick Utility Actions Bar -->
+      <div class="login-utils-bar">
+        <button class="util-action-btn pwa-install-trigger" onclick="PWA.install()" title="Install App on Device">
+          <span>📲</span> <span>Install App (நிறுவுக)</span>
+        </button>
+        <button class="util-action-btn" onclick="Auth.openForgotPasswordModal('director')" title="Authority Password Recovery">
+          <span>🔑</span> <span>Password Reset</span>
+        </button>
+        <button class="util-action-btn util-ai" onclick="AIDoctor.openModal()" title="AI PWA Assistant & Auto-Doctor">
+          <span>🤖</span> <span>AI Doctor</span>
         </button>
       </div>
 
-      <!-- Permanent PWA Install Action on Login Screen -->
-      <div style="margin-top:10px;width:100%;box-sizing:border-box">
-        <button class="btn btn-outline login-btn pwa-install-trigger" onclick="PWA.install()" style="border:1.5px solid var(--accent);color:var(--primary);font-weight:700;background:rgba(255,184,0,0.08)">
-          📲 Install App on Phone / PC (நிறுவுக)
-        </button>
-        <button class="btn btn-ghost login-btn" onclick="AIDoctor.openModal()" style="border:1.5px dashed #10b981;color:#047857;background:rgba(16,185,129,0.08);font-size:12.5px;margin-top:6px;width:100%">
-          🤖 AI PWA Doctor & Auto-Rectify (AI சரிசெய்தல்)
-        </button>
+      <!-- Salesian Motto & Footer -->
+      <div class="login-card-footer">
+        <div class="salesian-quote">
+          <em>&ldquo;Run, jump, make noise, but do not sin.&rdquo;</em>
+          <span>&mdash; St. John Bosco</span>
+        </div>
+        <div class="login-system-tag">DBYC Secure Cloud System &bull; Basin Bridge</div>
       </div>
 
-      <div style="margin-top:10px;text-align:center">
-        <a href="javascript:void(0)" onclick="Auth.openForgotPasswordModal('director')" style="color:var(--primary);font-size:12px;text-decoration:underline;font-weight:600">
-          🔑 Forgot Password? (கடவுச்சொல் மீட்பு)
-        </a>
-      </div>
-
-      <div class="login-footer">
-        Zero-Budget Cloud Architecture &bull; Google Apps Script & Sheets
-      </div>
     </div>
   </section>
+
 
   <!-- 2. AUTHENTICATED APP SHELL -->
   <div id="app-shell" class="hidden">

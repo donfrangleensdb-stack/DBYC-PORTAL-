@@ -1,5 +1,5 @@
 /* DBYC Service Worker - Cache-First for Assets, Network-First for API */
-const CACHE_NAME = 'dbyc-v7';
+const CACHE_NAME = 'dbyc-v9';
 const ASSETS = [
   './',
   './index.html',
@@ -20,6 +20,7 @@ const ASSETS = [
   './reports.js',
   './voice-keyboard.js',
   './rules.js',
+  './ai-doctor.js',
   './app.js'
 ];
 
