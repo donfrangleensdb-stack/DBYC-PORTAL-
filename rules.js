@@ -144,17 +144,17 @@ const Rules = {
 
   render(container) {
     container.innerHTML = `
-      <div class="view-header">
-        <div>
+      <div class="page-header">
+        <div class="page-header-left">
           <div style="display:flex;align-items:center;gap:var(--s-2)">
             <span style="font-size:1.8rem">📜</span>
             <div>
-              <h1 class="view-title">Rules of the Oratory &bull; மன்ற விதிமுறைகள்</h1>
-              <p class="view-subtitle">தொன்போஸ்கோ இளைஞர் மன்றம், பேசின் பாலம், சென்னை - 600 012 &bull; Official Statutes & Code of Conduct</p>
+              <div class="page-title">மன்ற விதிமுறைகள் (Rules of the Oratory)</div>
+              <div class="page-subtitle">Don Bosco Youth Centre (Basin Bridge, Chennai - 600 012) &bull; Official Statutes & Code of Conduct</div>
             </div>
           </div>
         </div>
-        <div class="view-actions" style="display:flex;gap:var(--s-2);flex-wrap:wrap">
+        <div class="page-actions">
           <button class="btn btn-outline btn-sm" id="btn-rules-tts" onclick="Rules.toggleVoiceReading()">
             🔊 குரல் வாசிப்பு (Listen TTS)
           </button>

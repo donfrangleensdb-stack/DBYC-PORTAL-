@@ -29,6 +29,18 @@ const UI = {
     if (overlay) overlay.classList.remove('open');
   },
 
+  togglePasswordVisibility(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    if (input.type === 'password') {
+      input.type = 'text';
+      if (btn) btn.innerHTML = '🙈';
+    } else {
+      input.type = 'password';
+      if (btn) btn.innerHTML = '👁️';
+    }
+  },
+
   showLoading(msg = 'Loading...') {
     let el = document.getElementById('global-loader');
     if (!el) {
@@ -56,6 +68,10 @@ const UI = {
   },
 
   updateNav(currentRoute) {
+    const u = Auth.getUser();
+    const role = u?.role || 'member';
+
+    // 1. Highlight active links
     document.querySelectorAll('.nav-item, .bottom-nav-item').forEach(el => {
       if (el.getAttribute('data-route') === currentRoute) {
         el.classList.add('active');
@@ -63,17 +79,44 @@ const UI = {
         el.classList.remove('active');
       }
     });
+
+    // 2. Dynamic topbar title
     const titleMap = {
-      dashboard: 'DBYC Central Dashboard',
+      dashboard: role === 'member' ? 'DBYC Member Portal • எனது தளம்' : 'DBYC Central Dashboard',
       members: 'Member Directory & Verification',
       attendance: 'QR Camera Terminal',
-      qr: 'Digital Member Passes',
+      qr: role === 'member' ? 'My Official DBYC Digital Pass (எனது அடையாள அட்டை)' : 'Digital Member Passes & ID Badges',
       certificates: 'Official Certificates Generator',
       reports: 'Championship & Reports',
       rules: 'Rules of the Oratory • மன்ற விதிமுறைகள்'
     };
     const titleEl = document.getElementById('topbar-page-title');
     if (titleEl) titleEl.textContent = titleMap[currentRoute] || 'DBYC Portal';
+
+    // 3. Enforce Role-Based Visibility on Navigation Elements
+    // Members link: Only Leaders and Directors
+    document.querySelectorAll('[data-route="members"]').forEach(el => {
+      el.style.display = Auth.canSeeAllMembers() ? '' : 'none';
+    });
+    // Attendance scan link: Incharges, Leaders, and Directors
+    document.querySelectorAll('[data-route="attendance"]').forEach(el => {
+      el.style.display = Auth.canTakeAttendance() ? '' : 'none';
+    });
+    // Certificates and Reports: Only Director and Assistant Director
+    document.querySelectorAll('[data-route="certificates"], [data-route="reports"]').forEach(el => {
+      el.style.display = Auth.canSeeCertificatesAndReports() ? '' : 'none';
+    });
+    // Sidebar section headers
+    const certSection = document.getElementById('sidebar-cert-section');
+    if (certSection) {
+      certSection.style.display = Auth.canSeeCertificatesAndReports() ? '' : 'none';
+    }
+
+    // Update Pass Label for Member
+    const qrLabels = document.querySelectorAll('[data-route="qr"] .nav-label, [data-route="qr"] span:not(.nav-icon)');
+    qrLabels.forEach(el => {
+      el.textContent = role === 'member' ? 'My Digital Pass' : 'Member Passes';
+    });
   },
 
   updateUserInfo() {
@@ -82,7 +125,10 @@ const UI = {
     const nameEls = document.querySelectorAll('.user-display-name');
     nameEls.forEach(el => el.textContent = u.name || 'User');
     const roleEls = document.querySelectorAll('.user-display-role');
-    roleEls.forEach(el => el.textContent = (u.role || 'Member').replace('_', ' '));
+    roleEls.forEach(el => {
+      const roleText = u.role === 'member' ? 'Youth Member' : (u.role || 'Member').replace('_', ' ');
+      el.textContent = roleText;
+    });
     const grpEls = document.querySelectorAll('.user-display-group');
     grpEls.forEach(el => el.textContent = u.group || 'All Groups');
     const avatarEls = document.querySelectorAll('.user-display-avatar');
@@ -120,8 +166,16 @@ const UI = {
             <input type="text" id="ap-name" class="form-control" value="${Utils.escapeHtml(u.name)}">
           </div>
           <div class="form-group">
-            <label class="form-label">Update Authority Password</label>
-            <input type="password" id="ap-pwd" class="form-control" placeholder="Leave blank to keep current password">
+            <label class="form-label" style="font-weight:600">Update Authority Password (கடவுச்சொல் திருத்துதல்)</label>
+            <div class="password-input-wrap" style="margin-bottom:var(--s-2)">
+              <input type="password" id="ap-pwd" class="form-control" placeholder="New password (leave blank to keep current)">
+              <button type="button" class="password-toggle-btn" onclick="UI.togglePasswordVisibility('ap-pwd', this)" title="Show/Hide">👁️</button>
+            </div>
+            <div class="password-input-wrap">
+              <input type="password" id="ap-confirm-pwd" class="form-control" placeholder="Confirm new password">
+              <button type="button" class="password-toggle-btn" onclick="UI.togglePasswordVisibility('ap-confirm-pwd', this)" title="Show/Hide">👁️</button>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:4px">Min 4 characters. Leave blank if you don't wish to change password.</div>
           </div>
 
           <!-- Spiritual Background Theme Chooser -->
@@ -130,9 +184,10 @@ const UI = {
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s-2);margin-top:var(--s-2)">
               ${UI.THEME_LIST.map(th => {
                 const isActive = (UI.getCurrentThemeKey() === th.key);
+                const thumbSrc = (typeof DBYC_THEMES !== 'undefined' && DBYC_THEMES[th.key]) ? DBYC_THEMES[th.key] : th.file;
                 return `
                   <div onclick="UI.applyTheme('${th.key}')" style="cursor:pointer;border:2px solid ${isActive ? 'var(--primary)' : 'var(--border)'};border-radius:var(--r-md);overflow:hidden;position:relative;background:#000;box-shadow:${isActive ? '0 0 0 2px var(--accent)' : 'none'}">
-                    <img src="${th.file}" style="width:100%;height:64px;object-fit:cover;opacity:0.85" alt="${th.name}">
+                    <img src="${thumbSrc}" style="width:100%;height:64px;object-fit:cover;opacity:0.85" alt="${th.name}">
                     <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,35,85,0.85);color:#fff;font-size:9px;font-weight:700;padding:2px 4px;text-align:center">
                       ${isActive ? '✓ ' : ''}${th.name}
                     </div>
@@ -163,9 +218,11 @@ const UI = {
     const th = this.THEME_LIST.find(t => t.key === key) || this.THEME_LIST[0];
     localStorage.setItem('dbyc_active_theme', th.key);
 
+    const themeImg = (typeof DBYC_THEMES !== 'undefined' && DBYC_THEMES[th.key]) ? DBYC_THEMES[th.key] : th.file;
+
     document.body.style.backgroundImage = `
       linear-gradient(180deg, rgba(244, 246, 251, 0.93) 0%, rgba(240, 244, 250, 0.95) 100%),
-      url('${th.file}')
+      url('${themeImg}')
     `;
     document.body.style.backgroundSize = 'cover';
     document.body.style.backgroundPosition = 'center center';
@@ -176,11 +233,13 @@ const UI = {
     if (loginEl) {
       loginEl.style.backgroundImage = `
         linear-gradient(145deg, rgba(0, 35, 85, 0.88) 0%, rgba(0, 63, 138, 0.82) 55%, rgba(15, 23, 42, 0.94) 100%),
-        url('${th.file}')
+        url('${themeImg}')
       `;
     }
 
-    UI.toast('success', 'Theme Applied', `Theme: ${th.name}`);
+    if (typeof UI !== 'undefined' && UI.toast) {
+      UI.toast('success', 'Theme Applied', `Theme: ${th.name}`);
+    }
   },
 
   cycleTheme() {
@@ -207,13 +266,26 @@ const UI = {
   saveAuthorityProfile() {
     const name = document.getElementById('ap-name')?.value.trim();
     const pwd = document.getElementById('ap-pwd')?.value.trim();
-    
+    const confirmPwd = document.getElementById('ap-confirm-pwd')?.value.trim();
+
+    if (pwd) {
+      if (pwd.length < 4) {
+        UI.toast('warning', 'Password Validation', 'New password must be at least 4 characters.');
+        return;
+      }
+      if (pwd !== confirmPwd) {
+        UI.toast('warning', 'Password Mismatch', 'New password and confirmation password do not match.');
+        return;
+      }
+    }
+
     Auth.updateAuthorityProfile({
       name: name,
       password: pwd || undefined,
       picture: this._tempAuthorityPhoto || Auth.getUser()?.picture
     });
 
+    this._tempAuthorityPhoto = '';
     UI.closeModal('auth-profile-modal');
   },
 
@@ -253,31 +325,111 @@ window.addEventListener('DOMContentLoaded', () => {
       console.log('ServiceWorker registration optional:', err);
     });
   }
+
+  // Initialize PWA Controller
+  PWA.init();
 });
 
-// PWA Install Prompt Handler (Android / Chrome / Edge)
-let deferredInstallPrompt = null;
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredInstallPrompt = e;
-  const topbar = document.getElementById('topbar');
-  if (topbar && !document.getElementById('pwa-header-install-btn')) {
-    const btn = document.createElement('button');
-    btn.id = 'pwa-header-install-btn';
-    btn.className = 'btn btn-sm btn-accent';
-    btn.style.marginRight = '8px';
-    btn.innerHTML = '📲 Install App';
-    btn.onclick = async () => {
-      if (deferredInstallPrompt) {
-        deferredInstallPrompt.prompt();
-        const { outcome } = await deferredInstallPrompt.userChoice;
-        if (outcome === 'accepted') {
-          btn.remove();
-        }
-        deferredInstallPrompt = null;
+// Universal DBYC PWA Install Controller (Works on Android, iOS, Windows, Mac, Chrome, Edge, Safari)
+const PWA = {
+  _deferredPrompt: null,
+
+  init() {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      this._deferredPrompt = e;
+      console.log('DBYC PWA install prompt ready');
+      this.updateInstallButtons(true);
+    });
+
+    window.addEventListener('appinstalled', () => {
+      this._deferredPrompt = null;
+      UI.toast('success', 'App Installed!', 'DBYC Portal is now installed on your device home screen.');
+      this.updateInstallButtons(false);
+    });
+  },
+
+  updateInstallButtons(isReady) {
+    const btns = document.querySelectorAll('.pwa-install-trigger');
+    btns.forEach(btn => {
+      btn.style.display = 'inline-flex';
+      if (isReady) {
+        btn.classList.add('pulse-ready');
       }
-    };
-    const right = topbar.querySelector('.topbar-right');
-    if (right) topbar.insertBefore(btn, right);
+    });
+  },
+
+  async install() {
+    if (this._deferredPrompt) {
+      this._deferredPrompt.prompt();
+      const { outcome } = await this._deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        UI.toast('success', 'Installation Started', 'Adding DBYC Portal to your applications...');
+      }
+      this._deferredPrompt = null;
+    } else {
+      // Show rich visual instructional modal based on client OS
+      this.showInstallInstructionsModal();
+    }
+  },
+
+  showInstallInstructionsModal() {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isAndroid = /Android/.test(navigator.userAgent);
+
+    let instructions = '';
+    if (isIOS) {
+      instructions = `
+        <div style="background:#F0F4FF;padding:12px;border-radius:8px;margin-bottom:12px;text-align:left">
+          <div style="font-weight:700;color:var(--primary);margin-bottom:6px">📱 Apple iPhone / iPad (Safari Browser):</div>
+          <ol style="padding-left:20px;margin:0;font-size:13px;line-height:1.6">
+            <li>Tap the <strong>Share</strong> button (⎋ with an arrow pointing up) at the bottom bar of Safari.</li>
+            <li>Scroll down and tap <strong>"Add to Home Screen" (முகப்புத் திரையில் சேர்)</strong> ➕.</li>
+            <li>Tap <strong>"Add"</strong> in the top-right corner. The DBYC App icon will appear on your home screen!</li>
+          </ol>
+        </div>`;
+    } else if (isAndroid) {
+      instructions = `
+        <div style="background:#F0F4FF;padding:12px;border-radius:8px;margin-bottom:12px;text-align:left">
+          <div style="font-weight:700;color:var(--primary);margin-bottom:6px">📱 Android Phone (Chrome / Brave / Edge):</div>
+          <ol style="padding-left:20px;margin:0;font-size:13px;line-height:1.6">
+            <li>Tap the <strong>3 vertical dots (⋮)</strong> menu in the top-right corner of your browser.</li>
+            <li>Tap <strong>"Install App"</strong> or <strong>"Add to Home screen" (பயன்பாட்டை நிறுவுக)</strong>.</li>
+            <li>Confirm by tapping <strong>Install</strong>. DBYC will open as a native fullscreen app!</li>
+          </ol>
+        </div>`;
+    } else {
+      instructions = `
+        <div style="background:#F0F4FF;padding:12px;border-radius:8px;margin-bottom:12px;text-align:left">
+          <div style="font-weight:700;color:var(--primary);margin-bottom:6px">💻 Laptop / PC (Google Chrome & Microsoft Edge):</div>
+          <ol style="padding-left:20px;margin:0;font-size:13px;line-height:1.6">
+            <li>Look at the right end of the <strong>URL / Address bar</strong> at the top.</li>
+            <li>Click the <strong>Install DBYC (⊞ / 💻)</strong> icon.</li>
+            <li>Or click browser <strong>Menu (⋮) &gt; Save and share &gt; Install DBYC</strong>.</li>
+          </ol>
+        </div>`;
+    }
+
+    const logoSrc = (typeof DBYC_LOGO_DATA !== 'undefined' && DBYC_LOGO_DATA) ? DBYC_LOGO_DATA : './assets/dbyc-logo.jpg';
+
+    UI.openModal('pwa-install-modal', `
+      <div class="modal-header">
+        <span class="modal-title">📲 Install DBYC Portal App (பயன்பாட்டை நிறுவுக)</span>
+        <button class="modal-close" onclick="UI.closeModal('pwa-install-modal')">✕</button>
+      </div>
+      <div class="modal-body" style="text-align:center">
+        <img src="${logoSrc}" style="width:72px;height:72px;border-radius:16px;border:2px solid var(--accent);margin-bottom:8px;object-fit:cover">
+        <div style="font-size:16px;font-weight:800;color:var(--primary)">DON BOSCO YOUTH CENTRE</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px">Official Progressive Web App (Offline & Fast)</div>
+        
+        ${instructions}
+
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;color:var(--success);font-size:12px;font-weight:600">
+          <span>✓ Works 100% Offline</span> &bull; <span>✓ Zero Storage (< 1MB)</span> &bull; <span>✓ Fast & Free</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="UI.closeModal('pwa-install-modal')">Got it! (புரிந்தது)</button>
+      </div>`);
   }
-});
+};

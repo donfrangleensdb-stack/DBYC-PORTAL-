@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -1811,44 +1811,6 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
 }
 
 
-/* Password Input Visibility Toggle Styling */
-.password-input-wrap {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.password-input-wrap .form-control {
-  padding-right: 42px !important;
-  width: 100%;
-}
-
-.password-toggle-btn {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
-  padding: 4px 6px;
-  border-radius: var(--r-sm, 4px);
-  color: var(--text-muted, #64748b);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s ease;
-  user-select: none;
-  z-index: 2;
-}
-
-.password-toggle-btn:hover {
-  background: rgba(0, 0, 0, 0.07);
-  transform: translateY(-50%) scale(1.1);
-}
   </style>
 
   <!-- Free Third-Party Libraries (CDNs) -->
@@ -1885,35 +1847,22 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
       <!-- Quick Role Selection -->
       <div style="display:grid;grid-template-columns:1fr;gap:var(--s-2)">
         <button class="btn btn-primary btn-full" onclick="loginAsRole('director')">
-          👑 Fr. Director (Full Access / முழு அணுகல்)
+          👑 Fr. Director (Incharge)
         </button>
         <button class="btn btn-outline btn-full" onclick="loginAsRole('asst_director')">
-          ⚡ Fr. Assistant Director (Full Access)
+          ⚡ Fr. Assistant Director (Direct Incharge)
         </button>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s-2)">
-          <button class="btn btn-ghost btn-sm" onclick="loginAsRole('leader', 'Seniors')" style="border:1px solid var(--border);text-align:center">
-            🎖️ Group Leader<br><span style="font-size:10px;color:var(--text-muted)">Members & Points</span>
+          <button class="btn btn-ghost btn-sm" onclick="loginAsRole('leader', 'Seniors')">
+            🎖️ Group Leader
           </button>
-          <button class="btn btn-ghost btn-sm" onclick="loginAsRole('incharge', 'Juniors')" style="border:1px solid var(--border);text-align:center">
-            🛡️ Group Incharge<br><span style="font-size:10px;color:var(--text-muted)">Attendance Only</span>
+          <button class="btn btn-ghost btn-sm" onclick="loginAsRole('incharge', 'Juniors')">
+            🛡️ Group Incharge
           </button>
         </div>
-        <button class="btn btn-accent btn-full" onclick="loginAsRole('member')">
-          👤 Youth Member Portal (My Pass & Scoreboard)
+        <button class="btn btn-ghost btn-sm btn-full" onclick="loginAsRole('member')">
+          👤 Youth Member
         </button>
-      </div>
-
-      <!-- Permanent PWA Install Action on Login Screen -->
-      <div style="margin-top:var(--s-3);text-align:center">
-        <button class="btn btn-outline btn-sm btn-full pwa-install-trigger" onclick="PWA.install()" style="border-color:var(--accent);color:var(--accent-dark);font-weight:700">
-          📲 Install App on Phone / PC (பயன்பாட்டை நிறுவுக)
-        </button>
-      </div>
-
-      <div style="margin-top:var(--s-2);text-align:center">
-        <a href="javascript:void(0)" onclick="Auth.openForgotPasswordModal('director')" style="color:var(--primary);font-size:12px;text-decoration:underline;font-weight:600">
-          🔑 Forgot Authority Password? (கடவுச்சொல் மீட்பு)
-        </a>
       </div>
 
       <div class="login-footer">
@@ -1949,7 +1898,7 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
           <span class="nav-icon">🪪</span><span class="nav-label">Member QR Passes</span>
         </a>
 
-        <div class="sidebar-section-title" id="sidebar-cert-section">Certificates & Reports</div>
+        <div class="sidebar-section-title">Certificates & Reports</div>
         <a class="nav-item" data-route="certificates" onclick="Router.navigate('certificates');UI.toggleSidebar()">
           <span class="nav-icon">📜</span><span class="nav-label">Certificates</span>
         </a>
@@ -1971,9 +1920,6 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
             <div class="sidebar-user-role user-display-role">Director</div>
           </div>
         </div>
-        <button class="btn btn-outline btn-sm btn-full pwa-install-trigger" onclick="PWA.install()" style="color:var(--accent);border-color:var(--accent);margin-top:var(--s-2)">
-          📲 Install DBYC App
-        </button>
         <button class="btn btn-ghost btn-sm btn-full" style="color:rgba(255,255,255,0.7);margin-top:var(--s-2)" onclick="Auth.signOut()">
           🚪 Sign Out
         </button>
@@ -1987,7 +1933,6 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
         <button class="topbar-menu-btn" onclick="UI.toggleSidebar()" title="Toggle Navigation">☰</button>
         <div class="topbar-title" id="topbar-page-title">Dashboard Overview</div>
         <div class="topbar-right">
-          <button class="btn btn-accent btn-sm pwa-install-trigger" onclick="PWA.install()" title="Install DBYC App on your device" style="font-size:var(--text-xs);padding:4px 10px;margin-right:var(--s-2);font-weight:700">📲 Install App</button>
           <button class="btn btn-outline btn-sm" id="global-mic-btn" onclick="VoiceKeyboard.toggleListening()" title="Tamil & English Voice Typing (குரல் தட்டச்சு)" style="font-size:var(--text-xs);padding:4px 10px;margin-right:var(--s-2)">🎙️ Voice Type</button>
           <button class="btn btn-outline btn-sm" onclick="VoiceKeyboard.toggleKeyboard()" title="Tamil & English On-Screen Keyboard (விசைப்பலகை)" style="font-size:var(--text-xs);padding:4px 10px;margin-right:var(--s-2)">⌨️ தமிழ்</button>
           <button class="btn btn-ghost btn-sm btn-icon" onclick="UI.cycleTheme()" title="Switch Don Bosco Portal Theme" style="font-size:1.1rem;margin-right:var(--s-2)">🎨</button>
@@ -2034,6 +1979,14 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
 
   <!-- App Core JavaScript Files (Root references) -->
   <script src="logo-data.js"></script>
+  <script>
+    // Instant base64 fallback for logo images
+    if (typeof DBYC_LOGO_DATA !== 'undefined') {
+      document.querySelectorAll('img[src*="dbyc-logo.jpg"]').forEach(function(img) {
+        img.src = DBYC_LOGO_DATA;
+      });
+    }
+  </script>
   <script src="theme-data.js"></script>
   <script src="config.js"></script>
   <script src="utils.js"></script>
@@ -2049,52 +2002,5 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
   <script src="voice-keyboard.js"></script>
   <script src="rules.js"></script>
   <script src="app.js"></script>
-
-  <!-- Don Bosco Spiritual Theme & Logo Real-Time Enforcer -->
-  <script>
-    (function() {
-      function forceDonBoscoTheme() {
-        // 1. Enforce Don Bosco Background Theme using base64 image data
-        if (typeof DBYC_THEMES !== 'undefined') {
-          var activeKey = localStorage.getItem('dbyc_active_theme') || 'banner';
-          var bgImg = DBYC_THEMES[activeKey] || DBYC_THEMES.banner;
-          if (bgImg) {
-            document.body.style.backgroundImage = 'linear-gradient(180deg, rgba(244, 246, 251, 0.93) 0%, rgba(240, 244, 250, 0.95) 100%), url("' + bgImg + '")';
-            document.body.style.backgroundSize = 'cover';
-            document.body.style.backgroundPosition = 'center center';
-            document.body.style.backgroundRepeat = 'no-repeat';
-            document.body.style.backgroundAttachment = 'fixed';
-
-            var login = document.getElementById('login-screen');
-            if (login) {
-              login.style.backgroundImage = 'linear-gradient(145deg, rgba(0, 35, 85, 0.88) 0%, rgba(0, 63, 138, 0.82) 55%, rgba(15, 23, 42, 0.94) 100%), url("' + bgImg + '")';
-              login.style.backgroundSize = 'cover';
-              login.style.backgroundPosition = 'center center';
-            }
-          }
-        }
-
-        // 2. Enforce Don Bosco Logo across UI
-        if (typeof DBYC_LOGO_DATA !== 'undefined' && DBYC_LOGO_DATA) {
-          document.querySelectorAll('img[src*="dbyc-logo.jpg"]').forEach(function(img) {
-            img.src = DBYC_LOGO_DATA;
-          });
-        }
-      }
-
-      window.addEventListener('DOMContentLoaded', forceDonBoscoTheme);
-      setTimeout(forceDonBoscoTheme, 100);
-      setTimeout(forceDonBoscoTheme, 600);
-
-      // Hook into UI.applyTheme for instant reactive theme switching
-      if (typeof UI !== 'undefined') {
-        var originalApply = UI.applyTheme;
-        UI.applyTheme = function(key) {
-          if (originalApply) originalApply.call(UI, key);
-          forceDonBoscoTheme();
-        };
-      }
-    })();
-  </script>
 </body>
 </html>

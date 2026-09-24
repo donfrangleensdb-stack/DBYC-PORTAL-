@@ -1,4 +1,4 @@
-﻿/* DBYC Router - Hash-based SPA routing */
+/* DBYC Router - Hash-based SPA routing */
 const Router = {
   _routes: {},
   _current: null,
@@ -39,6 +39,23 @@ const Router = {
   },
 
   _showApp(name, params) {
+    // Role-Based Route Guards
+    if (name === 'members' && !Auth.canSeeAllMembers()) {
+      UI.toast('warning', 'Access Restricted', 'Only Group Leaders and Fr. Directors can view the Member Registry.');
+      this.navigate('dashboard');
+      return;
+    }
+    if (name === 'attendance' && !Auth.canTakeAttendance()) {
+      UI.toast('warning', 'Access Restricted', 'Attendance scanner terminal is restricted to Incharges, Leaders, and Directors.');
+      this.navigate('dashboard');
+      return;
+    }
+    if ((name === 'certificates' || name === 'reports') && !Auth.canSeeCertificatesAndReports()) {
+      UI.toast('warning', 'Access Restricted', 'Certificates and official analytics are reserved for Rev. Fr. Director and Asst. Director.');
+      this.navigate('dashboard');
+      return;
+    }
+
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('app-shell').classList.remove('hidden');
     UI.updateNav(name);
