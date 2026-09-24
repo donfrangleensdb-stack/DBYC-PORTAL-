@@ -1,5 +1,5 @@
-/* DBYC Service Worker - Cache-First for Assets, Network-First for API */
-const CACHE_NAME = 'dbyc-v13';
+/* DBYC Service Worker - Network-First for HTML/Nav, Cache-First for Assets */
+const CACHE_NAME = 'dbyc-v15';
 const ASSETS = [
   './',
   './index.html',
@@ -45,15 +45,31 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
+
+  // 1. Google APIs & Backend: Network only with graceful cache fallback
   if (url.hostname.includes('script.google.com') || url.hostname.includes('googleapis.com')) {
     e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
     return;
   }
+
+  // 2. HTML Navigation (Android & Mobile devices): Network-First for instant updates
+  if (e.request.mode === 'navigate' || url.pathname.endsWith('index.html') || url.pathname === '/' || url.pathname.endsWith('/')) {
+    e.respondWith(
+      fetch(e.request).then(resp => {
+        const clone = resp.clone();
+        caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
+        return resp;
+      }).catch(() => caches.match('./index.html') || caches.match('/'))
+    );
+    return;
+  }
+
+  // 3. Static Assets: Cache-First with Network Revalidation
   e.respondWith(
     caches.match(e.request).then(cached => cached || fetch(e.request).then(resp => {
       const clone = resp.clone();
       caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
       return resp;
-    }).catch(() => caches.match('./index.html')))
+    }))
   );
 });
