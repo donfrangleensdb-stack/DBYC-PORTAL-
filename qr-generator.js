@@ -265,6 +265,7 @@ const QRGenerator = {
         </div>
       </div>
       <div class="modal-footer" style="flex-wrap:wrap;gap:var(--s-2)">
+        ${(m.HardCopyScan || m.AdmissionSoftCopy) ? `<button class="btn btn-outline" style="border-color:var(--primary);color:var(--primary)" onclick="Members.viewHardCopyScan('${m.MemberID}')">📑 View Scanned Admission Form</button>` : ''}
         <button class="btn btn-primary" onclick="QRGenerator.downloadIDCardPDF('${m.MemberID}', '${Utils.escapeHtml(m.FullName)}')">📥 Download ID Card (PDF)</button>
         <button class="btn btn-outline" onclick="QRGenerator.downloadIDCardImage('${m.MemberID}', '${Utils.escapeHtml(m.FullName)}')">🖼️ Download Image (PNG)</button>
         <button class="btn btn-ghost" onclick="window.print()">🖨️ Direct Print</button>

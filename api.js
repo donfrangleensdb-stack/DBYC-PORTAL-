@@ -321,7 +321,8 @@ const API = {
         VerificationStatus: 'Pending Verification',
         Points: 0,
         PhotoBase64: data.photoBase64 || '',
-        PhotoURL: data.photoURL || data.photoBase64 || ''
+        PhotoURL: data.photoURL || data.photoBase64 || '',
+        HardCopyScan: data.hardCopyScan || data.HardCopyScan || data.admissionSoftCopy || ''
       };
       members.push(newMem);
       MockDB.saveMembers(members);
@@ -370,6 +371,12 @@ const API = {
       }
       if (data.photoURL !== undefined) {
         mem.PhotoURL = data.photoURL;
+      }
+      if (data.hardCopyScan !== undefined) {
+        mem.HardCopyScan = data.hardCopyScan;
+      }
+      if (data.HardCopyScan !== undefined) {
+        mem.HardCopyScan = data.HardCopyScan;
       }
 
       MockDB.saveMembers(members);
