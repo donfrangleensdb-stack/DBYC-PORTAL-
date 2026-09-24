@@ -7,12 +7,13 @@ const Attendance = {
   _isProcessing: false,
 
   async render(container) {
-    const canMark = Auth.canTakeAttendance();
+    const user = Auth.getUser();
+    const canMark = user?.role !== 'member';
     container.innerHTML = `
       <div class="page-header">
         <div class="page-header-left">
-          <div class="page-title">QR வருகைப்பதிவு & புள்ளிகள் (QR Attendance & Points)</div>
-          <div class="page-subtitle">Camera QR check-in &bull; உடனடி வருகைப் பதிவு மற்றும் இல்லப் புள்ளிகள் (Don Bosco Youth Centre)</div>
+          <div class="page-title">QR Attendance Scanner & Points Terminal</div>
+          <div class="page-subtitle">Continuous camera check-ins with instant audio chime confirmation, House tracking & points</div>
         </div>
       </div>
 
@@ -23,7 +24,7 @@ const Attendance = {
             <span class="card-title">📷 Authority QR Scanner Terminal</span>
             <div style="display:flex;gap:var(--s-2)">
               <button class="btn btn-sm btn-primary" id="btn-mode-att" onclick="Attendance.setScanMode('attendance')">Check-In</button>
-              ${Auth.canAwardPoints() ? `<button class="btn btn-sm btn-outline" id="btn-mode-pts" onclick="Attendance.setScanMode('points')">⭐ Point Adjustment (+ / -)</button>` : ''}
+              <button class="btn btn-sm btn-outline" id="btn-mode-pts" onclick="Attendance.setScanMode('points')">⭐ Point Adjustment (+ / -)</button>
             </div>
           </div>
           <div class="card-body">
@@ -179,10 +180,6 @@ const Attendance = {
   },
 
   setScanMode(mode) {
-    if (mode === 'points' && !Auth.canAwardPoints()) {
-      UI.toast('warning', 'Access Restricted', 'Only Group Leaders and Fr. Directors can award points.');
-      return;
-    }
     this._scanMode = mode;
     const btnAtt = document.getElementById('btn-mode-att');
     const btnPts = document.getElementById('btn-mode-pts');
@@ -332,12 +329,6 @@ const Attendance = {
 
     // 1. Point Adjustment Mode (+ / -)
     if (this._scanMode === 'points') {
-      if (!Auth.canAwardPoints()) {
-        Utils.playBeep(false);
-        UI.toast('error', 'Unauthorized', 'Incharges can only record attendance, not award custom points.');
-        this._isProcessing = false;
-        return;
-      }
       const pts = parseInt(document.getElementById('scan-point-val')?.value) || 10;
       const reason = document.getElementById('scan-point-reason')?.value || 'Authority Adjustment';
 

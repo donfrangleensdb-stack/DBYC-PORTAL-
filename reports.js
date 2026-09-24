@@ -4,11 +4,11 @@ const Reports = {
     container.innerHTML = `
       <div class="page-header">
         <div class="page-header-left">
-          <div class="page-title">அறிக்கைகள் & பகுப்பாய்வு (Reports & Analytics)</div>
-          <div class="page-subtitle">4-House championship standings, attendance consistency & points &bull; Don Bosco Youth Centre</div>
+          <div class="page-title">Reports & Points Analytics</div>
+          <div class="page-subtitle">4-House championship progress, youth group attendance consistency, and membership metrics</div>
         </div>
         <div class="page-actions">
-          <button class="btn btn-primary btn-sm" onclick="Reports.downloadSummaryCSV()">📥 Export CSV (பதிவிறக்கம்)</button>
+          <button class="btn btn-primary" onclick="Reports.downloadSummaryCSV()">📥 Export Comprehensive CSV</button>
         </div>
       </div>
 

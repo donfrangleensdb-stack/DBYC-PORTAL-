@@ -424,11 +424,21 @@ const PWA = {
         
         ${instructions}
 
-        <div style="display:flex;align-items:center;justify-content:center;gap:8px;color:var(--success);font-size:12px;font-weight:600">
+        <div style="margin-top:14px;padding:12px;background:rgba(16,185,129,0.08);border:1.5px dashed #10b981;border-radius:10px;text-align:center">
+          <div style="font-size:12px;color:#065f46;font-weight:700;margin-bottom:6px">🤖 Having trouble installing or need automated fixes? (PWA சிக்கலா?)</div>
+          <button class="btn btn-sm" onclick="UI.closeModal('pwa-install-modal');if(typeof AIDoctor!=='undefined')AIDoctor.openModal();" style="background:#10b981;color:#fff;border:none;font-weight:700;padding:6px 14px;border-radius:6px;cursor:pointer">
+            ✨ Launch AI PWA Doctor & Auto-Rectify (AI சரிசெய்தல்)
+          </button>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;color:var(--success);font-size:12px;font-weight:600;margin-top:12px">
           <span>✓ Works 100% Offline</span> &bull; <span>✓ Zero Storage (< 1MB)</span> &bull; <span>✓ Fast & Free</span>
         </div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" style="display:flex;justify-content:space-between;align-items:center">
+        <button class="btn btn-outline btn-sm" onclick="UI.closeModal('pwa-install-modal');if(typeof AIDoctor!=='undefined')AIDoctor.openModal();" style="color:#047857;border-color:#10b981">
+          🤖 AI PWA Doctor
+        </button>
         <button class="btn btn-primary" onclick="UI.closeModal('pwa-install-modal')">Got it! (புரிந்தது)</button>
       </div>`);
   }

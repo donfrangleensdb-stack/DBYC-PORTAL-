@@ -3,19 +3,17 @@ const QRGenerator = {
   _members: [],
 
   async render(container) {
-    const isMember = Auth.isMember();
     container.innerHTML = `
       <div class="page-header">
         <div class="page-header-left">
-          <div class="page-title">${isMember ? '🪪 எனது டிஜிட்டல் பாஸ் (My Digital ID Pass)' : '🪪 டிஜிட்டல் அடையாள அட்டை (Member QR Passes)'}</div>
-          <div class="page-subtitle">${isMember ? 'Official digital membership pass with QR check-in &bull; Don Bosco Youth Centre' : 'Official photo ID passes with QR check-in & House badge &bull; Don Bosco Youth Centre'}</div>
+          <div class="page-title">Digital Member QR Passes & ID Cards</div>
+          <div class="page-subtitle">Official photo identification badges with embedded QR codes, House allocation & Don Bosco founder seal</div>
         </div>
         <div class="page-actions">
-          <button class="btn btn-primary btn-sm" onclick="window.print()">${isMember ? '🖨️ அச்சு (Print Pass)' : '🖨️ Print Passes (அச்சு)'}</button>
+          <button class="btn btn-primary" onclick="window.print()">🖨️ Print All Passes</button>
         </div>
       </div>
 
-      ${!isMember ? `
       <div class="card" style="margin-bottom:var(--s-5)">
         <div class="card-body" style="padding:var(--s-4)">
           <div style="display:flex;gap:var(--s-3);flex-wrap:wrap;align-items:center">
@@ -33,16 +31,9 @@ const QRGenerator = {
             </div>
           </div>
         </div>
-      </div>` : `
-      <div class="alert alert-info" style="margin-bottom:var(--s-4);display:flex;align-items:center;gap:12px">
-        <span style="font-size:1.5rem">📲</span>
-        <div>
-          <strong>Present this Digital Pass at the Entrance</strong>
-          <div style="font-size:var(--text-xs)">Show this QR code to your Group Leader or Incharge to record your daily attendance and earn House points!</div>
-        </div>
-      </div>`}
+      </div>
 
-      <div id="qr-cards-grid" class="${isMember ? 'grid-single' : 'grid-auto'}" style="${isMember ? 'max-width:420px;margin:0 auto;' : ''}">
+      <div id="qr-cards-grid" class="grid-auto">
         <div class="loading-overlay" style="grid-column:1/-1"><div class="spinner-lg"></div></div>
       </div>`;
 
@@ -50,73 +41,24 @@ const QRGenerator = {
   },
 
   async loadCards() {
-    const isMember = Auth.isMember();
-    const u = Auth.getUser();
-
-    try {
-      const result = await API.getMembers({});
-      const allActive = (result.data || []).filter(m => m.Status === 'Active');
-      
-      if (isMember) {
-        // Find current member
-        const myMatch = allActive.find(m => 
-          (u.memberId && m.MemberID && m.MemberID.toLowerCase() === u.memberId.toLowerCase()) ||
-          (u.name && m.FullName && m.FullName.toLowerCase() === u.name.toLowerCase())
-        );
-
-        if (myMatch) {
-          this._members = [myMatch];
-        } else {
-          // Construct pass from authenticated session
-          this._members = [{
-            MemberID: u.memberId || 'DBYC-2026-001',
-            FullName: u.name || 'Youth Member',
-            Group: u.group || 'Seniors',
-            House: u.team || 'Red House (St. John Bosco)',
-            Team: u.team || 'Red House (St. John Bosco)',
-            Photo: u.picture || '',
-            Status: 'Active',
-            TotalPoints: u.points || 120
-          }];
-        }
-      } else {
-        this._members = allActive;
-      }
-    } catch(e) {
-      if (isMember) {
-        this._members = [{
-          MemberID: u?.memberId || 'DBYC-2026-001',
-          FullName: u?.name || 'Youth Member',
-          Group: u?.group || 'Seniors',
-          House: u?.team || 'Red House (St. John Bosco)',
-          Team: u?.team || 'Red House (St. John Bosco)',
-          Photo: u?.picture || '',
-          Status: 'Active',
-          TotalPoints: u?.points || 120
-        }];
-      }
-    }
-
+    const result = await API.getMembers({});
+    if (!result.success) { UI.toast('error', 'Error', result.error); return; }
+    this._members = (result.data || []).filter(m => m.Status === 'Active');
     this.filterCards();
   },
 
   filterCards() {
-    const isMember = Auth.isMember();
-    let filtered = this._members;
+    const q = document.getElementById('qr-search')?.value.toLowerCase() || '';
+    const house = document.getElementById('qr-house-select')?.value || 'All';
+    const group = document.getElementById('qr-group-select')?.value || 'All';
 
-    if (!isMember) {
-      const q = document.getElementById('qr-search')?.value.toLowerCase() || '';
-      const house = document.getElementById('qr-house-select')?.value || 'All';
-      const group = document.getElementById('qr-group-select')?.value || 'All';
-
-      filtered = this._members.filter(m => {
-        const h = m.House || m.Team;
-        if (house !== 'All' && h !== house) return false;
-        if (group !== 'All' && m.Group !== group) return false;
-        if (q && !((m.FullName || '').toLowerCase().includes(q) || (m.MemberID || '').toLowerCase().includes(q))) return false;
-        return true;
-      });
-    }
+    const filtered = this._members.filter(m => {
+      const h = m.House || m.Team;
+      if (house !== 'All' && h !== house) return false;
+      if (group !== 'All' && m.Group !== group) return false;
+      if (q && !((m.FullName || '').toLowerCase().includes(q) || (m.MemberID || '').toLowerCase().includes(q))) return false;
+      return true;
+    });
 
     const grid = document.getElementById('qr-cards-grid');
     if (!grid) return;
@@ -265,7 +207,6 @@ const QRGenerator = {
         </div>
       </div>
       <div class="modal-footer" style="flex-wrap:wrap;gap:var(--s-2)">
-        ${(m.HardCopyScan || m.AdmissionSoftCopy) ? `<button class="btn btn-outline" style="border-color:var(--primary);color:var(--primary)" onclick="Members.viewHardCopyScan('${m.MemberID}')">📑 View Scanned Admission Form</button>` : ''}
         <button class="btn btn-primary" onclick="QRGenerator.downloadIDCardPDF('${m.MemberID}', '${Utils.escapeHtml(m.FullName)}')">📥 Download ID Card (PDF)</button>
         <button class="btn btn-outline" onclick="QRGenerator.downloadIDCardImage('${m.MemberID}', '${Utils.escapeHtml(m.FullName)}')">🖼️ Download Image (PNG)</button>
         <button class="btn btn-ghost" onclick="window.print()">🖨️ Direct Print</button>
