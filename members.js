@@ -6,9 +6,7 @@ const Members = {
   _perPage: 12,
   _activeTab: 'all',
   _photoBase64: '',
-  _hardCopyScanBase64: '',
   _cameraStream: null,
-  _docCameraStream: null,
 
   async render(container) {
     const canManage = Auth.canManageMembers();
@@ -21,7 +19,6 @@ const Members = {
         <div class="page-actions">
           <button class="btn btn-outline" onclick="VoiceKeyboard.toggleKeyboard()">⌨️ தமிழ் / English விசைப்பலகை</button>
           <button class="btn btn-ghost" onclick="Members.exportCSV()">📥 Export CSV</button>
-          ${canManage ? '<button class="btn btn-outline" style="border-color:var(--primary);color:var(--primary)" onclick="Members.openDocumentScannerModal()">📑 Scan Hard Copy Form (படிவம் ஸ்கேன்)</button>' : ''}
           ${canManage ? '<button class="btn btn-primary" onclick="Members.openAddModal()">➕ உறுப்பினர் சேர்க்கை (New Admission)</button>' : ''}
         </div>
       </div>
@@ -49,10 +46,9 @@ const Members = {
       <!-- Tabs: All vs Pending Verification -->
       <div class="tabs" style="margin-bottom:var(--s-4)">
         <button class="tab-btn active" id="tab-all-members" onclick="Members.switchTab('all')">அனைத்து உறுப்பினர்கள் (All Members)</button>
-        ${Auth.isAdmin() ? `
         <button class="tab-btn" id="tab-pending-members" onclick="Members.switchTab('pending')">
           ⏳ ஒப்புதல் நிலுவை (Pending Qualification) <span id="pending-badge-count" class="badge badge-warning" style="margin-left:4px">0</span>
-        </button>` : ''}
+        </button>
       </div>
 
       <div class="card" style="margin-bottom:var(--s-5)">
@@ -151,19 +147,14 @@ const Members = {
     if (!page.length) {
       tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">👤</div><div class="empty-title">உறுப்பினர்கள் இல்லை (No members found)</div></div></td></tr>`;
     } else {
-      tbody.innerHTML = page.map(m => {
-        const hasScan = !!(m.HardCopyScan || m.AdmissionSoftCopy);
-        return `
+      tbody.innerHTML = page.map(m => `
         <tr>
           <td>
             <div style="display:flex;align-items:center;gap:var(--s-3)">
               ${Utils.avatarHtml(m)}
               <div>
                 <div style="font-weight:var(--fw-semibold);color:var(--text-primary)">${Utils.escapeHtml(m.FullName)}</div>
-                <div style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-                  <span>${m.MemberID} &bull; ${m.Gender || 'Member'}</span>
-                  ${hasScan ? `<span class="badge badge-success" style="font-size:9px;padding:1px 6px;cursor:pointer;border-radius:10px" onclick="Members.viewHardCopyScan('${m.MemberID}')" title="Click to view scanned hard copy admission form">📑 Soft Copy</span>` : ''}
-                </div>
+                <div style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-muted)">${m.MemberID} &bull; ${m.Gender || 'Member'}</div>
               </div>
             </div>
           </td>
@@ -180,7 +171,6 @@ const Members = {
               <button class="btn btn-ghost btn-sm btn-icon" title="Digital ID Pass" onclick="QRGenerator.showMemberQR('${m.MemberID}')">🪪</button>
               <button class="btn btn-ghost btn-sm btn-icon" title="Print Official Application Form (விண்ணப்பம் & விதிமுறைகள்)" onclick="Members.printApplication('${m.MemberID}')">📄</button>
               <button class="btn btn-ghost btn-sm btn-icon" title="✍️ பெற்றோரின் டிஜிட்டல் கையொப்பம் (Digital Signature)" onclick="Members.openSignatureModal('${m.MemberID}')">✍️</button>
-              <button class="btn btn-ghost btn-sm btn-icon" title="${hasScan ? '📑 View Scanned Hard Copy Soft Copy (அசல் படிவம்)' : '📑 Scan & Upload Hard Copy Form (படிவம் ஸ்கேன்)'}" onclick="${hasScan ? `Members.viewHardCopyScan('${m.MemberID}')` : `Members.openDocumentScannerModal('${m.MemberID}')`}" style="${hasScan ? 'color:var(--primary);font-weight:700' : ''}">📑</button>
               ${isAdmin && m.VerificationStatus === 'Qualified' ? `
                 <button class="btn btn-ghost btn-sm btn-icon" title="Adjust Points" onclick="Members.openPointsModal('${m.MemberID}')">⭐</button>
               ` : ''}
@@ -189,8 +179,7 @@ const Members = {
               ` : ''}
             </div>
           </td>
-        </tr>`;
-      }).join('');
+        </tr>`).join('');
     }
 
     const total = this._filtered.length;
@@ -283,9 +272,7 @@ const Members = {
   openAddModal() {
     this._editingId = null;
     this._photoBase64 = '';
-    this._hardCopyScanBase64 = '';
     this.stopCameraStream();
-    this.stopHardCopyScanner();
     UI.openModal('member-modal', `
       <div class="modal-header">
         <div style="display:flex;align-items:center;gap:var(--s-2)">
@@ -314,9 +301,7 @@ const Members = {
     if (!m) return;
     this._editingId = id;
     this._photoBase64 = m.PhotoURL || m.PhotoBase64 || '';
-    this._hardCopyScanBase64 = m.HardCopyScan || m.AdmissionSoftCopy || '';
     this.stopCameraStream();
-    this.stopHardCopyScanner();
     UI.openModal('member-modal', `
       <div class="modal-header">
         <span class="modal-title">Edit Member Profile: ${Utils.escapeHtml(m.FullName)}</span>
@@ -340,7 +325,6 @@ const Members = {
 
   closeMemberModal() {
     this.stopCameraStream();
-    this.stopHardCopyScanner();
     this._parentSigPad = null;
     this._memberSigPad = null;
     UI.closeModal('member-modal');
@@ -389,74 +373,6 @@ const Members = {
                 <div style="position:absolute;bottom:8px;left:0;right:0;display:flex;justify-content:center;gap:var(--s-2)">
                   <button type="button" class="btn btn-primary btn-sm" onclick="Members.snapInstantPhoto()">📸 Take Snapshot (புகைப்படம் எடு)</button>
                   <button type="button" class="btn btn-ghost btn-sm" style="color:#fff;background:rgba(0,0,0,0.5)" onclick="Members.stopCameraStream()">Cancel</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Hard Copy Admission Form Document Scanner Module -->
-        <div class="form-group" style="background:#f8fafc;padding:var(--s-4);border-radius:var(--r-lg);border:1.5px dashed var(--primary);box-shadow:var(--shadow-sm)">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--s-2);flex-wrap:wrap;gap:var(--s-2)">
-            <div>
-              <label class="form-label" style="font-weight:700;color:var(--primary);margin:0;font-size:13px">
-                📑 அசல் விண்ணப்ப படிவம் - ஆவண ஸ்கேனர் (Hard Copy Admission Form Document Scanner)
-              </label>
-              <div style="font-size:11px;color:var(--text-muted);margin-top:2px">
-                காகித விண்ணப்பத்தை (Hard Copy Form) செல்போன் கேமரா வழியே ஸ்கேன் செய்து அல்லது பதிவேற்றி டிஜிட்டல் சாஃப்ட் காப்பியாக (Soft Copy) மாற்றவும்
-              </div>
-            </div>
-            <div id="mf-doc-status-badge">
-              ${(m.HardCopyScan || m.AdmissionSoftCopy) ? '<span class="badge badge-success">✅ Soft Copy Ready</span>' : '<span class="badge badge-warning">⏳ Hard Copy Not Scanned</span>'}
-            </div>
-          </div>
-
-          <div style="display:flex;gap:var(--s-4);align-items:flex-start;flex-wrap:wrap;margin-top:var(--s-3)">
-            <!-- Document Thumbnail Preview -->
-            <div style="position:relative;width:130px;height:170px;border-radius:var(--r-md);overflow:hidden;border:2px solid var(--border);background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);cursor:pointer" onclick="${(m.HardCopyScan || m.AdmissionSoftCopy) ? `Members.previewCurrentScan()` : ''}" title="Click to view scanned document">
-              <img id="mf-doc-preview-img" src="${m.HardCopyScan || m.AdmissionSoftCopy || 'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'170\' viewBox=\'0 0 130 170\'><rect width=\'130\' height=\'170\' fill=\'%23f1f5f9\'/><path d=\'M40 30 h50 v105 h-50 z\' fill=\'none\' stroke=\'%2394a3b8\' stroke-width=\'2\'/><line x1=\'50\' y1=\'50\' x2=\'80\' y2=\'50\' stroke=\'%2394a3b8\' stroke-width=\'2\'/><line x1=\'50\' y1=\'70\' x2=\'80\' y2=\'70\' stroke=\'%2394a3b8\' stroke-width=\'2\'/><line x1=\'50\' y1=\'90\' x2=\'70\' y2=\'90\' stroke=\'%2394a3b8\' stroke-width=\'2\'/><text x=\'65\' y=\'135\' font-size=\'10\' text-anchor=\'middle\' fill=\'%2364748b\' font-family=\'sans-serif\'>No Soft Copy</text></svg>'}" style="width:100%;height:100%;object-fit:cover" alt="Scanned Document Preview">
-            </div>
-
-            <!-- Controls -->
-            <div style="flex:1;min-width:240px;display:flex;flex-direction:column;gap:var(--s-2)">
-              <div style="display:flex;gap:var(--s-2);flex-wrap:wrap">
-                <button type="button" class="btn btn-primary btn-sm" id="btn-doc-scanner-toggle" onclick="Members.toggleHardCopyScanner()">
-                  📷 Scan Hard Copy (கேமரா ஸ்கேனர்)
-                </button>
-                <label class="btn btn-outline btn-sm" style="cursor:pointer;margin:0">
-                  📁 Upload Document (படிவ பதிவேற்றம்)
-                  <input type="file" id="mf-doc-file-input" accept="image/*" style="display:none" onchange="Members.handleHardCopyFileSelect(event)">
-                </label>
-                <button type="button" class="btn btn-ghost btn-sm" id="btn-doc-preview-view" onclick="Members.previewCurrentScan()" style="${(m.HardCopyScan || m.AdmissionSoftCopy) ? '' : 'display:none'}">
-                  👁️ Full Preview
-                </button>
-                <button type="button" class="btn btn-danger btn-sm" id="btn-doc-remove" onclick="Members.removeHardCopyScan()" style="${(m.HardCopyScan || m.AdmissionSoftCopy) ? '' : 'display:none'}">
-                  🗑️ Remove
-                </button>
-              </div>
-
-              <div style="font-size:11px;color:var(--text-muted);line-height:1.4">
-                💡 <strong>Scanning Advice:</strong> மொபைலின் பின்பக்க கேமராவை ஆவணத்தின் மீது வைத்து நல்ல வெளிச்சத்தில் A4 சட்டகத்திற்குள் பொருந்தும்படி புகைப்படம் எடுக்கவும். (Hold steady in good light to align full page).
-              </div>
-
-              <!-- Live Scanner Viewfinder with A4 Document Overlay Frame -->
-              <div id="doc-camera-viewfinder-box" style="display:none;margin-top:var(--s-2);background:#0f172a;border-radius:var(--r-md);overflow:hidden;position:relative;border:2px solid var(--primary)">
-                <div style="position:relative;width:100%;max-height:340px;overflow:hidden;display:flex;align-items:center;justify-content:center">
-                  <video id="doc-camera-video" autoplay playsinline style="width:100%;height:auto;max-height:340px;object-fit:contain"></video>
-                  <!-- Document Framing Guide -->
-                  <div style="position:absolute;top:10px;bottom:10px;left:15%;right:15%;border:2px dashed #ffb800;border-radius:8px;pointer-events:none;box-shadow:0 0 0 9999px rgba(0,0,0,0.35);display:flex;align-items:flex-start;justify-content:center;padding-top:10px">
-                    <span style="background:rgba(0,0,0,0.75);color:#ffb800;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px">
-                      Align Paper Form within Frame (A4)
-                    </span>
-                  </div>
-                </div>
-                <div style="background:rgba(15,23,42,0.95);padding:var(--s-2) var(--s-3);display:flex;justify-content:center;gap:var(--s-2);align-items:center">
-                  <button type="button" class="btn btn-accent btn-sm" onclick="Members.snapHardCopyScan()">
-                    📸 Capture Document Scan (படிவத்தை ஸ்கேன் செய்)
-                  </button>
-                  <button type="button" class="btn btn-ghost btn-sm" style="color:#fff" onclick="Members.stopHardCopyScanner()">
-                    Cancel (ரத்து)
-                  </button>
                 </div>
               </div>
             </div>
@@ -778,463 +694,6 @@ const Members = {
     }
   },
 
-  /* ========================================================
-     DOCUMENT SCANNER MODULE - HARD COPY TO SOFT COPY DIGITIZER
-     ======================================================== */
-  async toggleHardCopyScanner(videoId = 'doc-camera-video', boxId = 'doc-camera-viewfinder-box') {
-    const box = document.getElementById(boxId);
-    const video = document.getElementById(videoId);
-    if (!box || !video) return;
-
-    if (this._docCameraStream) {
-      this.stopHardCopyScanner(boxId);
-      return;
-    }
-
-    try {
-      // Prioritize rear/environment camera with high resolution for paper documents
-      this._docCameraStream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: { ideal: 'environment' },
-          width: { ideal: 1920 },
-          height: { ideal: 1080 }
-        },
-        audio: false
-      });
-      video.srcObject = this._docCameraStream;
-      box.style.display = 'block';
-      const btn = document.getElementById('btn-doc-scanner-toggle');
-      if (btn) btn.textContent = '⏹ Close Scanner (மூடு)';
-    } catch (err) {
-      console.warn('Document camera access error with constraints, trying fallback:', err);
-      try {
-        this._docCameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-        video.srcObject = this._docCameraStream;
-        box.style.display = 'block';
-        const btn = document.getElementById('btn-doc-scanner-toggle');
-        if (btn) btn.textContent = '⏹ Close Scanner (மூடு)';
-      } catch (err2) {
-        UI.toast('error', 'Camera Error', 'Could not access device camera for document scanning. Please use the Upload Document button.');
-      }
-    }
-  },
-
-  snapHardCopyScan(videoId = 'doc-camera-video', previewId = 'mf-doc-preview-img', boxId = 'doc-camera-viewfinder-box') {
-    const video = document.getElementById(videoId);
-    if (!video || !this._docCameraStream) return;
-
-    const canvas = document.createElement('canvas');
-    const vW = video.videoWidth || 1280;
-    const vH = video.videoHeight || 720;
-
-    // High resolution scaling for legible handwritten & printed text on A4 forms
-    const maxDim = 1400;
-    let targetW = vW;
-    let targetH = vH;
-    if (targetW > maxDim || targetH > maxDim) {
-      if (targetW > targetH) {
-        targetH = Math.round((targetH * maxDim) / targetW);
-        targetW = maxDim;
-      } else {
-        targetW = Math.round((targetW * maxDim) / targetH);
-        targetH = maxDim;
-      }
-    }
-
-    canvas.width = targetW;
-    canvas.height = targetH;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(video, 0, 0, targetW, targetH);
-
-    this._hardCopyScanBase64 = canvas.toDataURL('image/jpeg', 0.85);
-
-    const preview = document.getElementById(previewId);
-    if (preview) preview.src = this._hardCopyScanBase64;
-
-    const statusBadge = document.getElementById('mf-doc-status-badge');
-    if (statusBadge) statusBadge.innerHTML = '<span class="badge badge-success">✅ Soft Copy Ready</span>';
-
-    const viewBtn = document.getElementById('btn-doc-preview-view');
-    if (viewBtn) viewBtn.style.display = 'inline-flex';
-
-    const removeBtn = document.getElementById('btn-doc-remove');
-    if (removeBtn) removeBtn.style.display = 'inline-flex';
-
-    this.stopHardCopyScanner(boxId);
-    UI.toast('success', 'Document Scanned', 'காகித விண்ணப்பம் வெற்றிகரமாக ஸ்கேன் செய்யப்பட்டது! (Hard copy scanned successfully)');
-  },
-
-  stopHardCopyScanner(boxId = 'doc-camera-viewfinder-box') {
-    if (this._docCameraStream) {
-      this._docCameraStream.getTracks().forEach(t => t.stop());
-      this._docCameraStream = null;
-    }
-    const box = document.getElementById(boxId);
-    if (box) box.style.display = 'none';
-    const btn = document.getElementById('btn-doc-scanner-toggle');
-    if (btn) btn.textContent = '📷 Scan Hard Copy (கேமரா ஸ்கேனர்)';
-    const quickBtn = document.getElementById('btn-quick-scanner-toggle');
-    if (quickBtn) quickBtn.textContent = '📷 Rear Camera Scanner (கேமரா ஸ்கேன்)';
-  },
-
-  async handleHardCopyFileSelect(e, previewId = 'mf-doc-preview-img') {
-    const file = e.target.files[0];
-    if (!file) return;
-    try {
-      this.stopHardCopyScanner();
-      UI.showLoading('Optimizing document soft copy...');
-      this._hardCopyScanBase64 = await Utils.compressImage(file, 1400, 1800, 0.84);
-      UI.hideLoading();
-
-      const preview = document.getElementById(previewId);
-      if (preview) preview.src = this._hardCopyScanBase64;
-
-      const statusBadge = document.getElementById('mf-doc-status-badge');
-      if (statusBadge) statusBadge.innerHTML = '<span class="badge badge-success">✅ Soft Copy Ready</span>';
-
-      const viewBtn = document.getElementById('btn-doc-preview-view');
-      if (viewBtn) viewBtn.style.display = 'inline-flex';
-
-      const removeBtn = document.getElementById('btn-doc-remove');
-      if (removeBtn) removeBtn.style.display = 'inline-flex';
-
-      UI.toast('success', 'Document Attached', 'படிவ புகைப்படம் சாஃப்ட் காப்பியாக இணைக்கப்பட்டது (Soft copy attached)');
-    } catch (err) {
-      UI.hideLoading();
-      console.error(err);
-      UI.toast('error', 'Error', 'Failed to process document file');
-    }
-  },
-
-  removeHardCopyScan(previewId = 'mf-doc-preview-img') {
-    this._hardCopyScanBase64 = '';
-    const preview = document.getElementById(previewId);
-    if (preview) {
-      preview.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='130' height='170' viewBox='0 0 130 170'><rect width='130' height='170' fill='%23f1f5f9'/><path d='M40 30 h50 v105 h-50 z' fill='none' stroke='%2394a3b8' stroke-width='2'/><line x1='50' y1='50' x2='80' y2='50' stroke='%2394a3b8' stroke-width='2'/><line x1='50' y1='70' x2='80' y2='70' stroke='%2394a3b8' stroke-width='2'/><line x1='50' y1='90' x2='70' y2='90' stroke='%2394a3b8' stroke-width='2'/><text x='65' y='135' font-size='10' text-anchor='middle' fill='%2364748b' font-family='sans-serif'>No Soft Copy</text></svg>";
-    }
-    const statusBadge = document.getElementById('mf-doc-status-badge');
-    if (statusBadge) statusBadge.innerHTML = '<span class="badge badge-warning">⏳ Hard Copy Not Scanned</span>';
-
-    const viewBtn = document.getElementById('btn-doc-preview-view');
-    if (viewBtn) viewBtn.style.display = 'none';
-
-    const removeBtn = document.getElementById('btn-doc-remove');
-    if (removeBtn) removeBtn.style.display = 'none';
-
-    const fileInput = document.getElementById('mf-doc-file-input');
-    if (fileInput) fileInput.value = '';
-
-    UI.toast('info', 'Document Removed', 'Scanned soft copy has been cleared');
-  },
-
-  previewCurrentScan() {
-    if (!this._hardCopyScanBase64) {
-      UI.toast('warning', 'No Document', 'No scanned document is currently loaded');
-      return;
-    }
-    this._displayDocumentModal('📑 Scanned Admission Form Preview', this._hardCopyScanBase64);
-  },
-
-  viewHardCopyScan(memberID) {
-    const m = this._data.find(x => x.MemberID === memberID);
-    if (!m) return;
-    const scan = m.HardCopyScan || m.AdmissionSoftCopy;
-    if (!scan) {
-      UI.toast('info', 'No Soft Copy', `உறுப்பினர் ${m.FullName}-க்கு அசல் விண்ணப்ப படிவம் இன்னும் ஸ்கேன் செய்யப்படவில்லை (No hard copy scan uploaded yet).`);
-      if (Auth.canManageMembers()) {
-        this.openDocumentScannerModal(m.MemberID);
-      }
-      return;
-    }
-    this._displayDocumentModal(
-      `📑 அசல் சேர்க்கை படிவம்: ${Utils.escapeHtml(m.FullName)} (${m.MemberID})`,
-      scan,
-      m
-    );
-  },
-
-  _displayDocumentModal(title, scanSrc, memberObj = null) {
-    UI.openModal('doc-viewer-modal', `
-      <div class="modal-header">
-        <div style="display:flex;align-items:center;gap:var(--s-2)">
-          <span class="modal-title">${title}</span>
-        </div>
-        <div style="display:flex;gap:var(--s-2);align-items:center">
-          <button type="button" class="btn btn-xs btn-outline" onclick="Members.printScannedDocument()">🖨️ Print Soft Copy (அச்சு)</button>
-          <button type="button" class="btn btn-xs btn-primary" onclick="Members.downloadScannedDocument('${memberObj ? memberObj.MemberID : 'doc'}')">⬇️ Download (பதிவிறக்கம்)</button>
-          ${memberObj && Auth.canManageMembers() ? `
-            <button type="button" class="btn btn-xs btn-accent" onclick="UI.closeModal('doc-viewer-modal'); Members.openDocumentScannerModal('${memberObj.MemberID}')">🔄 Re-scan / Replace</button>
-          ` : ''}
-          <button class="modal-close" onclick="UI.closeModal('doc-viewer-modal')">✕</button>
-        </div>
-      </div>
-      <div class="modal-body" style="background:#0f172a;padding:var(--s-4);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:320px;max-height:85vh;overflow:auto">
-        ${memberObj ? `
-          <div style="background:rgba(255,255,255,0.95);color:#0f172a;width:100%;max-width:720px;padding:var(--s-3);border-radius:var(--r-md);margin-bottom:var(--s-3);display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow-md)">
-            <div>
-              <div style="font-weight:700;font-size:14px">${Utils.escapeHtml(memberObj.FullName)} &bull; ${memberObj.MemberID}</div>
-              <div style="font-size:12px;color:#64748b">${memberObj.Group} &bull; ${memberObj.House || memberObj.Team} &bull; சேர்க்கை: ${Utils.formatDate(memberObj.JoinDate)}</div>
-            </div>
-            <div>
-              <span class="badge badge-success">✅ Digitized Soft Copy</span>
-            </div>
-          </div>
-        ` : ''}
-        <div style="max-width:100%;display:flex;justify-content:center">
-          <img id="scanned-doc-full-img" src="${scanSrc}" alt="Admission Hard Copy Soft Copy" style="max-width:100%;max-height:75vh;border-radius:var(--r-md);box-shadow:0 10px 30px rgba(0,0,0,0.5);border:2px solid #ffffff;object-fit:contain;background:#ffffff">
-        </div>
-      </div>
-    `);
-  },
-
-  printScannedDocument() {
-    const img = document.getElementById('scanned-doc-full-img');
-    if (!img) return;
-    const printWin = window.open('', '_blank', 'width=850,height=1100');
-    if (!printWin) {
-      UI.toast('error', 'Popup Blocked', 'Please allow popups to print the scanned document');
-      return;
-    }
-    printWin.document.write(`
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>DBYC Admission Form Scanned Soft Copy</title>
-        <style>
-          @page { size: A4 portrait; margin: 0; }
-          body { margin: 0; padding: 0; display: flex; align-items: center; justify-content: center; background: #fff; }
-          img { max-width: 100vw; max-height: 100vh; object-fit: contain; }
-        </style>
-      </head>
-      <body>
-        <img src="${img.src}" onload="window.print(); window.close();" />
-      </body>
-      </html>
-    `);
-    printWin.document.close();
-  },
-
-  downloadScannedDocument(memberID) {
-    const img = document.getElementById('scanned-doc-full-img');
-    if (!img || !img.src) return;
-    const link = document.createElement('a');
-    link.href = img.src;
-    link.download = `DBYC_Admission_Form_${memberID || 'Doc'}.jpg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    UI.toast('success', 'Downloaded', 'Scanned soft copy saved to your device');
-  },
-
-  // Dedicated Quick Hard Copy Scanner Terminal for bulk/quick admission digitizing
-  openDocumentScannerModal(presetMemberID = null) {
-    this._quickDocScanBase64 = '';
-    this.stopHardCopyScanner();
-
-    const membersList = this._data || [];
-    const optionsHtml = membersList.map(m => `
-      <option value="${m.MemberID}" ${m.MemberID === presetMemberID ? 'selected' : ''}>
-        ${Utils.escapeHtml(m.FullName)} (${m.MemberID}) - ${m.Group} - ${(m.HardCopyScan || m.AdmissionSoftCopy) ? '✅ Has Soft Copy' : '⏳ No Scan'}
-      </option>
-    `).join('');
-
-    UI.openModal('quick-scanner-modal', `
-      <div class="modal-header">
-        <span class="modal-title">📑 அசல் விண்ணப்ப படிவம் ஆவண ஸ்கேனர் (Hard Copy Scanner Terminal)</span>
-        <button class="modal-close" onclick="Members.closeQuickScannerModal()">✕</button>
-      </div>
-      <div class="modal-body" style="max-height:85vh;overflow-y:auto;padding:var(--s-4)">
-        <div style="background:linear-gradient(135deg,#002D63,#003F8A);color:#fff;padding:var(--s-3);border-radius:var(--r-md);margin-bottom:var(--s-4)">
-          <div style="font-weight:700;font-size:14px">காகித படிவத்தை சாஃப்ட் காப்பியாக மாற்றும் தளம் (Hard Copy to Soft Copy Digitizer)</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.85);margin-top:2px">
-            உறுப்பினரைத் தேர்வு செய்து, அசல் காகித விண்ணப்பப் படிவத்தை மொபைல் கேமரா வழியே ஸ்கேன் செய்து உடனடியாக சேமிக்கவும்.
-          </div>
-        </div>
-
-        <div class="form-group" style="margin-bottom:var(--s-4)">
-          <label class="form-label" style="font-weight:700">உறுப்பினரைத் தேர்வு செய்யவும் (Select Member) <span class="required">*</span></label>
-          <select class="form-control" id="quick-doc-member-select" onchange="Members.onQuickDocMemberChange(this.value)">
-            <option value="">-- உறுப்பினரைத் தேர்ந்தெடுக்கவும் (Choose Member) --</option>
-            ${optionsHtml}
-          </select>
-        </div>
-
-        <div style="display:flex;gap:var(--s-4);align-items:flex-start;flex-wrap:wrap">
-          <div style="width:150px;height:200px;border-radius:var(--r-md);overflow:hidden;border:2px solid var(--primary);background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);position:relative">
-            <img id="quick-doc-preview-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='200' viewBox='0 0 150 200'><rect width='150' height='200' fill='%23f8fafc'/><path d='M45 40 h60 v120 h-60 z' fill='none' stroke='%2394a3b8' stroke-width='2'/><line x1='55' y1='65' x2='95' y2='65' stroke='%2394a3b8' stroke-width='2'/><line x1='55' y1='85' x2='95' y2='85' stroke='%2394a3b8' stroke-width='2'/><line x1='55' y1='105' x2='85' y2='105' stroke='%2394a3b8' stroke-width='2'/><text x='75' y='155' font-size='11' text-anchor='middle' fill='%2364748b' font-family='sans-serif'>Scan Form</text></svg>" style="width:100%;height:100%;object-fit:cover" alt="Scan Preview">
-          </div>
-
-          <div style="flex:1;min-width:240px;display:flex;flex-direction:column;gap:var(--s-3)">
-            <div style="display:flex;gap:var(--s-2);flex-wrap:wrap">
-              <button type="button" class="btn btn-primary btn-sm" id="btn-quick-scanner-toggle" onclick="Members.toggleHardCopyScanner('quick-camera-video','quick-camera-viewfinder')">
-                📷 Rear Camera Scanner (கேமரா ஸ்கேன்)
-              </button>
-              <label class="btn btn-outline btn-sm" style="cursor:pointer;margin:0">
-                📁 Upload File (கோப்பு பதிவேற்றம்)
-                <input type="file" id="quick-doc-file-input" accept="image/*" style="display:none" onchange="Members.handleQuickDocFileSelect(event)">
-              </label>
-            </div>
-
-            <!-- Camera Viewfinder -->
-            <div id="quick-camera-viewfinder" style="display:none;background:#0f172a;border-radius:var(--r-md);overflow:hidden;position:relative;border:2px solid var(--primary);margin-top:var(--s-2)">
-              <div style="position:relative;width:100%;max-height:300px;overflow:hidden;display:flex;align-items:center;justify-content:center">
-                <video id="quick-camera-video" autoplay playsinline style="width:100%;height:auto;max-height:300px;object-fit:contain"></video>
-                <div style="position:absolute;top:10px;bottom:10px;left:15%;right:15%;border:2px dashed #ffb800;border-radius:8px;pointer-events:none;box-shadow:0 0 0 9999px rgba(0,0,0,0.35);display:flex;align-items:flex-start;justify-content:center;padding-top:10px">
-                  <span style="background:rgba(0,0,0,0.75);color:#ffb800;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px">
-                    Align Physical Admission Form
-                  </span>
-                </div>
-              </div>
-              <div style="background:rgba(15,23,42,0.95);padding:var(--s-2) var(--s-3);display:flex;justify-content:center;gap:var(--s-2)">
-                <button type="button" class="btn btn-accent btn-sm" onclick="Members.snapQuickDocScan()">
-                  📸 Capture Hard Copy (படிவத்தை ஸ்கேன் செய்)
-                </button>
-                <button type="button" class="btn btn-ghost btn-sm" style="color:#fff" onclick="Members.stopHardCopyScanner('quick-camera-viewfinder')">
-                  Cancel
-                </button>
-              </div>
-            </div>
-
-            <div id="quick-doc-details" style="font-size:12px;color:var(--text-muted);background:#f1f5f9;padding:var(--s-3);border-radius:var(--r-md)">
-              தேர்ந்தெடுக்கப்பட்ட உறுப்பினரின் முந்தைய ஆவணம் இங்கே காட்டப்படும்.
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-ghost" onclick="Members.closeQuickScannerModal()">Cancel</button>
-        <button class="btn btn-primary" onclick="Members.saveQuickDocumentScan()">
-          💾 அசல் படிவத்தை சேமி (Save Scanned Soft Copy)
-        </button>
-      </div>
-    `);
-
-    if (presetMemberID) {
-      setTimeout(() => this.onQuickDocMemberChange(presetMemberID), 100);
-    }
-  },
-
-  onQuickDocMemberChange(memberID) {
-    const m = this._data.find(x => x.MemberID === memberID);
-    const preview = document.getElementById('quick-doc-preview-img');
-    const details = document.getElementById('quick-doc-details');
-    if (!m) {
-      if (details) details.innerHTML = 'தேர்ந்தெடுக்கப்பட்ட உறுப்பினரின் விவரங்கள் இங்கே தோன்றும்.';
-      return;
-    }
-
-    const scan = m.HardCopyScan || m.AdmissionSoftCopy;
-    if (scan) {
-      this._quickDocScanBase64 = scan;
-      if (preview) preview.src = scan;
-      if (details) {
-        details.innerHTML = `
-          <strong style="color:var(--success)">✅ ஏற்கனவே சாஃப்ட் காப்பி உள்ளது (Existing Soft Copy Found)</strong><br>
-          உறுப்பினர்: <strong>${Utils.escapeHtml(m.FullName)}</strong> &bull; ${m.Group} &bull; ${m.House || m.Team}<br>
-          <span style="font-size:11px;color:#64748b">புதிய படத்தை ஸ்கேன் செய்து பழையதை மாற்றலாம் (Scan or upload to replace).</span>
-        `;
-      }
-    } else {
-      this._quickDocScanBase64 = '';
-      if (preview) {
-        preview.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='200' viewBox='0 0 150 200'><rect width='150' height='200' fill='%23f8fafc'/><path d='M45 40 h60 v120 h-60 z' fill='none' stroke='%2394a3b8' stroke-width='2'/><text x='75' y='130' font-size='11' text-anchor='middle' fill='%2394a3b8' font-family='sans-serif'>No Soft Copy</text></svg>";
-      }
-      if (details) {
-        details.innerHTML = `
-          <strong style="color:var(--warning)">⏳ அசல் படிவம் இன்னும் ஸ்கேன் செய்யப்படவில்லை</strong><br>
-          உறுப்பினர்: <strong>${Utils.escapeHtml(m.FullName)}</strong> &bull; ${m.Group} &bull; ${m.House || m.Team}<br>
-          <span style="font-size:11px;color:#64748b">தயவுசெய்து மொபைல் கேமரா வழியே ஸ்கேன் செய்யவும் அல்லது கோப்பை பதிவேற்றவும்.</span>
-        `;
-      }
-    }
-  },
-
-  async handleQuickDocFileSelect(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    try {
-      this.stopHardCopyScanner('quick-camera-viewfinder');
-      UI.showLoading('Optimizing document for soft copy archiving...');
-      this._quickDocScanBase64 = await Utils.compressImage(file, 1400, 1800, 0.84);
-      UI.hideLoading();
-
-      const preview = document.getElementById('quick-doc-preview-img');
-      if (preview) preview.src = this._quickDocScanBase64;
-      UI.toast('success', 'Document Attached', 'காகித விண்ணப்பம் வெற்றிகரமாக இணைக்கப்பட்டது!');
-    } catch (err) {
-      UI.hideLoading();
-      UI.toast('error', 'Error', 'Failed to process document');
-    }
-  },
-
-  snapQuickDocScan() {
-    const video = document.getElementById('quick-camera-video');
-    if (!video || !this._docCameraStream) return;
-
-    const canvas = document.createElement('canvas');
-    const vW = video.videoWidth || 1280;
-    const vH = video.videoHeight || 720;
-
-    const maxDim = 1400;
-    let targetW = vW;
-    let targetH = vH;
-    if (targetW > maxDim || targetH > maxDim) {
-      if (targetW > targetH) {
-        targetH = Math.round((targetH * maxDim) / targetW);
-        targetW = maxDim;
-      } else {
-        targetW = Math.round((targetW * maxDim) / targetH);
-        targetH = maxDim;
-      }
-    }
-
-    canvas.width = targetW;
-    canvas.height = targetH;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(video, 0, 0, targetW, targetH);
-
-    this._quickDocScanBase64 = canvas.toDataURL('image/jpeg', 0.85);
-
-    const preview = document.getElementById('quick-doc-preview-img');
-    if (preview) preview.src = this._quickDocScanBase64;
-
-    this.stopHardCopyScanner('quick-camera-viewfinder');
-    UI.toast('success', 'Document Scanned', 'காகித படிவம் ஸ்கேன் செய்யப்பட்டது!');
-  },
-
-  async saveQuickDocumentScan() {
-    const memberID = document.getElementById('quick-doc-member-select')?.value;
-    if (!memberID) {
-      UI.toast('warning', 'Validation', 'தயவுசெய்து ஒரு உறுப்பினரைத் தேர்ந்தெடுக்கவும் (Please select a member)');
-      return;
-    }
-    if (!this._quickDocScanBase64) {
-      UI.toast('warning', 'Validation', 'தயவுசெய்து காகித படிவத்தை ஸ்கேன் செய்யவும் அல்லது கோப்பாக பதிவேற்றவும் (Please scan or upload document)');
-      return;
-    }
-
-    UI.showLoading('Saving scanned hard copy soft copy...');
-    const res = await API.updateMember({
-      memberID: memberID,
-      hardCopyScan: this._quickDocScanBase64
-    });
-    UI.hideLoading();
-
-    if (res.success) {
-      UI.toast('success', 'Saved', 'உறுப்பினரின் அசல் காகித படிவம் சாஃப்ட் காப்பியாக வெற்றிகரமாக பதியப்பட்டது! (Hard copy digitized to soft copy successfully)');
-      this.closeQuickScannerModal();
-      await this.loadMembers();
-    } else {
-      UI.toast('error', 'Error', res.error);
-    }
-  },
-
-  closeQuickScannerModal() {
-    this.stopHardCopyScanner('quick-camera-viewfinder');
-    this._quickDocScanBase64 = '';
-    UI.closeModal('quick-scanner-modal');
-  },
-
   async saveMember() {
     const house = document.getElementById('mf-house')?.value || 'Bosco House (Red)';
     const sports = [];
@@ -1276,18 +735,8 @@ const Members = {
       remarks: document.getElementById('mf-remarks')?.value.trim(),
       emergencyContact: (document.getElementById('mf-father')?.value || document.getElementById('mf-mother')?.value || 'Parent') + ' - ' + (document.getElementById('mf-phone')?.value || ''),
       photoBase64: this._photoBase64,
-      photoURL: this._photoBase64,
-      hardCopyScan: this._hardCopyScanBase64
+      photoURL: this._photoBase64
     };
-
-    if (this._hardCopyScanBase64) {
-      data.hardCopyScan = this._hardCopyScanBase64;
-    } else if (this._editingId) {
-      const existing = this._data.find(x => x.MemberID === this._editingId);
-      if (existing && (existing.HardCopyScan || existing.AdmissionSoftCopy)) {
-        data.hardCopyScan = existing.HardCopyScan || existing.AdmissionSoftCopy;
-      }
-    }
 
     const parentSig = this._parentSigPad ? this._parentSigPad.getDataURL() : '';
     const memberSig = this._memberSigPad ? this._memberSigPad.getDataURL() : '';
@@ -1310,7 +759,6 @@ const Members = {
     }
 
     this.stopCameraStream();
-    this.stopHardCopyScanner();
     UI.showLoading('Saving DBYC admission application...');
 
     let res;
