@@ -2,14 +2,19 @@
 const Dashboard = {
   async render(container) {
     const user = Auth.getUser();
+    const isMember = Auth.isMember();
     container.innerHTML = `
       <div class="page-header">
         <div class="page-header-left">
-          <div class="page-title">DBYC Central Dashboard</div>
-          <div class="page-subtitle">Welcome, ${Utils.escapeHtml(user.name)} &bull; ${new Date().toLocaleDateString('en-IN',{weekday:'long',day:'2-digit',month:'long',year:'numeric'})}</div>
+          <div class="page-title">${isMember ? 'DBYC Youth Member Portal (மன்ற தளம்)' : 'DBYC Central Dashboard'}</div>
+          <div class="page-subtitle">Welcome, ${Utils.escapeHtml(user.name)} &bull; ${user.team || user.group || ''} &bull; ${new Date().toLocaleDateString('en-IN',{weekday:'long',day:'2-digit',month:'long',year:'numeric'})}</div>
         </div>
         <div class="page-actions">
-          <button class="btn btn-outline btn-sm" onclick="Router.navigate('attendance')">📷 QR Scanner Terminal</button>
+          ${isMember ? `
+            <button class="btn btn-primary btn-sm" onclick="Router.navigate('qr')">🪪 View My Digital Pass</button>
+          ` : `
+            ${Auth.canTakeAttendance() ? `<button class="btn btn-outline btn-sm" onclick="Router.navigate('attendance')">📷 QR Scanner Terminal</button>` : ''}
+          `}
         </div>
       </div>
 
@@ -17,7 +22,7 @@ const Dashboard = {
       <div id="dash-pending-alert"></div>
 
       <!-- Don Bosco Oratory Spiritual Thematic Hero Banner -->
-      <div class="card" style="margin-bottom:var(--s-6);position:relative;overflow:hidden;border:none;border-radius:var(--r-xl);box-shadow:var(--shadow-lg);min-height:160px;background:linear-gradient(90deg, rgba(0, 35, 85, 0.92) 0%, rgba(0, 63, 138, 0.78) 50%, rgba(15, 23, 42, 0.88) 100%), url('assets/don-bosco-banner.jpg') center/cover no-repeat;display:flex;align-items:center;padding:var(--s-6)">
+      <div class="card" style="margin-bottom:var(--s-6);position:relative;overflow:hidden;border:none;border-radius:var(--r-xl);box-shadow:var(--shadow-lg);min-height:160px;background:linear-gradient(90deg, rgba(0, 35, 85, 0.92) 0%, rgba(0, 63, 138, 0.78) 50%, rgba(15, 23, 42, 0.88) 100%), url('${(typeof DBYC_THEMES !== "undefined" && DBYC_THEMES.banner) ? DBYC_THEMES.banner : "assets/don-bosco-banner.jpg"}') center/cover no-repeat;display:flex;align-items:center;padding:var(--s-6)">
         <div style="max-width:620px;color:#ffffff;z-index:2">
           <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,184,0,0.25);border:1px solid rgba(255,184,0,0.6);padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.05em;margin-bottom:8px">
             ✨ ST. JOHN BOSCO &bull; FATHER & TEACHER OF YOUTH
@@ -30,10 +35,15 @@ const Dashboard = {
           </div>
           
           <div style="display:flex;gap:var(--s-2);margin-top:var(--s-4);flex-wrap:wrap">
-            <button class="btn btn-accent btn-sm" onclick="Router.navigate('attendance')">📷 Scan QR Attendance</button>
-            <button class="btn btn-outline btn-sm" style="color:#ffffff;border-color:rgba(255,255,255,0.6)" onclick="Router.navigate('members')">➕ New Admission</button>
-            <button class="btn btn-ghost btn-sm" style="color:#ffffff" onclick="Router.navigate('qr')">🪪 Member Passes</button>
-            <button class="btn btn-outline btn-sm" style="color:#ffffff;border-color:rgba(255,184,0,0.85);background:rgba(255,184,0,0.2)" onclick="Router.navigate('rules')">⚖️ Rules of the Oratory (விதிமுறைகள்)</button>
+            ${isMember ? `
+              <button class="btn btn-accent btn-sm" onclick="Router.navigate('qr')">🪪 My Official Digital Pass (எனது அடையாள அட்டை)</button>
+              <button class="btn btn-outline btn-sm" style="color:#ffffff;border-color:rgba(255,184,0,0.85);background:rgba(255,184,0,0.2)" onclick="Router.navigate('rules')">⚖️ Rules of the Oratory (விதிமுறைகள்)</button>
+            ` : `
+              ${Auth.canTakeAttendance() ? `<button class="btn btn-accent btn-sm" onclick="Router.navigate('attendance')">📷 Scan QR Attendance</button>` : ''}
+              ${Auth.canSeeAllMembers() ? `<button class="btn btn-outline btn-sm" style="color:#ffffff;border-color:rgba(255,255,255,0.6)" onclick="Router.navigate('members')">👥 Member Registry</button>` : ''}
+              <button class="btn btn-ghost btn-sm" style="color:#ffffff" onclick="Router.navigate('qr')">🪪 Member Passes</button>
+              <button class="btn btn-outline btn-sm" style="color:#ffffff;border-color:rgba(255,184,0,0.85);background:rgba(255,184,0,0.2)" onclick="Router.navigate('rules')">⚖️ Rules of the Oratory (விதிமுறைகள்)</button>
+            `}
           </div>
         </div>
       </div>
@@ -57,11 +67,12 @@ const Dashboard = {
       </div>
 
       <!-- Groups Breakdown & Recent Attendance -->
-      <div class="grid-2" style="margin-bottom:var(--s-6)">
+      <div class="${isMember ? 'grid-1' : 'grid-2'}" style="margin-bottom:var(--s-6)">
+        ${!isMember ? `
         <div class="card">
           <div class="card-header"><span class="card-title">Youth Groups Attendance Ratio</span></div>
           <div class="card-body" id="dash-groups"><div class="loading-overlay"><div class="spinner-lg"></div></div></div>
-        </div>
+        </div>` : ''}
         <div class="card">
           <div class="card-header"><span class="card-title">Recent Verified Attendance</span></div>
           <div class="card-body" style="padding:0" id="dash-activity"><div class="loading-overlay"><div class="spinner-lg"></div></div></div>
@@ -115,39 +126,75 @@ const Dashboard = {
     // 3. Stats Cards
     const statsEl = document.getElementById('dash-stats');
     if (statsEl) {
-      statsEl.innerHTML = `
-        <div class="stat-card">
-          <div class="stat-icon" style="background:var(--primary-10);color:var(--primary)">👥</div>
-          <div class="stat-body">
-            <div class="stat-label">Verified Members</div>
-            <div class="stat-value">${d.activeMembers}</div>
-            <div class="stat-change up">✦ ${d.totalMembers} total enrolled</div>
+      if (isMember) {
+        statsEl.innerHTML = `
+          <div class="stat-card">
+            <div class="stat-icon" style="background:var(--primary-10);color:var(--primary)">🏠</div>
+            <div class="stat-body">
+              <div class="stat-label">Assigned House</div>
+              <div class="stat-value" style="font-size:var(--text-sm);font-weight:700">${Utils.teamBadge(user.team || 'Red House')}</div>
+              <div class="stat-change up">✦ 4-House League</div>
+            </div>
           </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background:var(--success-bg);color:var(--success)">✅</div>
-          <div class="stat-body">
-            <div class="stat-label">Today's Attendance</div>
-            <div class="stat-value">${d.todayAttendance}</div>
-            <div class="stat-change">Verified Check-Ins</div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:var(--success-bg);color:var(--success)">👥</div>
+            <div class="stat-body">
+              <div class="stat-label">Youth Category</div>
+              <div class="stat-value" style="font-size:var(--text-sm);font-weight:700">${Utils.groupBadge(user.group || 'Seniors')}</div>
+              <div class="stat-change">Active Youth Band</div>
+            </div>
           </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background:var(--accent-10);color:var(--accent-dark)">🏆</div>
-          <div class="stat-body">
-            <div class="stat-label">4 Teams Contested</div>
-            <div class="stat-value">4</div>
-            <div class="stat-change">Active Championship</div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:var(--accent-10);color:var(--accent-dark)">🪪</div>
+            <div class="stat-body">
+              <div class="stat-label">Pass Identification</div>
+              <div class="stat-value" style="font-size:var(--text-base);font-weight:700">${user.memberId || 'DBYC Pass'}</div>
+              <div class="stat-change up">Verified Digital Pass</div>
+            </div>
           </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background:var(--info-bg);color:var(--info)">🛡️</div>
-          <div class="stat-body">
-            <div class="stat-label">Pending Verifications</div>
-            <div class="stat-value">${d.pendingVerifications}</div>
-            <div class="stat-change ${d.pendingVerifications>0?'down':'up'}">Awaiting Director</div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:var(--info-bg);color:var(--info)">⭐</div>
+            <div class="stat-body">
+              <div class="stat-label">Personal Merit Points</div>
+              <div class="stat-value">${user.points || 120} <span style="font-size:12px;color:var(--text-muted)">pts</span></div>
+              <div class="stat-change up">Contributes to House</div>
+            </div>
+          </div>`;
+      } else {
+        statsEl.innerHTML = `
+          <div class="stat-card">
+            <div class="stat-icon" style="background:var(--primary-10);color:var(--primary)">👥</div>
+            <div class="stat-body">
+              <div class="stat-label">Verified Members</div>
+              <div class="stat-value">${d.activeMembers}</div>
+              <div class="stat-change up">✦ ${d.totalMembers} total enrolled</div>
+            </div>
           </div>
-        </div>`;
+          <div class="stat-card">
+            <div class="stat-icon" style="background:var(--success-bg);color:var(--success)">✅</div>
+            <div class="stat-body">
+              <div class="stat-label">Today's Attendance</div>
+              <div class="stat-value">${d.todayAttendance}</div>
+              <div class="stat-change">Verified Check-Ins</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:var(--accent-10);color:var(--accent-dark)">🏆</div>
+            <div class="stat-body">
+              <div class="stat-label">4 Teams Contested</div>
+              <div class="stat-value">4</div>
+              <div class="stat-change">Active Championship</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:var(--info-bg);color:var(--info)">🛡️</div>
+            <div class="stat-body">
+              <div class="stat-label">Pending Verifications</div>
+              <div class="stat-value">${d.pendingVerifications}</div>
+              <div class="stat-change ${d.pendingVerifications>0?'down':'up'}">Awaiting Director</div>
+            </div>
+          </div>`;
+      }
     }
 
     // 4. Groups Attendance Ratio

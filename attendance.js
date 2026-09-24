@@ -7,8 +7,7 @@ const Attendance = {
   _isProcessing: false,
 
   async render(container) {
-    const user = Auth.getUser();
-    const canMark = user?.role !== 'member';
+    const canMark = Auth.canTakeAttendance();
     container.innerHTML = `
       <div class="page-header">
         <div class="page-header-left">
@@ -24,7 +23,7 @@ const Attendance = {
             <span class="card-title">📷 Authority QR Scanner Terminal</span>
             <div style="display:flex;gap:var(--s-2)">
               <button class="btn btn-sm btn-primary" id="btn-mode-att" onclick="Attendance.setScanMode('attendance')">Check-In</button>
-              <button class="btn btn-sm btn-outline" id="btn-mode-pts" onclick="Attendance.setScanMode('points')">⭐ Point Adjustment (+ / -)</button>
+              ${Auth.canAwardPoints() ? `<button class="btn btn-sm btn-outline" id="btn-mode-pts" onclick="Attendance.setScanMode('points')">⭐ Point Adjustment (+ / -)</button>` : ''}
             </div>
           </div>
           <div class="card-body">
@@ -180,6 +179,10 @@ const Attendance = {
   },
 
   setScanMode(mode) {
+    if (mode === 'points' && !Auth.canAwardPoints()) {
+      UI.toast('warning', 'Access Restricted', 'Only Group Leaders and Fr. Directors can award points.');
+      return;
+    }
     this._scanMode = mode;
     const btnAtt = document.getElementById('btn-mode-att');
     const btnPts = document.getElementById('btn-mode-pts');
@@ -329,6 +332,12 @@ const Attendance = {
 
     // 1. Point Adjustment Mode (+ / -)
     if (this._scanMode === 'points') {
+      if (!Auth.canAwardPoints()) {
+        Utils.playBeep(false);
+        UI.toast('error', 'Unauthorized', 'Incharges can only record attendance, not award custom points.');
+        this._isProcessing = false;
+        return;
+      }
       const pts = parseInt(document.getElementById('scan-point-val')?.value) || 10;
       const reason = document.getElementById('scan-point-reason')?.value || 'Authority Adjustment';
 

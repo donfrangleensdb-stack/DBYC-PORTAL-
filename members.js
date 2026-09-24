@@ -46,9 +46,10 @@ const Members = {
       <!-- Tabs: All vs Pending Verification -->
       <div class="tabs" style="margin-bottom:var(--s-4)">
         <button class="tab-btn active" id="tab-all-members" onclick="Members.switchTab('all')">அனைத்து உறுப்பினர்கள் (All Members)</button>
+        ${Auth.isAdmin() ? `
         <button class="tab-btn" id="tab-pending-members" onclick="Members.switchTab('pending')">
           ⏳ ஒப்புதல் நிலுவை (Pending Qualification) <span id="pending-badge-count" class="badge badge-warning" style="margin-left:4px">0</span>
-        </button>
+        </button>` : ''}
       </div>
 
       <div class="card" style="margin-bottom:var(--s-5)">
