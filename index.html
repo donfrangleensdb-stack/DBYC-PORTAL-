@@ -16,7 +16,7 @@
   <!-- Google Fonts: Poppins & Noto Sans Tamil for Standardized Bilingual Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Embedded All-In-One Application Styles -->
   <style>
@@ -1817,16 +1817,8 @@ button, a, .nav-item, .bottom-nav-item, .page-btn {
   transform: translateY(-50%) scale(1.1);
 }
 /* ==========================================================================
-   OFFICIAL DBYC FRONT PORTAL - EXACT MATCH TO ORIGINAL WITH ZERO OVERFLOW
+   OFFICIAL DBYC FRONT PORTAL - BOLD LETTERS & RICH AMBIENT BACKGROUND
    ========================================================================== */
-
-:root {
-  color-scheme: light !important;
-}
-
-html, body {
-  color-scheme: light !important;
-}
 
 #login-screen {
   min-height: 100vh;
@@ -1836,7 +1828,7 @@ html, body {
   align-items: center;
   justify-content: center;
   background: 
-    linear-gradient(145deg, rgba(0, 35, 85, 0.90) 0%, rgba(0, 63, 138, 0.85) 50%, rgba(15, 23, 42, 0.95) 100%),
+    linear-gradient(145deg, rgba(0, 35, 85, 0.88) 0%, rgba(0, 50, 120, 0.84) 45%, rgba(15, 23, 42, 0.94) 100%),
     url('assets/don-bosco-walk.jpg') center/cover no-repeat fixed !important;
   padding: 16px 12px;
   position: relative;
@@ -1850,69 +1842,121 @@ html, body {
   content: '';
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at 15% 85%, rgba(255, 184, 0, 0.20) 0%, transparent 45%),
-    radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.16) 0%, transparent 45%);
+  background: 
+    radial-gradient(circle at 10% 90%, rgba(255, 184, 0, 0.20) 0%, transparent 45%),
+    radial-gradient(circle at 90% 10%, rgba(56, 189, 248, 0.15) 0%, transparent 45%);
   pointer-events: none;
 }
 
-/* Exact Photo Match Card - Zero Overflow */
+/* Different Premium Card - Bold, Glassmorphism, Zero Overflow */
 .login-card {
   position: relative !important;
-  background: #FFFFFF !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
   border-radius: 24px !important;
-  padding: 30px 22px 22px 22px !important;
   width: 100% !important;
   max-width: 440px !important;
   box-sizing: border-box !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 25, 70, 0.40), 0 0 0 1px rgba(0, 63, 138, 0.12) !important;
+  box-shadow: 0 25px 60px -10px rgba(0, 25, 70, 0.50), 0 0 0 1px rgba(255, 255, 255, 0.8) !important;
   text-align: center !important;
   overflow: hidden !important;
   margin: auto !important;
   border: none !important;
-  animation: slideUp var(--dur-slow) var(--ease-out);
+  animation: slideUp 0.35s ease-out;
 }
 
-.login-card * {
+/* Glowing Top Gold Accent Halo */
+.login-top-accent {
+  height: 6px;
+  width: 100%;
+  background: linear-gradient(90deg, #FFB800 0%, #FFE082 35%, #F59E0B 70%, #D97706 100%);
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.5);
+  display: block;
+}
+
+.login-body-wrapper {
+  padding: 22px 20px 20px 20px !important;
+  width: 100% !important;
+  max-width: 100% !important;
   box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
-/* Circular Crest Logo with Gold Border */
-.login-logo {
-  width: 96px !important;
-  height: 96px !important;
+/* Circular Crest Logo with Glowing Border */
+.login-logo-wrap {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 12px;
+  position: relative;
+}
+
+.login-logo-img {
+  width: 88px !important;
+  height: 88px !important;
   border-radius: 50% !important;
   object-fit: cover !important;
-  margin: 0 auto 10px !important;
-  display: block !important;
-  box-shadow: 0 8px 24px rgba(0, 63, 138, 0.3) !important;
   border: 3.5px solid #FFB800 !important;
+  box-shadow: 0 8px 24px rgba(0, 45, 99, 0.30) !important;
+  display: block;
 }
 
-/* Titles matching photo */
+/* Bold Institutional Header */
+.login-live-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+  color: #065F46;
+  border: 1.5px solid #A7F3D0;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15);
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10B981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
 .login-title {
-  font-size: 22px !important;
-  font-weight: 800 !important;
+  font-size: 21px !important;
+  font-weight: 900 !important;
   color: #002D63 !important;
-  letter-spacing: 0.04em !important;
+  letter-spacing: 0.5px !important;
   line-height: 1.2 !important;
   margin: 0 0 2px 0 !important;
   text-transform: uppercase !important;
 }
 
 .login-subhead {
-  font-size: 14.5px !important;
-  font-weight: 700 !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
   color: #D97706 !important;
   margin: 2px 0 3px 0 !important;
-  letter-spacing: 0.05em !important;
+  letter-spacing: 0.8px !important;
   text-transform: uppercase !important;
 }
 
-.login-subtitle {
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  color: #64748B !important;
+.login-tagline {
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  color: #475569 !important;
   margin: 0 0 12px 0 !important;
 }
 
@@ -1923,15 +1967,15 @@ html, body {
   width: 100% !important;
 }
 
-/* Divider: OR DEMO QUICK ACCESS */
+/* Bold Divider */
 .login-divider {
   display: flex !important;
   align-items: center !important;
-  margin: 12px 0 14px 0 !important;
-  color: #64748B !important;
-  font-size: 10.5px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.08em !important;
+  margin: 10px 0 12px 0 !important;
+  color: #475569 !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.8px !important;
   text-transform: uppercase !important;
 }
 
@@ -1939,7 +1983,7 @@ html, body {
 .login-divider::after {
   content: '' !important;
   flex: 1 !important;
-  border-bottom: 1px solid #CBD5E1 !important;
+  border-bottom: 2px solid #CBD5E1 !important;
 }
 
 .login-divider span {
@@ -1950,171 +1994,260 @@ html, body {
 .login-btn-stack {
   display: flex !important;
   flex-direction: column !important;
-  gap: 9px !important;
+  gap: 10px !important;
   width: 100% !important;
   max-width: 100% !important;
   box-sizing: border-box !important;
   margin: 0 !important;
 }
 
-/* Base button */
-.photo-btn {
+/* Universal Bold Role Button */
+.bold-role-btn {
   display: flex !important;
   align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
   width: 100% !important;
   max-width: 100% !important;
   box-sizing: border-box !important;
   margin: 0 !important;
   padding: 12px 14px !important;
-  min-height: 46px !important;
-  border-radius: 10px !important;
+  min-height: 50px !important;
+  border-radius: 12px !important;
   cursor: pointer !important;
   text-decoration: none !important;
   font-family: inherit !important;
-  font-size: 13.5px !important;
-  font-weight: 700 !important;
-  line-height: 1.3 !important;
-  white-space: normal !important;
-  word-break: normal !important;
-  text-align: center !important;
   transition: all 0.15s ease !important;
+  text-align: left !important;
   user-select: none !important;
   border: 1.5px solid transparent !important;
-  -webkit-tap-highlight-color: transparent !important;
+  overflow: hidden !important;
 }
 
-.photo-btn:active {
+.bold-role-btn:active {
   transform: scale(0.98) !important;
 }
 
-/* 1. Fr. Director: Solid Royal Blue (as in photo) */
-.btn-photo-director {
-  background: #003F8A !important;
+.btn-icon-wrap {
+  font-size: 1.5rem !important;
+  line-height: 1 !important;
+  flex-shrink: 0 !important;
+}
+
+.btn-text-wrap {
+  flex: 1 !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+.btn-text-main {
+  font-size: 14px !important;
+  font-weight: 900 !important;
+  line-height: 1.25 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.btn-text-sub {
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  margin-top: 2px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.btn-arrow-wrap {
+  font-size: 1.2rem !important;
+  font-weight: 900 !important;
+  flex-shrink: 0 !important;
+  transition: transform 0.15s ease !important;
+}
+
+.bold-role-btn:hover .btn-arrow-wrap {
+  transform: translateX(4px) !important;
+}
+
+/* 1. Star VIP Feature: Youth Member Digital Pass */
+.btn-gold-vip {
+  background: linear-gradient(135deg, #FFFDF5 0%, #FEF3C7 50%, #FDE68A 100%) !important;
+  border-color: #F59E0B !important;
+  box-shadow: 0 6px 18px rgba(245, 158, 11, 0.25) !important;
+}
+.btn-gold-vip:hover {
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%) !important;
+  border-color: #D97706 !important;
+}
+.btn-gold-vip .btn-text-main {
+  color: #78350F !important;
+}
+.btn-gold-vip .btn-text-sub {
+  color: #92400E !important;
+}
+.btn-gold-vip .btn-arrow-wrap {
+  color: #D97706 !important;
+}
+
+/* 2. Fr. Director: Solid Royal Navy */
+.btn-navy-royal {
+  background: linear-gradient(135deg, #002D63 0%, #00469B 100%) !important;
+  border-color: #00224D !important;
+  box-shadow: 0 4px 14px rgba(0, 45, 99, 0.35) !important;
+}
+.btn-navy-royal:hover {
+  background: linear-gradient(135deg, #001A3D 0%, #002D63 100%) !important;
+}
+.btn-navy-royal .btn-text-main {
   color: #FFFFFF !important;
-  border-color: #003F8A !important;
-  box-shadow: 0 3px 10px rgba(0, 63, 138, 0.3) !important;
 }
-.btn-photo-director:hover {
-  background: #002D63 !important;
+.btn-navy-royal .btn-text-sub {
+  color: #FFE082 !important;
 }
-
-/* 2. Fr. Assistant Director: White with blue outline (as in photo) */
-.btn-photo-asst {
-  background: #FFFFFF !important;
-  color: #003F8A !important;
-  border-color: #93C5FD !important;
-  box-shadow: 0 2px 6px rgba(0, 63, 138, 0.08) !important;
-}
-.btn-photo-asst:hover {
-  background: #EFF6FF !important;
-  border-color: #003F8A !important;
+.btn-navy-royal .btn-arrow-wrap {
+  color: #FFD054 !important;
 }
 
-/* 3. Dual row for Group Leader & Incharge */
-.photo-dual-grid {
+/* 3. Fr. Assistant Director: Solid Vibrant Azure */
+.btn-azure-solid {
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
+  border-color: #0369A1 !important;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.28) !important;
+}
+.btn-azure-solid:hover {
+  background: linear-gradient(135deg, #0369A1 0%, #075985 100%) !important;
+}
+.btn-azure-solid .btn-text-main {
+  color: #FFFFFF !important;
+}
+.btn-azure-solid .btn-text-sub {
+  color: #E0F2FE !important;
+}
+.btn-azure-solid .btn-arrow-wrap {
+  color: #BAE6FD !important;
+}
+
+/* 4. Dual Grid for Leaders & Incharges */
+.dual-leader-grid {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
   gap: 8px !important;
   width: 100% !important;
-  max-width: 100% !important;
   box-sizing: border-box !important;
 }
 
-.btn-photo-sm {
-  min-height: 42px !important;
-  padding: 8px 8px !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  background: #FFFFFF !important;
-  color: #0E1B35 !important;
-  border: 1px solid #CBD5E1 !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+.btn-emerald-solid {
+  background: linear-gradient(135deg, #047857 0%, #10B981 100%) !important;
+  border-color: #065F46 !important;
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.25) !important;
+  padding: 10px 10px !important;
 }
-.btn-photo-sm:hover {
-  background: #F8FAFC !important;
-  border-color: #94A3B8 !important;
+.btn-emerald-solid .btn-text-main {
+  color: #FFFFFF !important;
+  font-size: 13px !important;
 }
-
-.btn-photo-sm .photo-sub {
+.btn-emerald-solid .btn-text-sub {
+  color: #D1FAE5 !important;
   font-size: 10px !important;
-  color: #64748B !important;
-  margin-left: 2px !important;
 }
 
-/* 4. Youth Member Portal: Solid Warm Salesian Gold (as in photo) */
-.btn-photo-member {
-  background: #FFB800 !important;
-  color: #1A1000 !important;
-  border-color: #E0A000 !important;
-  box-shadow: 0 4px 14px rgba(255, 184, 0, 0.35) !important;
-  font-weight: 800 !important;
+.btn-indigo-solid {
+  background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%) !important;
+  border-color: #4338CA !important;
+  box-shadow: 0 3px 10px rgba(79, 70, 229, 0.25) !important;
+  padding: 10px 10px !important;
 }
-.btn-photo-member:hover {
-  background: #F59E0B !important;
+.btn-indigo-solid .btn-text-main {
+  color: #FFFFFF !important;
+  font-size: 13px !important;
 }
-
-/* 5. Install App (as in photo) */
-.btn-photo-install {
-  background: #FFFFFF !important;
-  color: #334155 !important;
-  border: 1px solid #CBD5E1 !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  min-height: 40px !important;
-}
-.btn-photo-install:hover {
-  background: #F1F5F9 !important;
+.btn-indigo-solid .btn-text-sub {
+  color: #E0E7FF !important;
+  font-size: 10px !important;
 }
 
-/* 6. Links (Forgot Password & AI Doctor) */
-.photo-link-btn {
-  background: transparent !important;
-  border: none !important;
-  color: #003F8A !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  padding: 6px 4px !important;
-  text-decoration: underline !important;
+/* 5. Utility Action Pills (High Contrast) */
+.login-utils-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  margin-top: 14px !important;
+  flex-wrap: wrap !important;
+  width: 100% !important;
+}
+
+.util-pill {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 4px !important;
-  width: auto !important;
-  margin: 0 auto !important;
-  -webkit-tap-highlight-color: transparent !important;
+  gap: 5px !important;
+  padding: 7px 12px !important;
+  border-radius: 20px !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  border: 1.5px solid transparent !important;
+  transition: all 0.15s ease !important;
+  white-space: nowrap !important;
 }
 
-.photo-link-ai {
-  color: #059669 !important;
+.util-pill-install {
+  background: #0F172A !important;
+  color: #FFFFFF !important;
+  border-color: #0F172A !important;
 }
 
-/* 7. Footer matching photo */
-.login-footer-text {
-  font-size: 10.5px !important;
-  color: #8A97B4 !important;
+.util-pill-pwd {
+  background: #FFF7ED !important;
+  color: #9A3412 !important;
+  border-color: #F97316 !important;
+}
+
+.util-pill-ai {
+  background: #047857 !important;
+  color: #FFFFFF !important;
+  border-color: #047857 !important;
+}
+
+/* 6. Footer Salesian Motto */
+.login-card-foot {
   margin-top: 14px !important;
-  line-height: 1.4 !important;
+  padding-top: 10px !important;
+  border-top: 1.5px solid #F1F5F9 !important;
+}
+
+.salesian-foot-quote {
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  color: #334155 !important;
+  line-height: 1.35 !important;
+}
+
+.salesian-foot-quote em {
+  color: #002D63 !important;
+  font-weight: 900 !important;
+}
+
+.salesian-foot-meta {
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  color: #64748B !important;
+  margin-top: 3px !important;
 }
 
 @media screen and (max-width: 400px) {
-  .login-card {
-    padding: 22px 14px 18px 14px !important;
-    border-radius: 18px !important;
+  .login-body-wrapper {
+    padding: 18px 14px 16px 14px !important;
   }
   .login-title {
-    font-size: 19px !important;
+    font-size: 18px !important;
   }
-  .login-subhead {
-    font-size: 13px !important;
-  }
-  .photo-btn {
+  .btn-text-main {
     font-size: 12.5px !important;
-    padding: 10px 8px !important;
   }
-  .photo-dual-grid {
+  .dual-leader-grid {
     grid-template-columns: 1fr !important;
     gap: 6px !important;
   }
@@ -2264,75 +2397,108 @@ html, body {
   <!-- Mobile Sidebar Dimmer Overlay -->
   <div id="sidebar-overlay" onclick="UI.toggleSidebar()"></div>
 
-          <!-- 1. LOGIN SCREEN (EXACT MATCH TO PHOTO) -->
+  <!-- 1. LOGIN SCREEN - BOLD DIFFERENT PORTAL -->
   <section id="login-screen">
     <div class="login-card">
-      <!-- Round Logo -->
-      <img src="assets/dbyc-logo.jpg" alt="Don Bosco Youth Centre" class="login-logo" id="login-logo-img">
-      
-      <!-- Title Group -->
-      <h1 class="login-title">DON BOSCO</h1>
-      <h2 class="login-subhead">YOUTH CENTRE (DBYC)</h2>
-      <p class="login-subtitle">Attendance & Membership Portal</p>
+      <!-- Top Salesian Ribbon Halo -->
+      <div class="login-top-accent"></div>
 
-      <!-- Google GIS Auth Container -->
-      <div id="g_id_signin" class="login-gis-container"></div>
+      <div class="login-body-wrapper">
+        <!-- Crest & Institutional Header -->
+        <div class="login-logo-wrap">
+          <img src="assets/dbyc-logo.jpg" alt="Don Bosco Youth Centre" class="login-logo-img" id="login-logo-img">
+        </div>
 
-      <!-- Divider -->
-      <div class="login-divider">
-        <span>OR DEMO QUICK ACCESS</span>
-      </div>
+        <div class="login-live-badge">
+          <span class="pulse-dot"></span>
+          <span>BOSCO PULSE &bull; தொன்போஸ்கோ தளம்</span>
+        </div>
 
-      <!-- Buttons Stack: 100% Contained, Symmetrical & Matching Photo -->
-      <div class="login-btn-stack">
-        <!-- 1. Fr. Director: Royal Blue -->
-        <button class="photo-btn btn-photo-director" onclick="loginAsRole('director')" title="Fr. Director Full Access">
-          <span>👑</span>
-          <span>Fr. Director (Full Access / முழு அணுகல்)</span>
-        </button>
+        <h1 class="login-title">DON BOSCO YOUTH CENTRE</h1>
+        <h2 class="login-subhead">YOUTH MOVEMENT &bull; BASIN BRIDGE</h2>
+        <p class="login-tagline">Learn &bull; Lead &bull; Serve &bull; Grow &bull; Est. 1950</p>
 
-        <!-- 2. Fr. Assistant Director: White with Outline -->
-        <button class="photo-btn btn-photo-asst" onclick="loginAsRole('asst_director')" title="Fr. Assistant Director Full Access">
-          <span>⚡</span>
-          <span>Fr. Assistant Director (Full Access)</span>
-        </button>
+        <!-- Google GIS Auth Container -->
+        <div id="g_id_signin" class="login-gis-container"></div>
 
-        <!-- 3. Dual row for Group Leader & Incharge -->
-        <div class="photo-dual-grid">
-          <button class="photo-btn btn-photo-sm" onclick="loginAsRole('leader', 'Seniors')" title="Group Leader: Members & Points">
-            <span>🎖️ Group Leader</span>
-            <span class="photo-sub">Members & Points</span>
+        <!-- Bold Divider -->
+        <div class="login-divider">
+          <span>CHOOSE YOUR ACCESS &bull; பொறுப்பாளர் தெரிவு</span>
+        </div>
+
+        <!-- Buttons Stack (Strictly Contained, Bold, High-Contrast) -->
+        <div class="login-btn-stack">
+          <!-- 1. Star VIP Card: Youth Member Portal (Top Prominence!) -->
+          <button class="bold-role-btn btn-gold-vip" onclick="loginAsRole('member')" title="Youth Member Portal & Digital ID Pass">
+            <span class="btn-icon-wrap">🪪</span>
+            <div class="btn-text-wrap">
+              <div class="btn-text-main">Youth Member Portal (My Pass)</div>
+              <div class="btn-text-sub">Digital ID &bull; Points Board &bull; Oratory Rules &bull; அட்டை</div>
+            </div>
+            <span class="btn-arrow-wrap">➔</span>
           </button>
-          <button class="photo-btn btn-photo-sm" onclick="loginAsRole('incharge', 'Juniors')" title="Group Incharge: Attendance Only">
-            <span>🛡️ Group Incharge</span>
-            <span class="photo-sub">Attendance Only</span>
+
+          <!-- 2. Fr. Director: Solid Royal Navy -->
+          <button class="bold-role-btn btn-navy-royal" onclick="loginAsRole('director')" title="Fr. Director Full Executive Access">
+            <span class="btn-icon-wrap">👑</span>
+            <div class="btn-text-wrap">
+              <div class="btn-text-main">Fr. Director (முழு அணுகல்)</div>
+              <div class="btn-text-sub">Full Management &bull; Approvals &bull; Official Authority</div>
+            </div>
+            <span class="btn-arrow-wrap">➔</span>
+          </button>
+
+          <!-- 3. Fr. Assistant Director: Solid Vibrant Azure -->
+          <button class="bold-role-btn btn-azure-solid" onclick="loginAsRole('asst_director')" title="Fr. Assistant Director Full Access">
+            <span class="btn-icon-wrap">⚡</span>
+            <div class="btn-text-wrap">
+              <div class="btn-text-main">Fr. Assistant Director</div>
+              <div class="btn-text-sub">Direct Leadership &bull; Activities &bull; Full Access</div>
+            </div>
+            <span class="btn-arrow-wrap">➔</span>
+          </button>
+
+          <!-- 4. Animators & Incharges 2-Column Grid -->
+          <div class="dual-leader-grid">
+            <button class="bold-role-btn btn-emerald-solid" onclick="loginAsRole('leader', 'Seniors')" title="Group Leader: Members & Points">
+              <span class="btn-icon-wrap" style="font-size:1.25rem">🎖️</span>
+              <div class="btn-text-wrap">
+                <div class="btn-text-main">Group Leader</div>
+                <div class="btn-text-sub">Members & Points &bull; புள்ளிகள்</div>
+              </div>
+            </button>
+
+            <button class="bold-role-btn btn-indigo-solid" onclick="loginAsRole('incharge', 'Juniors')" title="Group Incharge: Attendance Only">
+              <span class="btn-icon-wrap" style="font-size:1.25rem">🛡️</span>
+              <div class="btn-text-wrap">
+                <div class="btn-text-main">Group Incharge</div>
+                <div class="btn-text-sub">Attendance &bull; வருகைப் பதிவு</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Utilities Action Row -->
+        <div class="login-utils-row">
+          <button class="util-pill util-pill-install pwa-install-trigger" onclick="PWA.install()" title="Install App on Phone / PC">
+            <span>📲</span> <span>Install App (நிறுவுக)</span>
+          </button>
+          <button class="util-pill util-pill-pwd" onclick="Auth.openForgotPasswordModal('director')" title="Reset Authority Password">
+            <span>🔑</span> <span>Password Reset</span>
+          </button>
+          <button class="util-pill util-pill-ai" onclick="AIDoctor.openModal()" title="AI PWA Assistant & Auto-Doctor">
+            <span>🤖</span> <span>AI Doctor</span>
           </button>
         </div>
 
-        <!-- 4. Youth Member Portal: Solid Gold -->
-        <button class="photo-btn btn-photo-member" onclick="loginAsRole('member')" title="Youth Member Portal (My Pass & Scoreboard)">
-          <span>👤 Youth Member Portal (My Pass & Scoreboard)</span>
-        </button>
-
-        <!-- 5. Install App -->
-        <button class="photo-btn btn-photo-install pwa-install-trigger" onclick="PWA.install()" title="Install App on Phone / PC">
-          <span>📲 Install App on Phone / PC (பயன்பாட்டை நிறுவுக)</span>
-        </button>
-
-        <!-- 6. Password Reset Link -->
-        <button class="photo-link-btn" onclick="Auth.openForgotPasswordModal('director')" title="Forgot Authority Password">
-          <span>🔑 Forgot Authority Password? (கடவுச்சொல் மீட்பு)</span>
-        </button>
-
-        <!-- 7. AI Doctor Link -->
-        <button class="photo-link-btn photo-link-ai" onclick="AIDoctor.openModal()" title="AI PWA Assistant & Doctor">
-          <span>🤖 AI PWA Doctor (AI சரிசெய்தல்)</span>
-        </button>
-      </div>
-
-      <!-- Footer text matching photo -->
-      <div class="login-footer-text">
-        Zero-Budget Cloud Architecture &bull; Google Apps Script & Sheets
+        <!-- Footer Salesian Quote -->
+        <div class="login-card-foot">
+          <div class="salesian-foot-quote">
+            <em>&ldquo;Run, jump, make noise, but do not sin!&rdquo;</em>
+            <div>&mdash; St. John Bosco &bull; புனித தொன்போஸ்கோ</div>
+          </div>
+          <div class="salesian-foot-meta">Bosco Pulse Youth Movement System &bull; Chennai - 12</div>
+        </div>
       </div>
     </div>
   </section>
@@ -2350,21 +2516,35 @@ html, body {
       </div>
 
       <nav class="sidebar-nav">
-        <div class="sidebar-section-title">Operations</div>
+        <div class="sidebar-section-title">Youth Movement (மன்றப் பிரிவு)</div>
         <a class="nav-item" data-route="dashboard" onclick="Router.navigate('dashboard');UI.toggleSidebar()">
-          <span class="nav-icon">📊</span><span class="nav-label">Dashboard</span>
+          <span class="nav-icon">🌟</span><span class="nav-label">Bosco Pulse Home</span>
         </a>
+        <a class="nav-item" data-route="events" onclick="Router.navigate('events');UI.toggleSidebar()">
+          <span class="nav-icon">📅</span><span class="nav-label">Events & Camps</span>
+        </a>
+        <a class="nav-item" data-route="formation" onclick="Router.navigate('formation');UI.toggleSidebar()">
+          <span class="nav-icon">📚</span><span class="nav-label">Formation & Skills</span>
+        </a>
+        <a class="nav-item" data-route="volunteer" onclick="Router.navigate('volunteer');UI.toggleSidebar()">
+          <span class="nav-icon">❤️</span><span class="nav-label">Service & Volunteer</span>
+        </a>
+        <a class="nav-item" data-route="leaderboard" onclick="Router.navigate('leaderboard');UI.toggleSidebar()">
+          <span class="nav-icon">🏆</span><span class="nav-label">Ranks & Badges</span>
+        </a>
+        <a class="nav-item" data-route="qr" onclick="Router.navigate('qr');UI.toggleSidebar()">
+          <span class="nav-icon">🪪</span><span class="nav-label">Digital Youth Pass</span>
+        </a>
+
+        <div class="sidebar-section-title">Administration & Leadership</div>
         <a class="nav-item" data-route="members" onclick="Router.navigate('members');UI.toggleSidebar()">
           <span class="nav-icon">👥</span><span class="nav-label">Members Registry</span>
         </a>
         <a class="nav-item" data-route="attendance" onclick="Router.navigate('attendance');UI.toggleSidebar()">
-          <span class="nav-icon">📷</span><span class="nav-label">QR Attendance</span>
-        </a>
-        <a class="nav-item" data-route="qr" onclick="Router.navigate('qr');UI.toggleSidebar()">
-          <span class="nav-icon">🪪</span><span class="nav-label">Member QR Passes</span>
+          <span class="nav-icon">📷</span><span class="nav-label">QR Scanner Terminal</span>
         </a>
 
-        <div class="sidebar-section-title" id="sidebar-cert-section">Certificates & Reports</div>
+        <div class="sidebar-section-title" id="sidebar-cert-section">Certificates & Analytics</div>
         <a class="nav-item" data-route="certificates" onclick="Router.navigate('certificates');UI.toggleSidebar()">
           <span class="nav-icon">📜</span><span class="nav-label">Certificates</span>
         </a>
@@ -2433,26 +2613,26 @@ html, body {
 
       <!-- Bottom Mobile Bar -->
       <nav id="bottom-nav">
-        <div class="bottom-nav-inner">
+        <div class="bottom-nav-inner" style="grid-template-columns: repeat(5, 1fr) !important;">
           <div class="bottom-nav-item" data-route="dashboard" onclick="Router.navigate('dashboard')">
-            <div class="nav-icon">📊</div>
+            <div class="nav-icon">🏠</div>
             <span>Home</span>
           </div>
-          <div class="bottom-nav-item" data-route="members" onclick="Router.navigate('members')">
-            <div class="nav-icon">👥</div>
-            <span>Members</span>
+          <div class="bottom-nav-item" data-route="events" onclick="Router.navigate('events')">
+            <div class="nav-icon">📅</div>
+            <span>Events</span>
           </div>
-          <div class="bottom-nav-item" data-route="attendance" onclick="Router.navigate('attendance')">
-            <div class="nav-icon">📷</div>
-            <span>Scan</span>
+          <div class="bottom-nav-item" data-route="formation" onclick="Router.navigate('formation')">
+            <div class="nav-icon">📚</div>
+            <span>Learn</span>
           </div>
-          <div class="bottom-nav-item" data-route="qr" onclick="Router.navigate('qr')">
-            <div class="nav-icon">🪪</div>
-            <span>Passes</span>
+          <div class="bottom-nav-item" data-route="volunteer" onclick="Router.navigate('volunteer')">
+            <div class="nav-icon">❤️</div>
+            <span>Serve</span>
           </div>
-          <div class="bottom-nav-item" data-route="certificates" onclick="Router.navigate('certificates')">
-            <div class="nav-icon">📜</div>
-            <span>Certs</span>
+          <div class="bottom-nav-item" data-route="leaderboard" onclick="Router.navigate('leaderboard')">
+            <div class="nav-icon">🏆</div>
+            <span>Ranks</span>
           </div>
         </div>
       </nav>
@@ -2468,6 +2648,10 @@ html, body {
   <script src="api.js"></script>
   <script src="router.js"></script>
   <script src="dashboard.js"></script>
+  <script src="events.js"></script>
+  <script src="formation.js"></script>
+  <script src="volunteer.js"></script>
+  <script src="leaderboard.js"></script>
   <script src="members.js"></script>
   <script src="attendance.js"></script>
   <script src="qr-generator.js"></script>
@@ -2493,12 +2677,7 @@ html, body {
             document.body.style.backgroundRepeat = 'no-repeat';
             document.body.style.backgroundAttachment = 'fixed';
 
-            var login = document.getElementById('login-screen');
-            if (login) {
-              login.style.backgroundImage = 'linear-gradient(145deg, rgba(0, 35, 85, 0.88) 0%, rgba(0, 63, 138, 0.82) 55%, rgba(15, 23, 42, 0.94) 100%), url("' + bgImg + '")';
-              login.style.backgroundSize = 'cover';
-              login.style.backgroundPosition = 'center center';
-            }
+// Login screen retains clean Salesian royal blue gradient
           }
         }
 

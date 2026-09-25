@@ -1,5 +1,5 @@
 /* DBYC Service Worker - Bosco Pulse Youth Movement Ecosystem */
-const CACHE_NAME = 'dbyc-v18';
+const CACHE_NAME = 'dbyc-v19';
 const ASSETS = [
   './',
   './index.html',
