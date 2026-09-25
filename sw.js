@@ -1,5 +1,5 @@
 /* DBYC Service Worker - Network-First for HTML/Nav, Cache-First for Assets */
-const CACHE_NAME = 'dbyc-v15';
+const CACHE_NAME = 'dbyc-v16';
 const ASSETS = [
   './',
   './index.html',
