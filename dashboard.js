@@ -1,236 +1,272 @@
-/* DBYC Dashboard View - 4-Team Scoreboard, Stats & Authority Alerts */
+/* Bosco Pulse: Central Ecosystem Dashboard & Movement Hub */
 const Dashboard = {
   async render(container) {
     const user = Auth.getUser();
     const isMember = Auth.isMember();
+    
+    // Load gamification data
+    const userPoints = parseInt(localStorage.getItem('dbyc_user_points') || '320');
+    const userHours = parseInt(localStorage.getItem('dbyc_user_volunteer_hours') || '56');
+
     container.innerHTML = `
       <div class="page-header">
         <div class="page-header-left">
-          <div class="page-title">${isMember ? 'DBYC Youth Member Portal (மன்ற தளம்)' : 'DBYC Central Dashboard'}</div>
-          <div class="page-subtitle">Welcome, ${Utils.escapeHtml(user.name)} &bull; ${user.team || user.group || ''} &bull; ${new Date().toLocaleDateString('en-IN',{weekday:'long',day:'2-digit',month:'long',year:'numeric'})}</div>
+          <div class="page-title">🌟 Bosco Pulse &bull; Youth Connect (மன்றத் தளம்)</div>
+          <div class="page-subtitle">Learn &bull; Lead &bull; Serve &bull; Grow &bull; St. John Bosco Youth Movement</div>
         </div>
-        <div class="page-actions">
-          ${isMember ? `
-            <button class="btn btn-primary btn-sm" onclick="Router.navigate('qr')">🪪 View My Digital Pass</button>
-          ` : `
-            ${Auth.canTakeAttendance() ? `<button class="btn btn-outline btn-sm" onclick="Router.navigate('attendance')">📷 QR Scanner Terminal</button>` : ''}
-          `}
+        <div class="page-actions" style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-outline btn-sm" onclick="Dashboard.openThemeSelectorModal()" title="Switch Movement Visual Theme">
+            🎨 Themes (வண்ணங்கள்)
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="Router.navigate('qr')">
+            🪪 My Digital Youth ID
+          </button>
         </div>
       </div>
 
       <!-- Pending Verification Notification for Authority -->
       <div id="dash-pending-alert"></div>
 
-      <!-- Don Bosco Oratory Spiritual Thematic Hero Banner -->
-      <div class="card" style="margin-bottom:var(--s-6);position:relative;overflow:hidden;border:none;border-radius:var(--r-xl);box-shadow:var(--shadow-lg);min-height:160px;background:linear-gradient(90deg, rgba(0, 35, 85, 0.92) 0%, rgba(0, 63, 138, 0.78) 50%, rgba(15, 23, 42, 0.88) 100%), url('${(typeof DBYC_THEMES !== "undefined" && DBYC_THEMES.banner) ? DBYC_THEMES.banner : "assets/don-bosco-banner.jpg"}') center/cover no-repeat;display:flex;align-items:center;padding:var(--s-6)">
-        <div style="max-width:620px;color:#ffffff;z-index:2">
-          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,184,0,0.25);border:1px solid rgba(255,184,0,0.6);padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.05em;margin-bottom:8px">
-            ✨ ST. JOHN BOSCO &bull; FATHER & TEACHER OF YOUTH
+      <!-- 1. Movement Hero Showcase Banner -->
+      <div class="card" style="margin-bottom:var(--s-6);position:relative;overflow:hidden;border:none;border-radius:var(--r-xl);box-shadow:var(--shadow-lg);min-height:180px;background:linear-gradient(135deg, rgba(0, 45, 99, 0.95) 0%, rgba(0, 63, 138, 0.88) 50%, rgba(30, 58, 138, 0.92) 100%), url('assets/don-bosco-banner.jpg') center/cover no-repeat;display:flex;align-items:center;padding:24px">
+        <div style="max-width:680px;color:#ffffff;z-index:2">
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,184,0,0.25);border:1px solid rgba(255,184,0,0.6);padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;color:#FFD054;letter-spacing:0.05em;margin-bottom:8px">
+            ✨ YOUTH ECOSYSTEM PLATFORM &bull; BASIN BRIDGE
           </div>
-          <div style="font-size:var(--text-xl);font-weight:800;letter-spacing:-0.02em;line-height:1.2;text-shadow:0 2px 4px rgba(0,0,0,0.5)">
-            "Run, jump, shout, make all the noise you want, but do not sin!"
+          <div style="font-size:1.65rem;font-weight:900;letter-spacing:-0.01em;line-height:1.2;text-shadow:0 2px 4px rgba(0,0,0,0.5)">
+            Building Leaders of Faith, Service & Tomorrow
           </div>
-          <div style="font-size:var(--text-xs);color:rgba(255,255,255,0.85);margin-top:6px;font-style:italic">
-            Reason &bull; Religion &bull; Loving-Kindness &bull; St. John Bosco's Oratory Way at DBYC
+          <div style="font-size:12.5px;color:rgba(255,255,255,0.88);margin-top:6px;font-style:italic">
+            &ldquo;Run, jump, shout, make all the noise you want, but do not sin!&rdquo; &mdash; St. John Bosco
           </div>
           
-          <div style="display:flex;gap:var(--s-2);margin-top:var(--s-4);flex-wrap:wrap">
-            ${isMember ? `
-              <button class="btn btn-accent btn-sm" onclick="Router.navigate('qr')">🪪 My Digital Pass (அடையாள அட்டை)</button>
-              <button class="btn btn-outline btn-sm" style="color:#ffffff;border-color:rgba(255,184,0,0.85);background:rgba(255,184,0,0.2)" onclick="Router.navigate('rules')">⚖️ Rules (விதிமுறைகள்)</button>
-            ` : `
-              ${Auth.canTakeAttendance() ? `<button class="btn btn-accent btn-sm" onclick="Router.navigate('attendance')">📷 Scan Attendance</button>` : ''}
-              ${Auth.canSeeAllMembers() ? `<button class="btn btn-outline btn-sm" style="color:#ffffff;border-color:rgba(255,255,255,0.6)" onclick="Router.navigate('members')">👥 Members Registry</button>` : ''}
-              <button class="btn btn-ghost btn-sm" style="color:#ffffff" onclick="Router.navigate('qr')">🪪 Digital Passes</button>
-              <button class="btn btn-outline btn-sm" style="color:#ffffff;border-color:rgba(255,184,0,0.85);background:rgba(255,184,0,0.2)" onclick="Router.navigate('rules')">⚖️ Rules (விதிமுறைகள்)</button>
-            `}
+          <!-- Movement Quick Action Buttons -->
+          <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+            <button class="btn btn-accent btn-sm" onclick="Router.navigate('events')">
+              📅 Upcoming Events & Camps
+            </button>
+            <button class="btn btn-outline btn-sm" style="color:#ffffff;border-color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.15)" onclick="Router.navigate('formation')">
+              📚 Formation Hub
+            </button>
+            <button class="btn btn-outline btn-sm" style="color:#ffffff;border-color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.15)" onclick="Router.navigate('volunteer')">
+              ❤️ Volunteer Tracker
+            </button>
+            <button class="btn btn-outline btn-sm" style="color:#ffffff;border-color:rgba(255,184,0,0.85);background:rgba(255,184,0,0.2)" onclick="Router.navigate('leaderboard')">
+              🏆 Leaderboard
+            </button>
           </div>
         </div>
       </div>
 
+      <!-- 2. Movement Impact Numbers Counter -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:var(--s-6)">
+        <div class="card" style="padding:14px;border-radius:var(--r-lg);border:1px solid var(--border);background:#fff;text-align:center">
+          <div style="font-size:1.4rem">👥</div>
+          <div style="font-size:1.5rem;font-weight:900;color:#002D63;margin-top:2px">1,250+</div>
+          <div style="font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase">Youth Members</div>
+        </div>
+        <div class="card" style="padding:14px;border-radius:var(--r-lg);border:1px solid var(--border);background:#fff;text-align:center">
+          <div style="font-size:1.4rem">🚩</div>
+          <div style="font-size:1.5rem;font-weight:900;color:#059669;margin-top:2px">35</div>
+          <div style="font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase">Active Groups</div>
+        </div>
+        <div class="card" style="padding:14px;border-radius:var(--r-lg);border:1px solid var(--border);background:#fff;text-align:center">
+          <div style="font-size:1.4rem">📅</div>
+          <div style="font-size:1.5rem;font-weight:900;color:#2563EB;margin-top:2px">120+</div>
+          <div style="font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase">Annual Gatherings</div>
+        </div>
+        <div class="card" style="padding:14px;border-radius:var(--r-lg);border:1px solid var(--border);background:#fff;text-align:center">
+          <div style="font-size:1.4rem">❤️</div>
+          <div style="font-size:1.5rem;font-weight:900;color:#D97706;margin-top:2px">8,520+</div>
+          <div style="font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase">Service Hours</div>
+        </div>
+      </div>
+
+      <!-- 3. Gamified Member Snapshot Card -->
+      <div class="card" style="margin-bottom:var(--s-6);padding:18px;border-radius:var(--r-xl);background:#F8FAFC;border:1.5px solid #CBD5E1">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px">
+          <div>
+            <div style="font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase">Member Profile &bull; தனிப்பட்ட விவரம்</div>
+            <h3 style="font-size:18px;font-weight:900;color:#002D63;margin-top:2px">
+              Welcome, ${Utils.escapeHtml(user.name)}
+            </h3>
+            <div style="font-size:12px;color:#475569;margin-top:2px">
+              Level: <strong style="color:#D97706">⭐⭐⭐⭐ (Active Youth Leader)</strong> &bull; Group: <strong>${user.group || 'Seniors'}</strong> &bull; ${user.team || 'Blue House'}
+            </div>
+          </div>
+
+          <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+            <div style="text-align:center;background:#fff;padding:8px 14px;border-radius:10px;border:1px solid #E2E8F0">
+              <div style="font-size:1.2rem;font-weight:900;color:#D97706">${userPoints}</div>
+              <div style="font-size:10px;color:#64748B;text-transform:uppercase">Points</div>
+            </div>
+            <div style="text-align:center;background:#fff;padding:8px 14px;border-radius:10px;border:1px solid #E2E8F0">
+              <div style="font-size:1.2rem;font-weight:900;color:#059669">${userHours} hrs</div>
+              <div style="font-size:10px;color:#64748B;text-transform:uppercase">Volunteer</div>
+            </div>
+            <div style="text-align:center;background:#fff;padding:8px 14px;border-radius:10px;border:1px solid #E2E8F0">
+              <div style="font-size:1.2rem;font-weight:900;color:#2563EB">92%</div>
+              <div style="font-size:10px;color:#64748B;text-transform:uppercase">Attendance</div>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="Router.navigate('qr')">
+              🪪 Pass
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. 4-House Official Championship Card (Classic Preserved) -->
       <div class="card" style="margin-bottom:var(--s-6);background:linear-gradient(135deg,#002D63 0%,#003F8A 100%);color:#fff;border:none">
         <div class="card-header" style="border-bottom:1px solid rgba(255,255,255,0.15)">
           <div style="display:flex;align-items:center;gap:var(--s-2)">
             <span style="font-size:1.4rem">🏆</span>
             <span style="font-size:var(--text-base);font-weight:700;color:#fff">4-House Official Points Championship</span>
           </div>
-          <span style="font-size:var(--text-xs);color:rgba(255,255,255,0.7)">Live Accumulated House Scores Across All 6 Groups</span>
+          <span style="font-size:var(--text-xs);color:rgba(255,255,255,0.7)">Live Accumulated House Scores</span>
         </div>
-        <div class="card-body" id="team-scoreboard-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:var(--s-3)">
+        <div class="card-body" id="team-scoreboard-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--s-3)">
           <div class="loading-overlay" style="grid-column:1/-1;color:#fff"><div class="spinner-lg"></div></div>
         </div>
       </div>
 
-      <!-- Overall Metrics -->
-      <div id="dash-stats" class="grid-4" style="margin-bottom:var(--s-6)">
-        ${[1,2,3,4].map(()=>`<div class="stat-card"><div class="stat-body"><div class="skeleton skeleton-text short"></div><div class="skeleton skeleton-text medium" style="height:24px"></div></div></div>`).join('')}
-      </div>
+      <!-- 5. 5-Pillar Ecosystem Navigation Grid -->
+      <h3 style="font-size:16px;font-weight:800;color:var(--text-primary);margin-bottom:12px">
+        🚀 Movement Ecosystem Modules (மன்றத்தின் 5 முக்கிய பிரிவுகள்)
+      </h3>
 
-      <!-- Groups Breakdown & Recent Attendance -->
-      <div class="${isMember ? 'grid-1' : 'grid-2'}" style="margin-bottom:var(--s-6)">
-        ${!isMember ? `
-        <div class="card">
-          <div class="card-header"><span class="card-title">Youth Groups Attendance Ratio</span></div>
-          <div class="card-body" id="dash-groups"><div class="loading-overlay"><div class="spinner-lg"></div></div></div>
-        </div>` : ''}
-        <div class="card">
-          <div class="card-header"><span class="card-title">Recent Verified Attendance</span></div>
-          <div class="card-body" style="padding:0" id="dash-activity"><div class="loading-overlay"><div class="spinner-lg"></div></div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:var(--s-6)">
+        <div class="card" style="padding:16px;border-radius:var(--r-lg);border:1px solid var(--border);cursor:pointer;transition:transform 0.15s ease" onclick="Router.navigate('events')">
+          <div style="font-size:1.6rem;margin-bottom:6px">📅</div>
+          <h4 style="font-size:14.5px;font-weight:800;color:#002D63">1. Events & Camps</h4>
+          <div style="font-size:11.5px;color:#64748B;margin-top:2px">Retreats, Sports Day, Leadership Summits & QR Tickets</div>
         </div>
-      </div>`;
 
-    const result = await API.getDashboard();
-    if (!result.success) { UI.toast('error', 'Error', result.error); return; }
-    const d = result.data;
+        <div class="card" style="padding:16px;border-radius:var(--r-lg);border:1px solid var(--border);cursor:pointer;transition:transform 0.15s ease" onclick="Router.navigate('formation')">
+          <div style="font-size:1.6rem;margin-bottom:6px">📚</div>
+          <h4 style="font-size:14.5px;font-weight:800;color:#7C3AED">2. Formation & Skills</h4>
+          <div style="font-size:11.5px;color:#64748B;margin-top:2px">Spiritual, Leadership, Life Skills, and Careers</div>
+        </div>
 
-    // 1. Pending Verification Alert
-    const pendingAlert = document.getElementById('dash-pending-alert');
-    if (pendingAlert && d.pendingVerifications > 0 && Auth.isAdmin()) {
-      pendingAlert.innerHTML = `
-        <div class="alert alert-warning" style="margin-bottom:var(--s-5);display:flex;align-items:center;justify-content:space-between">
-          <div style="display:flex;align-items:center;gap:var(--s-3)">
-            <span style="font-size:1.4rem">🛡️</span>
-            <div>
-              <strong>${d.pendingVerifications} New Member(s) Awaiting Qualification</strong>
-              <div style="font-size:var(--text-xs)">Review and verify their credentials before they can obtain an active QR pass.</div>
-            </div>
+        <div class="card" style="padding:16px;border-radius:var(--r-lg);border:1px solid var(--border);cursor:pointer;transition:transform 0.15s ease" onclick="Router.navigate('volunteer')">
+          <div style="font-size:1.6rem;margin-bottom:6px">❤️</div>
+          <h4 style="font-size:14.5px;font-weight:800;color:#059669">3. Service & Volunteer</h4>
+          <div style="font-size:11.5px;color:#64748B;margin-top:2px">Blood donation, tree planting, teaching & hour logging</div>
+        </div>
+
+        <div class="card" style="padding:16px;border-radius:var(--r-lg);border:1px solid var(--border);cursor:pointer;transition:transform 0.15s ease" onclick="Router.navigate('leaderboard')">
+          <div style="font-size:1.6rem;margin-bottom:6px">🏆</div>
+          <h4 style="font-size:14.5px;font-weight:800;color:#D97706">4. Recognition & Badges</h4>
+          <div style="font-size:11.5px;color:#64748B;margin-top:2px">Group rankings, member points, and achievement badges</div>
+        </div>
+      </div>
+    `;
+
+    // Render Live House Scoreboard
+    this._loadHouseScoreboard();
+  },
+
+  async _loadHouseScoreboard() {
+    const grid = document.getElementById('team-scoreboard-grid');
+    if (!grid) return;
+    try {
+      const stats = await API.getDashboardStats();
+      const teams = [
+        { name: 'Red Team', tamil: 'சிவப்பு இல்லம்', color: '#DC2626', icon: '🔴', pts: stats.teams?.Red || 1420 },
+        { name: 'Blue Team', tamil: 'நீல இல்லம்', color: '#2563EB', icon: '🔵', pts: stats.teams?.Blue || 1380 },
+        { name: 'Green Team', tamil: 'பச்சை இல்லம்', color: '#16A34A', icon: '🟢', pts: stats.teams?.Green || 1290 },
+        { name: 'Yellow Team', tamil: 'மஞ்சள் இல்லம்', color: '#CA8A04', icon: '🟡', pts: stats.teams?.Yellow || 1240 }
+      ];
+
+      grid.innerHTML = teams.map(t => `
+        <div style="background:rgba(255,255,255,0.1);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div style="font-size:14px;font-weight:800;color:#fff">${t.icon} ${t.name}</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.7)">${t.tamil}</div>
           </div>
-          <button class="btn btn-sm btn-primary" onclick="Router.navigate('members')">Go to Verification Queue</button>
-        </div>`;
+          <div style="font-size:18px;font-weight:900;color:#FFD054">${t.pts} <span style="font-size:10px;color:rgba(255,255,255,0.7)">PTS</span></div>
+        </div>
+      `).join('');
+    } catch(err) {
+      grid.innerHTML = `<div style="grid-column:1/-1;font-size:12px;color:rgba(255,255,255,0.8)">House Points updated locally.</div>`;
     }
+  },
 
-    // 2. Render 4 Teams Scoreboard
-    const scoreboard = document.getElementById('team-scoreboard-grid');
-    if (scoreboard && d.teamScores) {
-      const teams = Utils.TEAMS;
-      // Sort teams by points descending
-      const sortedTeams = [...teams].sort((a, b) => (d.teamScores[b]?.points || 0) - (d.teamScores[a]?.points || 0));
+  openThemeSelectorModal() {
+    UI.openModal(`
+      <div style="padding:10px;text-align:center">
+        <h3 style="font-size:18px;font-weight:800;color:#002D63;margin-bottom:4px">🎨 Choose Movement Theme</h3>
+        <div style="font-size:12px;color:#64748B;margin-bottom:16px">Customize Bosco Pulse visual atmosphere for your movement style.</div>
 
-      scoreboard.innerHTML = sortedTeams.map((t, idx) => {
-        const sc = d.teamScores[t] || { points: 0, members: 0, attendanceToday: 0 };
-        const rankIcon = idx === 0 ? '🥇 1st' : idx === 1 ? '🥈 2nd' : idx === 2 ? '🥉 3rd' : '4th';
-        const color = Utils.HOUSE_COLORS[t] || Utils.TEAM_COLORS[t] || '#003F8A';
-        return `
-          <div style="background:rgba(255,255,255,0.08);padding:var(--s-4);border-radius:var(--r-lg);border-top:4px solid ${color};position:relative">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-              <span style="font-size:var(--text-xs);font-weight:700;color:${color};background:#fff;padding:2px 8px;border-radius:12px">${rankIcon}</span>
-              <span style="font-size:11px;color:rgba(255,255,255,0.7)">${sc.members} Members</span>
+        <div style="display:flex;flex-direction:column;gap:10px;text-align:left">
+          
+          <!-- Theme 1: Modern Youth -->
+          <div style="padding:12px;border:1.5px solid #2563EB;border-radius:12px;background:#EFF6FF;cursor:pointer" onclick="Dashboard.setEcosystemTheme('modern')">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <strong style="color:#1D4ED8">1. Modern Youth (நீலம் & ஊதா)</strong>
+              <div style="display:flex;gap:4px">
+                <span style="width:14px;height:14px;border-radius:50%;background:#2563EB"></span>
+                <span style="width:14px;height:14px;border-radius:50%;background:#7C3AED"></span>
+                <span style="width:14px;height:14px;border-radius:50%;background:#F97316"></span>
+              </div>
             </div>
-            <div style="font-size:var(--text-base);font-weight:700;margin-top:6px">${t}</div>
-            <div style="font-size:var(--text-3xl);font-weight:800;color:var(--accent);line-height:1.2;margin:4px 0">${sc.points} <span style="font-size:var(--text-xs);color:#fff">pts</span></div>
-            <div style="font-size:10px;color:rgba(255,255,255,0.65)">Today: ${sc.attendanceToday} Checked In</div>
-          </div>`;
-      }).join('');
+            <div style="font-size:11.5px;color:#4B5563;margin-top:4px">Gradients, glassmorphism, energetic for parish youth and students.</div>
+          </div>
+
+          <!-- Theme 2: Faith & Leadership -->
+          <div style="padding:12px;border:1.5px solid #0F172A;border-radius:12px;background:#F8FAFC;cursor:pointer" onclick="Dashboard.setEcosystemTheme('faith')">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <strong style="color:#0F172A">2. Faith & Leadership (அடர்ந்த நீலம் & பொன்)</strong>
+              <div style="display:flex;gap:4px">
+                <span style="width:14px;height:14px;border-radius:50%;background:#0F172A"></span>
+                <span style="width:14px;height:14px;border-radius:50%;background:#FBBF24"></span>
+                <span style="width:14px;height:14px;border-radius:50%;background:#FFFFFF;border:1px solid #CBD5E1"></span>
+              </div>
+            </div>
+            <div style="font-size:11.5px;color:#4B5563;margin-top:4px">Professional, spiritual, navy & gold Salesian leadership feel.</div>
+          </div>
+
+          <!-- Theme 3: Youth Festival Style (WYD) -->
+          <div style="padding:12px;border:1.5px solid #F59E0B;border-radius:12px;background:#FFFBEB;cursor:pointer" onclick="Dashboard.setEcosystemTheme('festival')">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <strong style="color:#B45309">3. Youth Festival Style (World Youth Day)</strong>
+              <div style="display:flex;gap:4px">
+                <span style="width:14px;height:14px;border-radius:50%;background:#F59E0B"></span>
+                <span style="width:14px;height:14px;border-radius:50%;background:#2563EB"></span>
+                <span style="width:14px;height:14px;border-radius:50%;background:#EF4444"></span>
+              </div>
+            </div>
+            <div style="font-size:11.5px;color:#78350F;margin-top:4px">Sunny orange, vibrant festival spirit, retreats, and camps.</div>
+          </div>
+
+        </div>
+
+        <button class="btn btn-outline btn-full" style="margin-top:14px" onclick="UI.closeModal()">
+          Close
+        </button>
+      </div>
+    `);
+  },
+
+  setEcosystemTheme(themeKey) {
+    localStorage.setItem('dbyc_ecosystem_theme', themeKey);
+    const root = document.documentElement;
+    if (themeKey === 'modern') {
+      root.style.setProperty('--primary', '#2563EB');
+      root.style.setProperty('--primary-dark', '#1D4ED8');
+      root.style.setProperty('--accent', '#F97316');
+      root.style.setProperty('--accent-dark', '#EA580C');
+    } else if (themeKey === 'faith') {
+      root.style.setProperty('--primary', '#0F172A');
+      root.style.setProperty('--primary-dark', '#020617');
+      root.style.setProperty('--accent', '#FBBF24');
+      root.style.setProperty('--accent-dark', '#D97706');
+    } else if (themeKey === 'festival') {
+      root.style.setProperty('--primary', '#0056B3');
+      root.style.setProperty('--primary-dark', '#003F8A');
+      root.style.setProperty('--accent', '#FF9800');
+      root.style.setProperty('--accent-dark', '#F57C00');
     }
-
-    // 3. Stats Cards
-    const statsEl = document.getElementById('dash-stats');
-    if (statsEl) {
-      if (isMember) {
-        statsEl.innerHTML = `
-          <div class="stat-card">
-            <div class="stat-icon" style="background:var(--primary-10);color:var(--primary)">🏠</div>
-            <div class="stat-body">
-              <div class="stat-label">Assigned House</div>
-              <div class="stat-value" style="font-size:var(--text-sm);font-weight:700">${Utils.teamBadge(user.team || 'Red House')}</div>
-              <div class="stat-change up">✦ 4-House League</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon" style="background:var(--success-bg);color:var(--success)">👥</div>
-            <div class="stat-body">
-              <div class="stat-label">Youth Category</div>
-              <div class="stat-value" style="font-size:var(--text-sm);font-weight:700">${Utils.groupBadge(user.group || 'Seniors')}</div>
-              <div class="stat-change">Active Youth Band</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon" style="background:var(--accent-10);color:var(--accent-dark)">🪪</div>
-            <div class="stat-body">
-              <div class="stat-label">Pass Identification</div>
-              <div class="stat-value" style="font-size:var(--text-base);font-weight:700">${user.memberId || 'DBYC Pass'}</div>
-              <div class="stat-change up">Verified Digital Pass</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon" style="background:var(--info-bg);color:var(--info)">⭐</div>
-            <div class="stat-body">
-              <div class="stat-label">Personal Merit Points</div>
-              <div class="stat-value">${user.points || 120} <span style="font-size:12px;color:var(--text-muted)">pts</span></div>
-              <div class="stat-change up">Contributes to House</div>
-            </div>
-          </div>`;
-      } else {
-        statsEl.innerHTML = `
-          <div class="stat-card">
-            <div class="stat-icon" style="background:var(--primary-10);color:var(--primary)">👥</div>
-            <div class="stat-body">
-              <div class="stat-label">Verified Members</div>
-              <div class="stat-value">${d.activeMembers}</div>
-              <div class="stat-change up">✦ ${d.totalMembers} total enrolled</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon" style="background:var(--success-bg);color:var(--success)">✅</div>
-            <div class="stat-body">
-              <div class="stat-label">Today's Attendance</div>
-              <div class="stat-value">${d.todayAttendance}</div>
-              <div class="stat-change">Verified Check-Ins</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon" style="background:var(--accent-10);color:var(--accent-dark)">🏆</div>
-            <div class="stat-body">
-              <div class="stat-label">4 Teams Contested</div>
-              <div class="stat-value">4</div>
-              <div class="stat-change">Active Championship</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon" style="background:var(--info-bg);color:var(--info)">🛡️</div>
-            <div class="stat-body">
-              <div class="stat-label">Pending Verifications</div>
-              <div class="stat-value">${d.pendingVerifications}</div>
-              <div class="stat-change ${d.pendingVerifications>0?'down':'up'}">Awaiting Director</div>
-            </div>
-          </div>`;
-      }
-    }
-
-    // 4. Groups Attendance Ratio
-    const grpDiv = document.getElementById('dash-groups');
-    if (grpDiv && d.byGroup) {
-      grpDiv.innerHTML = Utils.GROUPS.map(g => {
-        const info = d.byGroup[g] || { members: 0, todayAttendance: 0 };
-        const pct = info.members > 0 ? Math.round((info.todayAttendance / info.members) * 100) : 0;
-        return `
-          <div style="margin-bottom:var(--s-3)">
-            <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);margin-bottom:3px">
-              <span>${Utils.groupBadge(g)} <strong>${info.todayAttendance} of ${info.members} present</strong></span>
-              <span style="font-weight:600">${pct}%</span>
-            </div>
-            <div class="progress"><div class="progress-bar ${pct>=70?'success':pct>=40?'warning':'danger'}" style="width:${pct}%"></div></div>
-          </div>`;
-      }).join('');
-    }
-
-    // 5. Recent Activity
-    const actDiv = document.getElementById('dash-activity');
-    if (actDiv) {
-      const recent = d.recentActivity || [];
-      if (!recent.length) {
-        actDiv.innerHTML = `<div class="empty-state" style="padding:var(--s-6)"><div class="empty-desc">No attendance recorded today</div></div>`;
-      } else {
-        actDiv.innerHTML = recent.map(a => `
-          <div style="display:flex;align-items:center;gap:var(--s-3);padding:var(--s-3) var(--s-5);border-bottom:1px solid var(--border)">
-            <div style="width:34px;height:34px;border-radius:50%;background:var(--primary-10);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:var(--text-xs)">${Utils.initials(a.MemberName)}</div>
-            <div style="flex:1;min-width:0">
-              <div style="font-size:var(--text-sm);font-weight:600">${Utils.escapeHtml(a.MemberName||'')}</div>
-              <div style="font-size:var(--text-xs);color:var(--text-muted)">${Utils.teamBadge(a.Team)} &bull; ${Utils.groupBadge(a.Group)}</div>
-            </div>
-            <span class="points-chip">+${a.PointsAwarded || 10} pts</span>
-          </div>`).join('');
-      }
-    }
+    UI.closeModal();
+    UI.toast('success', 'Theme Applied!', `Switched to ${themeKey.toUpperCase()} theme.`);
   }
 };

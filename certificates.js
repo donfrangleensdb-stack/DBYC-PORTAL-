@@ -7,8 +7,8 @@ const Certificates = {
     container.innerHTML = `
       <div class="page-header">
         <div class="page-header-left">
-          <div class="page-title">சான்றிதழ்கள் (Official Certificates)</div>
-          <div class="page-subtitle">Attendance & Membership Certificates with St. John Bosco seal &bull; Don Bosco Youth Centre</div>
+          <div class="page-title">Official DBYC Certificates</div>
+          <div class="page-subtitle">Auto-generate verified Attendance and Membership Certificates with DBYC emblem & St. John Bosco seal</div>
         </div>
       </div>
       <div class="grid-2" style="margin-bottom:var(--s-6)">

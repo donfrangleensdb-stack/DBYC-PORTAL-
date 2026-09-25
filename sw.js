@@ -1,5 +1,5 @@
-/* DBYC Service Worker - Network-First for HTML/Nav, Cache-First for Assets */
-const CACHE_NAME = 'dbyc-v16';
+/* DBYC Service Worker - Bosco Pulse Youth Movement Ecosystem */
+const CACHE_NAME = 'dbyc-v18';
 const ASSETS = [
   './',
   './index.html',
@@ -13,6 +13,10 @@ const ASSETS = [
   './api.js',
   './router.js',
   './dashboard.js',
+  './events.js',
+  './formation.js',
+  './volunteer.js',
+  './leaderboard.js',
   './members.js',
   './attendance.js',
   './qr-generator.js',
@@ -46,7 +50,7 @@ self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
 
-  // 1. Google APIs & Backend: Network only with graceful cache fallback
+  // 1. Google APIs & Backend: Network-first
   if (url.hostname.includes('script.google.com') || url.hostname.includes('googleapis.com')) {
     e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
     return;
@@ -64,7 +68,7 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // 3. Static Assets: Cache-First with Network Revalidation
+  // 3. Static Assets: Cache-First with Background Revalidation
   e.respondWith(
     caches.match(e.request).then(cached => cached || fetch(e.request).then(resp => {
       const clone = resp.clone();

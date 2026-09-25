@@ -302,6 +302,10 @@ const UI = {
 window.addEventListener('DOMContentLoaded', () => {
   // Register routes
   Router.register('dashboard', (c) => Dashboard.render(c));
+  Router.register('events', (c) => EventsModule.render(c));
+  Router.register('formation', (c) => FormationModule.render(c));
+  Router.register('volunteer', (c) => VolunteerModule.render(c));
+  Router.register('leaderboard', (c) => LeaderboardModule.render(c));
   Router.register('members', (c) => Members.render(c));
   Router.register('attendance', (c) => Attendance.render(c));
   Router.register('qr', (c) => QRGenerator.render(c));
