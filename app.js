@@ -312,6 +312,13 @@ window.addEventListener('DOMContentLoaded', () => {
   Router.register('certificates', (c) => Certificates.render(c));
   Router.register('reports', (c) => Reports.render(c));
   Router.register('rules', (c) => Rules.render(c));
+  Router.register('birthdays',       (c) => BirthdaysModule.render(c));
+  Router.register('event-calendar',  (c) => EventCalendar.render(c));
+  Router.register('upcoming-events', (c) => UpcomingEvents.render(c));
+  Router.register('minutes',         (c) => DBYCMinutes.render(c));
+  Router.register('news',            (c) => DBYCNews.render(c));
+  Router.register('statistics',      (c) => MembersStatistics.render(c));
+  Router.register('teams',           (c) => TeamSystem.render(c));
 
   // Initialize auth state and theme
   Auth.init();
